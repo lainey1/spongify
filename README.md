@@ -1,7 +1,5 @@
 # Flask React Project
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/6vILhGt5Jqq1kKsqSAmOzt/Shaquonna-Williams's-team-library?node-id=0-1&embed-host=share" allowfullscreen></iframe>
-
 This is the starter for the Flask React project.
 
 ## Getting started
