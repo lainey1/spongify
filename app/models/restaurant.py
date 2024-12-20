@@ -24,7 +24,7 @@ class Restaurant(db.Model):
 
     def to_dict(self, form=None):
         # Initialize the dictionary with all other fields
-        restaurant_dict = {
+        restaurants_dict = {
             'id': self.id,
             'owner_id': self.owner_id,
             'name': self.name,
@@ -42,7 +42,7 @@ class Restaurant(db.Model):
 
         # If a form is provided, add hours data to the dictionary
         if form:
-            restaurant_dict['hours'] = {
+            restaurants_dict['hours'] = {
                 'monday': form.monday_hours.data,
                 'tuesday': form.tuesday_hours.data,
                 'wednesday': form.wednesday_hours.data,
@@ -53,6 +53,6 @@ class Restaurant(db.Model):
             }
         else:
             # If no form is provided, return the hours stored in the database
-            restaurant_dict['hours'] = self.hours
+            restaurants_dict['hours'] = self.hours
         
-        return restaurant_dict
+        return restaurants_dict
