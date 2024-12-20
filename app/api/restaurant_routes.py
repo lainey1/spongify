@@ -22,7 +22,7 @@ def restaurant(id):
     restaurant = Restaurant.query.get(id)
     return restaurant.to_dict()
 
-@restaurant_routes.route('/restuarants/new', methods=['POST'])
+@restaurant_routes.route('/restaurants/new', methods=['GET', 'POST'])
 def create_restaurant():
     """
     Query to add a restaurant to the DB
@@ -30,35 +30,36 @@ def create_restaurant():
     form = NewRestaurant()
 
     if form.validate_on_submit():
-        new_restaurant = restaurants(
-            name = form.name.data,
-            address = form.address.data,
-            city = form.city.data,
-            state = form.state.data,
-            country = form.country.data,
-            phone_number = form.phone_number.data,
-            email = form.email.data,
-            website = form.website.data,
-            cuisine = form.cuisine.data,
-            price_point = form.price_point.data,
-            description = form.description.data,
-            monday_hours = form.monday_hours.data,
-            tuesday_hours = form.tuesday_hours.data,
-            wednesday_hours = form.wednesday_hours.data,
-            thursday_hours = form.thursday_hours.data,
-            friday_hours = form.friday_hours.data,
-            saturday_hours = form.saturday_hours.data,
-            sunday_hours = form.sunday_hours.data
-            )
-        
+        # Create new restaurant
+        new_restaurant = Restaurant(
+            name=form.name.data,
+            address=form.address.data,
+            city=form.city.data,
+            state=form.state.data,
+            country=form.country.data,
+            phone_number=form.phone_number.data,
+            email=form.email.data,
+            website=form.website.data,
+            cuisine=form.cuisine.data,
+            price_point=form.price_point.data,
+            description=form.description.data,
+            monday_hours=form.monday_hours.data,
+            tuesday_hours=form.tuesday_hours.data,
+            wednesday_hours=form.wednesday_hours.data,
+            thursday_hours=form.thursday_hours.data,
+            friday_hours=form.friday_hours.data,
+            saturday_hours=form.saturday_hours.data,
+            sunday_hours=form.sunday_hours.data
+        )
 
         db.session.add(new_restaurant)
         db.session.commit()
         flash("Restaurant added successfully!", "success")
         return redirect('/')
-    
+
     flash("Bad Data, please check your inputs", "error")
-    return new_restaurant
+    return render_template('new_restaurant.html', form=form)
+
 
     
 
