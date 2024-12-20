@@ -17,9 +17,6 @@ class Review(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
-    # user = db.relationship('User', back_populates='reviews')
-    # restaurant = db.relationship('Restaurant', back_populates='reviews')
-
     def to_dict(self):
         return {
             'id': self.id,
