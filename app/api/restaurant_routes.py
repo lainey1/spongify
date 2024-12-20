@@ -22,7 +22,7 @@ def restaurant(id):
     restaurant = Restaurant.query.get(id)
     return restaurant.to_dict()
 
-@restaurant_routes.route('/restuarants', methods=['POST'])
+@restaurant_routes.route('/restuarants/new', methods=['POST'])
 def create_restaurant():
     """
     Query to add a restaurant to the DB
@@ -58,7 +58,7 @@ def create_restaurant():
         return redirect('/')
     
     flash("Bad Data, please check your inputs", "error")
-    return('/restaurants')
+    return new_restaurant
 
     
 
