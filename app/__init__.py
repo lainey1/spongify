@@ -25,8 +25,6 @@ def load_user(id):
 
 
 
-
-
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
 
