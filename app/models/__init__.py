@@ -4,3 +4,4 @@ from .restaurant import Restaurant
 from .reviews import Review
 from .reservation import Reservation
 from .db import environment, SCHEMA
+from .review_image import ReviewImage

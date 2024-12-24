@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField
-from wtforms.validators import InputRequired, ValidationError, Optional, Length
+from wtforms.validators import InputRequired, Optional, Length#, ValidationError
 
 
 
 def email_validator(form,field):
     email = field.data
-    if not email.endswith('@something.com'):
-        raise ValidationError('Email must be from something.com domain.')
+    # if not email.endswith('@something.com'):
+    #     raise ValidationError('Email must be from something.com domain.')
 
 
 class NewRestaurant(FlaskForm):
