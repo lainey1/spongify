@@ -18,15 +18,14 @@ class ReviewImage(db.Model):
     
     # Define the relationship with Review (optional if you need access to the associated review object)
     review = db.relationship('Review', back_populates='review_images') 
-    images = db.relationship('ReviewImage', back_populates='review')
+    user = db.relationship('User', back_populates='review_images')
 
-   
     def to_dict(self):
         return {
             'id': self.id,
             'review_id': self.review_id,
             'user_id': self.user_id,
-            'url': self.restaurant_id,
+            'url': self.url, 
             'created_at': self.created_at,
             'updated_at': self.updated_at,
             'review': self.review.to_dict() if self.review else None,

@@ -17,6 +17,10 @@ class Review(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
+    # In your Review model
+    review_images = db.relationship('ReviewImage', back_populates='review')
+
+
     def to_dict(self):
         return {
             'id': self.id,
