@@ -22,7 +22,9 @@ class Restaurant(db.Model):
     price_point = db.Column(db.Integer, nullable=True)
     description = db.Column(db.String(500), nullable=True)
 
-    def to_dict(self, form=None):
+restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
+
+def to_dict(self, form=None):
         # Initialize the dictionary with all other fields
         restaurants_dict = {
             'id': self.id,
