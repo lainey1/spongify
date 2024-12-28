@@ -3,7 +3,7 @@ from .restaurant import Restaurant
 from datetime import datetime
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
-class ReviewImage(db.Model):
+class RestaurantImage(db.Model):
     __tablename__ = 'restaurant_images'
 
     if environment == "production":
