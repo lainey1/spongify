@@ -12,7 +12,7 @@ class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('restaurants.id')), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
-    date = db.Column(db.String, nullable=False)
+    date = db.Column(db.TIMESTAMP, nullable=False)
     party_size = db.Column(db.Integer, nullable=False)
 
 
