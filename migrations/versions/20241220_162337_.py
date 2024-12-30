@@ -48,6 +48,8 @@ def upgrade():
     sa.Column('cuisine', sa.String(length=50), nullable=True),
     sa.Column('price_point', sa.Integer(), nullable=True),
     sa.Column('description', sa.String(length=500), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id'),
     schema=schema
