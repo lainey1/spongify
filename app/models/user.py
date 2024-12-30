@@ -14,6 +14,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
+    review_images = db.relationship('ReviewImage', back_populates='user')
+
+    restaurant_images = db.relationship('RestaurantImage', back_populates='user')
+
+
     @property
     def password(self):
         return self.hashed_password
@@ -24,9 +29,6 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-    
-   
-    review_images = db.relationship('ReviewImage', back_populates='user')
 
 
     def to_dict(self):

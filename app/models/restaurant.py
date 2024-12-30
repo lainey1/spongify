@@ -1,3 +1,4 @@
+from .user import User
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 class Restaurant(db.Model):
@@ -21,7 +22,7 @@ class Restaurant(db.Model):
     price_point = db.Column(db.Integer, nullable=True)
     description = db.Column(db.String(500), nullable=True)
 
-restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
+    restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
 
 def to_dict(self, form=None):
         # Initialize the dictionary with all other fields
@@ -55,5 +56,5 @@ def to_dict(self, form=None):
         else:
             # If no form is provided, return the hours stored in the database
             restaurants_dict['hours'] = self.hours
-        
+
         return restaurants_dict
