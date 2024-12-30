@@ -1,3 +1,5 @@
+from datetime import datetime
+
 # from app.models import db, Reservation, environment, SCHEMA
 # from sqlalchemy.sql import text
 
@@ -59,15 +61,13 @@ from sqlalchemy.sql import text
 def seed_reservations():
     res1 = Reservation(
            id = 1,
-           restaurant_id = 5,
+           restaurant_id = 4,
            user_id = 3,
-           date = '2024-12-20 13:45:00',
+           date=datetime.strptime('2024-12-20 13:45:00', '%Y-%m-%d %H:%M:%S'),
            party_size = 4,
-           name =  'The Great Diner',
-           username = 'john_doe'
         )
-    
-    db.session.add(res1)    
+
+    db.session.add(res1)
     db.session.commit()
 
 
@@ -83,4 +83,4 @@ def undo_reservations():
         db.session.execute(f"TRUNCATE table {SCHEMA}.reservations RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM reservations"))
-    db.session.commit() 
+    db.session.commit()

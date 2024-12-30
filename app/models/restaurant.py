@@ -1,4 +1,5 @@
 from .user import User
+from datetime import datetime
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 class Restaurant(db.Model):
@@ -21,8 +22,10 @@ class Restaurant(db.Model):
     cuisine = db.Column(db.String(50), nullable=True)
     price_point = db.Column(db.Integer, nullable=True)
     description = db.Column(db.String(500), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True)
 
-restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
+    restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
 
 def to_dict(self, form=None):
         # Initialize the dictionary with all other fields
@@ -39,7 +42,9 @@ def to_dict(self, form=None):
             'website': self.website,
             'cuisine': self.cuisine,
             'price_point': self.price_point,
-            'description': self.description
+            'description': self.description,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
         }
 
         # If a form is provided, add hours data to the dictionary
@@ -56,5 +61,5 @@ def to_dict(self, form=None):
         else:
             # If no form is provided, return the hours stored in the database
             restaurants_dict['hours'] = self.hours
-        
+
         return restaurants_dict

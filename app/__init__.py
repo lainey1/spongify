@@ -29,20 +29,14 @@ def load_user(id):
 
 
 
-
-
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-app.register_blueprint(user_routes, url_prefix='/users')
-app.register_blueprint(auth_routes, url_prefix='/auth')
-app.register_blueprint(restaurant_routes, url_prefix='/restaurants')
-app.register_blueprint(review_routes, url_prefix='/reviews')
-# app.register_blueprint(reservation_routes, url_prefix='/reservation')
-# app.register_blueprint(review_image_routes, url_prefix='/review_image')
-
-
+app.register_blueprint(user_routes, url_prefix='/api/users')
+app.register_blueprint(auth_routes, url_prefix='/api/auth')
+app.register_blueprint(restaurant_routes, url_prefix='/api/restaurants')
+app.register_blueprint(review_routes, url_prefix='/api/reviews')
 db.init_app(app)
 Migrate(app, db)
 

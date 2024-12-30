@@ -35,7 +35,6 @@ class Reservation(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     date = db.Column(db.TIMESTAMP, nullable=False)
     party_size = db.Column(db.Integer, nullable=False)
-
     restaurant = db.relationship('Restaurant', backref='reservations')
     user = db.relationship('User', backref='reservations')
 
