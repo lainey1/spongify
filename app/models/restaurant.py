@@ -27,7 +27,7 @@ class Restaurant(db.Model):
 
     restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
 
-def to_dict(self, form=None):
+    def to_dict(self, form=None):
         # Initialize the dictionary with all other fields
         restaurants_dict = {
             'id': self.id,
