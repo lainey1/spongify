@@ -25,7 +25,7 @@ class Restaurant(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True)
 
-    restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
+    restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant', cascade="all, delete-orphan")
 
 def to_dict(self, form=None):
         # Initialize the dictionary with all other fields
@@ -43,6 +43,7 @@ def to_dict(self, form=None):
             'cuisine': self.cuisine,
             'price_point': self.price_point,
             'description': self.description,
+            'restaurant_images': [image.to_dict() for image in self.restaurant_images],
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }

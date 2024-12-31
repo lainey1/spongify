@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.forms import RestaurantForm
 from app.models import Restaurant, db
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 
 restaurant_routes = Blueprint('restaurants', __name__)
@@ -90,6 +90,61 @@ def create_restaurant():
         }), 201
 
     # If form validation fails
+    return jsonify({
+        'message': 'Bad Data, please check your inputs',
+        'errors': form.errors
+    }), 400
+
+
+@restaurant_routes.route('/update/<int:id>', methods=['POST']) 
+@login_required
+def update_restaurant(id):
+    """
+    Query to update a restaurant in the DB
+    """
+   
+    restaurant = Restaurant.query.get(id)
+
+    if restaurant is None:
+        return jsonify({'message': 'Restaurant not found'}), 404
+
+   
+    if restaurant.owner_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to update this restaurant'}), 403
+
+   
+    form = RestaurantForm()
+
+    if form.validate_on_submit():
+        # Update the restaurant's details
+        restaurant.name = form.name.data
+        restaurant.address = form.address.data
+        restaurant.city = form.city.data
+        restaurant.state = form.state.data
+        restaurant.country = form.country.data
+        restaurant.phone_number = form.phone_number.data
+        restaurant.email = form.email.data
+        restaurant.website = form.website.data
+        restaurant.cuisine = form.cuisine.data
+        restaurant.price_point = form.price_point.data
+        restaurant.description = form.description.data
+        restaurant.monday_hours = form.monday_hours.data
+        restaurant.tuesday_hours = form.tuesday_hours.data
+        restaurant.wednesday_hours = form.wednesday_hours.data
+        restaurant.thursday_hours = form.thursday_hours.data
+        restaurant.friday_hours = form.friday_hours.data
+        restaurant.saturday_hours = form.saturday_hours.data
+        restaurant.sunday_hours = form.sunday_hours.data
+
+        db.session.commit()
+
+        
+        return jsonify({
+            'message': 'Restaurant updated successfully!',
+            'restaurant': restaurant.to_dict()  
+        }), 200
+
+    
     return jsonify({
         'message': 'Bad Data, please check your inputs',
         'errors': form.errors
