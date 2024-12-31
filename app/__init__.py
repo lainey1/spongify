@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
@@ -14,11 +14,7 @@ from .api.restaurant_image_routes import restaurant_images
 from .seeds import seed_commands
 from .config import Config
 
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 
-# Ensure the directory exists
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
@@ -32,21 +28,25 @@ login.login_view = 'auth.unauthorized'
 def load_user(id):
     return User.query.get(int(id))
 
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 
+# Ensure the directory exists
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# app.config['STATIC_FOLDER'] = 'static'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['STATIC_FOLDER'] = 'static'
 
 
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(restaurant_routes, url_prefix='/api/restaurants')
 app.register_blueprint(review_routes, url_prefix='/api/reviews')
-app.register_blueprint(restaurant_images, url_perfix='/api/restuarantimages')
+app.register_blueprint(restaurant_images, url_prefix='/api/restaurantimages')
 db.init_app(app)
 Migrate(app, db)
 
@@ -111,6 +111,6 @@ def not_found(e):
 
 
 # This allows Flask to serve the uploaded images
-@app.route('/static/uploads/<filename>')
+@app.route('/static/uploaded/images')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)

@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request
 from app.forms import RestaurantForm
 from app.models import Restaurant, db, RestaurantImage
-import os
+import os, random, string
 from werkzeug.utils import secure_filename
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 
 restaurant_images = Blueprint('restaurant_images', __name__)  
@@ -17,8 +17,15 @@ def all_images():
     return {'restaurant_images': [image.to_dict() for image in images]}  
 
 
-
+UPLOAD_FOLDER = '/static/uploaded/images'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+import random
+import string
+
+def generate_random_string(length=8):
+    """Generate a random string of specified length."""
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 def allowed_file(filename):
     """Check if the file extension is allowed."""
@@ -34,6 +41,7 @@ def save_image(image):
     return f"/static/uploaded/images/{filename}" 
 
 @restaurant_images.route('/restaurant/<int:restaurant_id>/Images', methods=['POST'])
+@login_required
 def upload_image(restaurant_id):
     restaurant = Restaurant.query.get(restaurant_id)
 
