@@ -129,9 +129,13 @@ def delete_reservation(reservation_id):
     """
     Delete a reservation by ID
     """
-    reservation = Reservation.query.get(reservation)
+    reservation = Reservation.query.get(reservation_id)
     if reservation:
+        if reservation.user_id != current_user.id:
+            return {'message': 'You are not authorized to delete this reservation'}, 403
+
         db.session.delete(reservation)
         db.session.commit()
-        return {'message': 'Reservation deleted successfully'}
+        return {'message': 'Reservation deleted successfully'}, 200
+
     return {'error': 'Reservation not found'}, 404
