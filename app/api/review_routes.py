@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import db, Review, Restaurant
+from app.models import db, Review
 from app.forms import ReviewForm
 from flask_login import login_required, current_user
 
@@ -87,7 +87,6 @@ def create_review(restaurant_id):
     }), 401
 
 # Update a review
-# TODO: Add validation to check if the review belongs to the current user
 @review_routes.route('/<int:review_id>', methods=['PUT'])
 @login_required
 def update_review(review_id):
@@ -113,10 +112,13 @@ def update_review(review_id):
             'review': review.to_dict()
         }), 200
     
-    return jsonify({'errors': form.errors}), 401
+    # If form validation fails
+    return jsonify({
+        'message': 'Invalid review data',
+        'errors': form.errors
+    }), 401
 
 # Delete a review
-# TODO: Add validation to check if the review belongs to the current user
 @review_routes.route('/<int:review_id>', methods=['DELETE'])
 @login_required
 def delete_review(review_id):
