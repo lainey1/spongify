@@ -6,8 +6,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 class UserProfile(db.Model):
     """
-    Represents a detailed user profile linked to the User model.
-    Includes location, cuisine preference, and a personal headline.
+    Represents a detailed user profile linked to the User model. Includes location, cuisine preference, and a personal headline.
     """
 
     __tablename__ = 'user_profiles'
