@@ -100,16 +100,14 @@ def images_by_restaurant(restaurant_id):
 def delete_image(image_id):
 
     userid = request.user.id  
-    owner_id = request.owner.id  
-
-    
+        
     image = RestaurantImage.query.filter_by(id=image_id).first()
 
     
     if not image:
         return jsonify({'error': 'Image not found'}), 404
 
-    if image.user_id != userid or image.owner_id != owner_id:
+    if image.user_id != userid or image.restaurant.owner_id != user_id:
         return jsonify({'error': 'User Unauthorized'}), 403
 
     
