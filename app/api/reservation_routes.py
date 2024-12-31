@@ -93,15 +93,34 @@ def update_reservation(reservation_id):
     Update a reservation by ID
     """
     reservation = Reservation.query.get(reservation_id)
+    if not reservation:
+        return jsonify({'message': 'Reservation not found'}), 404
+
+    # Ensure the user is the one who created the reservation
+    if reservation.user_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to update this reservation'}), 403
+
     form = ReservationForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        reservation.date = form.data.date,
-        reservation.party_size = form.data.party_size,
+        # Update the reservation fields
+        reservation.date = form.date.data
+        reservation.party_size = form.party_size.data
+
         db.session.commit()
-        return reservation.to_dict()
-    return form.errors, 400
+
+        return jsonify({
+            'message': 'Reservation updated successfully',
+            'reservation': reservation.to_dict()
+        }), 200
+
+    # If form validation fails
+    return jsonify({
+        'message': 'Invalid reservation data',
+        'errors': form.errors
+    }), 400
+
 
 # Delete a reservation
 @reservation_routes.route('/<int:reservation_id>', methods=['DELETE'])
