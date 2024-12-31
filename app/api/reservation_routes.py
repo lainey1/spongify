@@ -96,8 +96,8 @@ def update_reservation(reservation_id):
     if not reservation:
         return jsonify({'message': 'Reservation not found'}), 404
 
-    # Ensure the user is the one who created the reservation
-    if reservation.user_id != current_user.id:
+    # Ensure the user is the one who created the reservation or is not the owner of the restaurant
+    if reservation.user_id != current_user.id and reservation.restaurant.owner_id != current_user.id:
         return jsonify({'message': 'You are not authorized to update this reservation'}), 403
 
     form = ReservationForm()
@@ -131,7 +131,8 @@ def delete_reservation(reservation_id):
     """
     reservation = Reservation.query.get(reservation_id)
     if reservation:
-        if reservation.user_id != current_user.id:
+        # Ensure the user is the one who created the reservation or is not the owner of the restaurant
+        if reservation.user_id != current_user.id and reservation.restaurant.owner_id != current_user.id:
             return {'message': 'You are not authorized to delete this reservation'}, 403
 
         db.session.delete(reservation)
