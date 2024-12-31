@@ -74,7 +74,7 @@ def seed_restaurants():
         description='Authentic Italian pasta and wood-fired pizzas.'
     )
     restaurant4 = Restaurant(
-        owner_id=4,
+        owner_id=2,
         name='Sushi Station',
         address='789 Sushi Street',
         city='Los Angeles',
