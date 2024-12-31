@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import db, Review
+from app.models import db, Review, Restaurant
 from app.forms import ReviewForm
 from flask_login import login_required, current_user
 
@@ -43,23 +43,22 @@ def review(review_id):
     return review.to_dict()
 
 # Create a new review
-@review_routes.route('/new', methods=['POST'])
+@review_routes.route('/restaurant/<int:restaurant_id>/new', methods=['POST'])
 @login_required
-def create_review():
+def create_review(restaurant_id):
     """
     Create a new review and return it as a review dictionary
     """
     form = ReviewForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    print(form.data)
-    
     if form.validate_on_submit():
         # Create new review
         new_review = Review(
             user_id=current_user.id,
-            restaurant_id=form.data['restaurant_id'],
-            rating=form.data['rating'],
-            body=form.data['body']
+            restaurant_id=restaurant_id,
+            review=form.data['review_text'],
+            stars=form.data['stars']
         )
 
         db.session.add(new_review)
@@ -84,9 +83,11 @@ def update_review(review_id):
     """
     review = Review.query.get(review_id)
     form = ReviewForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
-        review.rating = form.data['rating']
-        review.body = form.data['body']
+        review.review = form.data['review_text']
+        review.stars = form.data['stars']
         db.session.commit()
         return review.to_dict()
     return form.errors, 401
