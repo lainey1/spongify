@@ -57,11 +57,11 @@ def create_restaurant():
     """
     Query to add a restaurant to the DB
     """
-    form = RestaurantForm()
+    form = RestaurantForm(request.form)
 
     if form.validate_on_submit():
         # Create new restaurant
-        new_restaurant = restaurants(
+        new_restaurant = Restaurant(
             name=form.name.data,
             address=form.address.data,
             city=form.city.data,
