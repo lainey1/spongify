@@ -75,6 +75,7 @@ def create_review(restaurant_id):
     }), 401
 
 # Update a review
+# TODO: Add validation to check if the review belongs to the current user
 @review_routes.route('/<int:review_id>', methods=['PUT'])
 @login_required
 def update_review(review_id):
@@ -93,6 +94,7 @@ def update_review(review_id):
     return form.errors, 401
 
 # Delete a review
+# TODO: Add validation to check if the review belongs to the current user
 @review_routes.route('/<int:review_id>', methods=['DELETE'])
 @login_required
 def delete_review(review_id):
