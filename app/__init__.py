@@ -28,18 +28,13 @@ login.login_view = 'auth.unauthorized'
 def load_user(id):
     return User.query.get(int(id))
 
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 
-# Ensure the directory exists
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['STATIC_FOLDER'] = 'static'
+
 
 
 app.register_blueprint(user_routes, url_prefix='/api/users')
@@ -110,7 +105,3 @@ def not_found(e):
     return app.send_static_file('index.html')
 
 
-# This allows Flask to serve the uploaded images
-@app.route('/static/uploaded/images')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)

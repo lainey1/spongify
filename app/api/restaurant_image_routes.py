@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.forms import RestaurantForm
+from app.forms import RestaurantForm, ImageForm
 from app.models import Restaurant, db, RestaurantImage
 import os, random, string
 from werkzeug.utils import secure_filename
@@ -17,68 +17,46 @@ def all_images():
     return {'restaurant_images': [image.to_dict() for image in images]}  
 
 
-UPLOAD_FOLDER = '/static/uploaded/images'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-import random
-import string
-
-def generate_random_string(length=8):
-    """Generate a random string of specified length."""
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-
-def allowed_file(filename):
-    """Check if the file extension is allowed."""
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def save_image(image):
-    """Save the image to the upload folder and return the URL path."""
-    filename = secure_filename(image.filename)
-    filepath = os.path.join(UPLOAD_FOLDER, filename)
-    
-    # Save the image to the specified folder
-    image.save(filepath)
-    return f"/static/uploaded/images/{filename}" 
-
-@restaurant_images.route('/restaurant/<int:restaurant_id>/Images', methods=['POST'])
+@restaurant_images.route('/restaurant/<int:restaurant_id>/Images', methods=['GET','POST'])
 @login_required
 def upload_image(restaurant_id):
+    form = ImageForm()
     restaurant = Restaurant.query.get(restaurant_id)
 
     if not restaurant:
         return jsonify({"error": "Restaurant not found"}), 404
 
-    images = request.files.getlist('images')
+    if not form.images.data:
+        return jsonify({"error": "No images uploaded"}), 400
 
-    if not images:
-        return jsonify({'error': 'No image provided'}), 400
+    image_urls = form.images.data  
 
     uploaded_images = []
-    for image in images:
-        # Check if the file is a valid image
-        if image and allowed_file(image.filename):
-            try:
-                # Save the image and get the URL
-                image_url = save_image(image)
-                
-                # new RestaurantImage record
-                restaurant_image = RestaurantImage(
-                    restaurant_id=restaurant.id,
-                    user_id=current_user.id,  
-                    url=image_url
-                )
-                db.session.add(restaurant_image)
-                uploaded_images.append(restaurant_image.to_dict())
-            except Exception as e:
-                db.session.rollback()  # Rollback in case of an error
-                return jsonify({"error": f"Error saving image: {str(e)}"}), 500
-        else:
-            return jsonify({"error": "Invalid file type. Only images are allowed."}), 400
+    for image_url in image_urls:
+        
+        if not image_url.startswith(('http://', 'https://')):
+            return jsonify({"error": f"Invalid URL: {image_url}"}), 400
+
+        try:
+            # New RestaurantImage record with the URL
+            restaurant_image = RestaurantImage(
+                restaurant_id=restaurant.id,
+                user_id=current_user.id,  
+                url=image_url
+            )
+            db.session.add(restaurant_image)
+            uploaded_images.append(image_url)
+            
+        except Exception as e:
+            db.session.rollback()  
+            return jsonify({"error": f"Error saving image: {str(e)}"}), 500
+
     
-    # Commit after all images are processed
     db.session.commit()
-    
-    return jsonify({"message": "Images uploaded successfully", "images": uploaded_images}), 200
+
+    return jsonify({"message": "Images uploaded successfully", "uploaded_images": uploaded_images}), 200
+
 
 
 
