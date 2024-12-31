@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify
 from app.models import db, Review
+from app.forms import ReviewForm
 from flask_login import login_required, current_user
 
 review_routes = Blueprint('reviews', __name__)
 
+# Get all reviews
 @review_routes.route('/')
 def reviews():
     """
@@ -41,19 +43,64 @@ def review(review_id):
     return review.to_dict()
 
 # Create a new review
-@review_routes.route('/', methods=['POST'])
+@review_routes.route('/new', methods=['POST'])
 @login_required
 def create_review():
     """
     Create a new review and return it as a review dictionary
     """
-    data = request.json
-    review = Review(
-        user_id=current_user.id,
-        restaurant_id=data['restaurant_id'],
-        rating=data['rating'],
-        body=data['body']
-    )
-    db.session.add(review)
-    db.session.commit()
-    return review.to_dict()
+    form = ReviewForm()
+
+    print(form.data)
+    
+    if form.validate_on_submit():
+        # Create new review
+        new_review = Review(
+            user_id=current_user.id,
+            restaurant_id=form.data['restaurant_id'],
+            rating=form.data['rating'],
+            body=form.data['body']
+        )
+
+        db.session.add(new_review)
+        db.session.commit()
+        return jsonify({
+            'message': 'Review created successfully',
+            'review': new_review.to_dict()
+        }), 201
+    
+    # If form validation fails
+    return jsonify({
+        'message': 'Invalid review data',
+        'errors': form.errors
+    }), 401
+
+# Update a review
+@review_routes.route('/<int:review_id>', methods=['PUT'])
+@login_required
+def update_review(review_id):
+    """
+    Update a review by ID
+    """
+    review = Review.query.get(review_id)
+    form = ReviewForm()
+    if form.validate_on_submit():
+        review.rating = form.data['rating']
+        review.body = form.data['body']
+        db.session.commit()
+        return review.to_dict()
+    return form.errors, 401
+
+# Delete a review
+@review_routes.route('/<int:review_id>', methods=['DELETE'])
+@login_required
+def delete_review(review_id):
+    """
+    Delete a review by ID
+    """
+    review = Review.query.get(review_id)
+    if review:
+        db.session.delete(review)
+        db.session.commit()
+        return {'message': 'Review deleted successfully'}
+    return {'error': 'Review not found'}, 404
