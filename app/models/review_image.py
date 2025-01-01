@@ -10,15 +10,15 @@ class ReviewImage(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    review_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('reviews.id')), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    review_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('reviews.id'), name='fk_image_review', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), name='fk_image_user', ondelete='CASCADE'), nullable=False)
     url = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     # Define the relationship with Review (optional if you need access to the associated review object)
-    review = db.relationship('Review', back_populates='review_images')
-    user = db.relationship('User', back_populates='review_images')
+    review = db.relationship('Review', back_populates='review_images', cascade='all, delete-orphan')
+    user = db.relationship('User', back_populates='review_images', cascade='all, delete-orphan')
 
     def to_dict(self):
         return {

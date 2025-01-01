@@ -15,13 +15,9 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
 
     review_images = db.relationship('ReviewImage', back_populates='user', cascade='all, delete-orphan')
-
     restaurant_images = db.relationship('RestaurantImage', back_populates='user', cascade='all, delete-orphan')
-
     restaurant = db.relationship('Restaurant', back_populates='user', cascade='all, delete-orphan')
-
     review = db.relationship('Review', back_populates='user', cascade='all, delete-orphan')
-
     reservations = db.relationship('Reservation', back_populates='user', cascade='all, delete-orphan')
 
 
