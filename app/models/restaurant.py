@@ -26,6 +26,9 @@ class Restaurant(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True)
 
     restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
+    reservations = db.relationship('Reservation', back_populates='restaurant')
+    review = db.relationship('Review', back_populates='restaurant')
+    user = db.relationship('User', back_populates='restaurant')
 
     def to_dict(self, form=None):
         # Initialize the dictionary with all other fields

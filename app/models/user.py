@@ -14,9 +14,15 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
-    review_images = db.relationship('ReviewImage', back_populates='user')
+    review_images = db.relationship('ReviewImage', back_populates='user', cascade='all, delete-orphan')
 
-    restaurant_images = db.relationship('RestaurantImage', back_populates='user')
+    restaurant_images = db.relationship('RestaurantImage', back_populates='user', cascade='all, delete-orphan')
+
+    restaurant = db.relationship('Restaurant', back_populates='user', cascade='all, delete-orphan')
+
+    review = db.relationship('Review', back_populates='user', cascade='all, delete-orphan')
+
+    reservations = db.relationship('Reservation', back_populates='user', cascade='all, delete-orphan')
 
 
     @property

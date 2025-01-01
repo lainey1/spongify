@@ -10,8 +10,8 @@ class Review(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
-    restaurant_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('restaurants.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('restaurants.id'), ondelete='CASCADE'), nullable=False)
     review = db.Column(db.String, nullable=False)
     stars = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
@@ -19,7 +19,8 @@ class Review(db.Model):
 
     # In your Review model
     review_images = db.relationship('ReviewImage', back_populates='review')
-
+    user = db.relationship('User', back_populates='review')
+    restaurant = db.relationship('Restaurant', back_populates='review')
 
     def to_dict(self):
         return {
