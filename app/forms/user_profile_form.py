@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import InputRequired, TextAreaField, Length, Optional
+from wtforms import StringField, TextAreaField
+from wtforms.validators import InputRequired, Length, Optional
 
 class UserProfileForm(FlaskForm):
     location = StringField('City, State', validators=[InputRequired(), Length(min=1, max=255)])
