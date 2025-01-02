@@ -9,6 +9,18 @@ def email_validator(form,field):
     # if not email.endswith('@something.com'):
     #     raise ValidationError('Email must be from something.com domain.')
 
+# Define a common time range for the dropdown
+TIME_CHOICES = [
+    ('Closed', 'Closed'),
+    ('12:00 AM', '12:00 AM'), ('1:00 AM', '1:00 AM'), ('2:00 AM', '2:00 AM'),
+    ('3:00 AM', '3:00 AM'), ('4:00 AM', '4:00 AM'), ('5:00 AM', '5:00 AM'),
+    ('6:00 AM', '6:00 AM'), ('7:00 AM', '7:00 AM'), ('8:00 AM', '8:00 AM'),
+    ('9:00 AM', '9:00 AM'), ('10:00 AM', '10:00 AM'), ('11:00 AM', '11:00 AM'),
+    ('12:00 PM', '12:00 PM'), ('1:00 PM', '1:00 PM'), ('2:00 PM', '2:00 PM'),
+    ('3:00 PM', '3:00 PM'), ('4:00 PM', '4:00 PM'), ('5:00 PM', '5:00 PM'),
+    ('6:00 PM', '6:00 PM'), ('7:00 PM', '7:00 PM'), ('8:00 PM', '8:00 PM'),
+    ('9:00 PM', '9:00 PM'), ('10:00 PM', '10:00 PM'), ('11:00 PM', '11:00 PM')
+]
 
 class RestaurantForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired(), Length(min=1, max=95)])
@@ -22,11 +34,25 @@ class RestaurantForm(FlaskForm):
     cuisine = StringField('Cuisine', validators=[Optional(), Length(max=50)])
     price_point = SelectField('Price Point', choices=[('1', '$1-$10'), ('2', '$11-$30'), ('3', '$31-$60'), ('4', '$61-$100'), '5', 'Over $100'], validators=[Optional()])
     description = TextAreaField('Description', validators=[Optional(), Length(max=500)])
-    # Days of the week with dropdown options for hours
-    monday_hours = SelectField('Monday Hours', choices=[('Closed', 'Closed'), ('9am - 5pm', '9am - 5pm'), ('10am - 6pm', '10am - 6pm'), ('12pm - 8pm', '12pm - 8pm'), ('24hrs', '24hrs')], default='Closed')
-    tuesday_hours = SelectField('Tuesday Hours', choices=[('Closed', 'Closed'), ('9am - 5pm', '9am - 5pm'), ('10am - 6pm', '10am - 6pm'), ('12pm - 8pm', '12pm - 8pm'), ('24hrs', '24hrs')], default='Closed')
-    wednesday_hours = SelectField('Wednesday Hours', choices=[('Closed', 'Closed'), ('9am - 5pm', '9am - 5pm'), ('10am - 6pm', '10am - 6pm'), ('12pm - 8pm', '12pm - 8pm'), ('24hrs', '24hrs')], default='Closed')
-    thursday_hours = SelectField('Thursday Hours', choices=[('Closed', 'Closed'), ('9am - 5pm', '9am - 5pm'), ('10am - 6pm', '10am - 6pm'), ('12pm - 8pm', '12pm - 8pm'), ('24hrs', '24hrs')], default='Closed')
-    friday_hours = SelectField('Friday Hours', choices=[('Closed', 'Closed'), ('9am - 5pm', '9am - 5pm'), ('10am - 6pm', '10am - 6pm'), ('12pm - 8pm', '12pm - 8pm'), ('24hrs', '24hrs')], default='Closed')
-    saturday_hours = SelectField('Saturday Hours', choices=[('Closed', 'Closed'), ('9am - 5pm', '9am - 5pm'), ('10am - 6pm', '10am - 6pm'), ('12pm - 8pm', '12pm - 8pm'), ('24hrs', '24hrs')], default='Closed')
-    sunday_hours = SelectField('Sunday Hours', choices=[('Closed', 'Closed'), ('9am - 5pm', '9am - 5pm'), ('10am - 6pm', '10am - 6pm'), ('12pm - 8pm', '12pm - 8pm'), ('24hrs', '24hrs')], default='Closed')
+
+    # Separate fields for opening and closing times
+    monday_open = SelectField('Monday Open', choices=TIME_CHOICES, default='Closed')
+    monday_close = SelectField('Monday Close', choices=TIME_CHOICES, default='Closed')
+
+    tuesday_open = SelectField('Tuesday Open', choices=TIME_CHOICES, default='Closed')
+    tuesday_close = SelectField('Tuesday Close', choices=TIME_CHOICES, default='Closed')
+
+    wednesday_open = SelectField('Wednesday Open', choices=TIME_CHOICES, default='Closed')
+    wednesday_close = SelectField('Wednesday Close', choices=TIME_CHOICES, default='Closed')
+
+    thursday_open = SelectField('Thursday Open', choices=TIME_CHOICES, default='Closed')
+    thursday_close = SelectField('Thursday Close', choices=TIME_CHOICES, default='Closed')
+
+    friday_open = SelectField('Friday Open', choices=TIME_CHOICES, default='Closed')
+    friday_close = SelectField('Friday Close', choices=TIME_CHOICES, default='Closed')
+
+    saturday_open = SelectField('Saturday Open', choices=TIME_CHOICES, default='Closed')
+    saturday_close = SelectField('Saturday Close', choices=TIME_CHOICES, default='Closed')
+
+    sunday_open = SelectField('Sunday Open', choices=TIME_CHOICES, default='Closed')
+    sunday_close = SelectField('Sunday Close', choices=TIME_CHOICES, default='Closed')

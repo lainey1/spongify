@@ -8,7 +8,7 @@ def seed_restaurant_image():
             restaurant_id=1,
             user_id=1,
             url='https://example.com/image1.jpg',
-            is_preview=True  # Optional if you added this field
+            is_preview=True
         ),
         RestaurantImage(
             restaurant_id=1,
