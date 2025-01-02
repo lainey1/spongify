@@ -36,13 +36,13 @@ def update_profile(user_id):
     """
     user = User.query.get(user_id)
     if not user:
-        return jsonify({'message': 'ResUserervation not found'}), 404
+        return jsonify({'message': 'User not found'}), 404
 
     # Ensure the user is the one who created the reservation or is not the owner of the restaurant
-    if user_id != current_user.id and restaurant.owner_id != current_user.id:
-        return jsonify({'message': 'You are not authorized to update this reservation'}), 403
+    if user_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to update this profile'}), 403
 
-    form = ReservationForm()
+    form = UserProfileForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():

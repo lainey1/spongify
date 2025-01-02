@@ -1,7 +1,6 @@
 from app.models import db, Restaurant, environment, SCHEMA
 from sqlalchemy.sql import text
 
-
 # Adds demo restaurants
 def seed_restaurants():
     restaurant1 = Restaurant(
@@ -102,8 +101,6 @@ def seed_restaurants():
     db.session.add(restaurant3)
     db.session.add(restaurant4)
     db.session.commit()
-
-
 
 # Uses a raw SQL query to TRUNCATE or DELETE the restaurants table.
 # SQLAlchemy doesn't have a built-in function to do this.
