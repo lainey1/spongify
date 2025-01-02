@@ -1,9 +1,11 @@
 from flask import Blueprint, jsonify, request
+
 from app.forms import ImageForm
 from app.models import Restaurant, db, RestaurantImage
 from flask_login import current_user, login_required
 
 restaurant_images = Blueprint('restaurant_images', __name__)
+
 
 @restaurant_images.route('/')
 def all_images():
@@ -11,6 +13,7 @@ def all_images():
     Query for all restaurant images and return them in a list of image dictionaries.
     """
     images = RestaurantImage.query.all()
+
     return {'restaurant_images': [image.to_dict() for image in images]}
 
 
@@ -95,3 +98,4 @@ def delete_image(image_id):
         return {'message': 'Image deleted successfully'}
 
     return {'error': 'Image not found.'}, 404
+

@@ -62,6 +62,7 @@ def create_restaurant():
     """
     Query to add a restaurant to the DB using either JSON or Form data
     """
+
     if request.is_json:
         # Handle JSON input (from Postman)
         data = request.get_json()
@@ -131,3 +132,4 @@ def create_restaurant():
                 return jsonify({"error": str(e)}), 500
         else:
             return jsonify({"errors": form.errors}), 400
+
