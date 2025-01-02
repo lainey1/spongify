@@ -43,6 +43,10 @@ def restaurant(id):
     if not restaurant:
         return {'error': f'Restaurant with ID {id} not found.'}, 404
 
+    # Check if the current user is the owner of the restaurant
+    if restaurant.owner_id != current_user.id:
+        return {'error': 'You are not authorized to delete this restaurant.'}, 403
+
     if request.method == 'GET':
         return restaurant.to_dict(), 200
 
@@ -50,6 +54,7 @@ def restaurant(id):
         db.session.delete(restaurant)
         db.session.commit()
         return {'message': f'Restaurant with ID {id} deleted successfully.'}, 200
+
 
 @restaurant_routes.route('/new', methods=['POST'])
 @login_required
