@@ -28,6 +28,6 @@ class ReviewImage(db.Model):
             'url': self.url,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'review': self.review.to_dict() if self.review else None,
+            # 'review': self.review.to_dict() if self.review else None,
             'user': self.user.to_dict() if self.user else None
         }
