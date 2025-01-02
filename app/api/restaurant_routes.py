@@ -55,48 +55,74 @@ def restaurant(id):
 @login_required
 def create_restaurant():
     """
-    Query to add a restaurant to the DB using a Flask form
+    Query to add a restaurant to the DB using either JSON or Form data
     """
-    form = RestaurantForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    if request.is_json:
+        # Handle JSON input (from Postman)
+        data = request.get_json()
 
-    if form.validate_on_submit():
         try:
-            # Get the validated form data
             new_restaurant = Restaurant(
                 owner_id=current_user.id,
-                name=form.name.data,
-                address=form.address.data,
-                city=form.city.data,
-                state=form.state.data,
-                country=form.country.data,
-                phone_number=form.phone_number.data,
-                email=form.email.data,
-                website=form.website.data,
-                cuisine=form.cuisine.data,
-                price_point=int(form.price_point.data),
-                description=form.description.data,
-                hours={
-                    "Monday": [form.monday_open.data, form.monday_close.data],
-                    "Tuesday": [form.tuesday_open.data, form.tuesday_close.data],
-                    "Wednesday": [form.wednesday_open.data, form.wednesday_close.data],
-                    "Thursday": [form.thursday_open.data, form.thursday_close.data],
-                    "Friday": [form.friday_open.data, form.friday_close.data],
-                    "Saturday": [form.saturday_open.data, form.saturday_close.data],
-                    "Sunday": [form.sunday_open.data, form.sunday_close.data],
-                }
+                name=data['name'],
+                address=data['address'],
+                city=data['city'],
+                state=data['state'],
+                country=data['country'],
+                phone_number=data.get('phone_number'),
+                email=data.get('email'),
+                website=data.get('website'),
+                cuisine=data.get('cuisine'),
+                price_point=data.get('price_point'),
+                description=data.get('description'),
+                hours=data['hours']  # Directly assign hours from the JSON
             )
 
-            # Add the new restaurant to the session and commit
             db.session.add(new_restaurant)
             db.session.commit()
 
-            # Return the created restaurant's data as JSON
             return jsonify(new_restaurant.to_dict()), 201
 
         except Exception as e:
-            # Handle any errors during the process
             return jsonify({"error": str(e)}), 500
+
     else:
-        # If form validation fails, return errors
-        return jsonify({"errors": form.errors}), 400
+        # Handle form input (when you're using the Flask form later)
+        form = RestaurantForm()
+        form['csrf_token'].data = request.cookies['csrf_token']
+
+        if form.validate_on_submit():
+            try:
+                new_restaurant = Restaurant(
+                    owner_id=current_user.id,
+                    name=form.name.data,
+                    address=form.address.data,
+                    city=form.city.data,
+                    state=form.state.data,
+                    country=form.country.data,
+                    phone_number=form.phone_number.data,
+                    email=form.email.data,
+                    website=form.website.data,
+                    cuisine=form.cuisine.data,
+                    price_point=int(form.price_point.data),
+                    description=form.description.data,
+                    hours={
+                        "Monday": [form.monday_open.data, form.monday_close.data],
+                        "Tuesday": [form.tuesday_open.data, form.tuesday_close.data],
+                        "Wednesday": [form.wednesday_open.data, form.wednesday_close.data],
+                        "Thursday": [form.thursday_open.data, form.thursday_close.data],
+                        "Friday": [form.friday_open.data, form.friday_close.data],
+                        "Saturday": [form.saturday_open.data, form.saturday_close.data],
+                        "Sunday": [form.sunday_open.data, form.sunday_close.data],
+                    }
+                )
+
+                db.session.add(new_restaurant)
+                db.session.commit()
+
+                return jsonify(new_restaurant.to_dict()), 201
+
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+        else:
+            return jsonify({"errors": form.errors}), 400
