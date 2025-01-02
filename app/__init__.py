@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
@@ -15,8 +15,12 @@ from .api.restaurant_image_routes import restaurant_images
 from .api.review_image_routes import review_image_routes
 
 
+
 from .seeds import seed_commands
 from .config import Config
+
+
+
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
@@ -35,6 +39,9 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
+
+
+
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(restaurant_routes, url_prefix='/api/restaurants')
@@ -45,6 +52,7 @@ app.register_blueprint(restaurant_images, url_prefix='/api/restaurant_images')
 app.register_blueprint(review_image_routes, url_prefix='/api/review_images')
 
 # Initialize Packages
+
 db.init_app(app)
 Migrate(app, db)
 
@@ -106,3 +114,5 @@ def react_root(path):
 @app.errorhandler(404)
 def not_found(e):
     return app.send_static_file('index.html')
+
+
