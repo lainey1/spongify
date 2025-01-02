@@ -6,14 +6,11 @@ const GET_ALL_REVIEWS = 'reviews/GET_ALL_REVIEWS';
 const UPDATE_REVIEW = 'reviews/UPDATE_REVIEW';
 const DELETE_REVIEW = 'reviews/DELETE_REVIEW';
 
-
-
 // Action Creators
 export const createReview = (review) => ({ type: CREATE_REVIEW, review });
 export const getReviews = (reviews) => ({ type: GET_ALL_REVIEWS, reviews });
 export const updateReview = (review) => ({ type: UPDATE_REVIEW, review });
 export const deleteReview = (reviewId) => ({ type: DELETE_REVIEW, reviewId });
-
 
 // Thunks
 export const createNewReview = (reviewData) => async (dispatch) => {
@@ -34,7 +31,6 @@ export const createNewReview = (reviewData) => async (dispatch) => {
         console.error('Error creating review:', err);
     }
 };
-
 
 export const getAllReviews = () => async (dispatch) => {
     try {
@@ -105,6 +101,5 @@ const reviewsReducer = (state = initialState, action) => {
             return state;
     }
 };
-
 
 export default reviewsReducer;

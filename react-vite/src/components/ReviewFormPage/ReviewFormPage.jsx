@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import * as reviewActions from '../../redux/review';
 import { FaStar } from 'react-icons/fa6';
-import './ReviewFormPage.css';
+import './ReviewForm.css';
 
-function ReviewFormPage() {
+function ReviewFormPage({ disabled, onChange }) {
     const dispatch = useDispatch();
 
     const [reviewBody, setReviewBody] = useState('');
@@ -11,8 +12,33 @@ function ReviewFormPage() {
     const [activeRating, setActiveRating] = useState(rating);
     const [errors, setErrors] = useState({});
 
+    const handleMouseEnter = (index) => {
+        if (!disabled) {
+            setActiveRating(index);
+        }
+    }
+
+    const handleMouseLeave = () => {    
+        if (!disabled) {
+            setActiveRating(rating);
+        }
+    }
+
+    const handleClick = (index) => {
+        if (!disabled && onChange) {
+            // console.log('Clicked rating:', index);
+            setRating(index);
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrors({});
+
+        const newReview = {
+            review: reviewBody,
+            stars: parseInt(rating),
+        }
 
         const validationErrors = {};
 
@@ -28,38 +54,19 @@ function ReviewFormPage() {
             return;
         }
 
-        const handleMouseEnter = (index) => {
-            if (!disabled) {
-                setActiveRating(index);
+        // console.log("validationErrors: ", validationErrors);
+        // console.log("newReview: ", newReview);
+
+        return dispatch(
+            reviewActions.createReview(newReview)
+        )
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data?.errors) {
+                    setErrors(data.errors);
+                }
             }
-        }
-
-        const handleMouseLeave = () => {    
-            if (!disabled) {
-                setActiveRating(rating);
-            }
-        }
-
-        const handleClick = (index) => {
-            if (!disabled && onChange) {
-                // console.log('Clicked rating:', index);
-                setRating(index);
-            }
-        }
-
-        const handleSubmit = (e) => {
-            e.preventDefault();
-            setErrors({});
-
-            const newReview = {
-                review: reviewBody,
-                stars: parseInt(rating),
-            }
-
-            // console.log("newReview: ", newReview);
-        }
-
-        console.log('Form submitted');
+        )
     }
 
     return (
@@ -68,7 +75,13 @@ function ReviewFormPage() {
             <form onSubmit={handleSubmit}>
                 <div className="review-body">
                     <label htmlFor="review">Review</label>
-                    <textarea id="review" name="review" rows="4"></textarea>
+                    <textarea 
+                        placeholder="Leave your review here..."
+                        value={reviewBody}
+                        rows="4"
+                        onChange={(e) => setReviewBody(e.target.value)}
+                        required
+                    ></textarea>
                     {errors.reviewBody && <p>{errors.reviewBody}</p>}
                 </div>
                 <div className="stars">
