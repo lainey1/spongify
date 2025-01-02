@@ -15,8 +15,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    location = db.Column(db.String(150), nullable=False)
-    cuisine = db.Column(db.String(100), nullable=True)
+    location = db.Column(db.String(150), nullable=True)
+    favorite_cuisine = db.Column(db.String(100), nullable=True)
     headline = db.Column(db.String(255), nullable=True)
 
     review_images = db.relationship('ReviewImage', back_populates='user')
@@ -66,7 +66,7 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email,
             'location': self.location,
-            'cuisine': self.cuisine,
+            'favorite_cuisine': self.cuisine,
             'headline': self.headline,
             # TODO Placeholder for profile_image
             # 'profile_image': self.profile_image.to_dict() if self.profile_image else None,

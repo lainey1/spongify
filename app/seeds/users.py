@@ -9,7 +9,7 @@ def seed_users():
         email='demo@aa.io',
         password='password',
         location='San Francisco, CA',
-        cuisine='Italian',
+        favorite_cuisine='Italian',
         headline='Lover of authentic Italian cuisine and cozy dining experiences.',
     )
     marnie = User(
@@ -17,7 +17,7 @@ def seed_users():
         email='marnie@aa.io',
         password='password',
         location='New York, NY',
-        cuisine='Japanese',
+        favorite_cuisine='Japanese',
         headline='Sushi fanatic exploring hidden gems in the city.',
         )
     bobbie = User(
@@ -25,7 +25,7 @@ def seed_users():
         email='bobbie@aa.io',
         password='password',
         location='Austin, TX',
-        cuisine='BBQ',
+        favorite_cuisine='BBQ',
         headline='BBQ enthusiast with a penchant for smoky flavors.',
         )
 
