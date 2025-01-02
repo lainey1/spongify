@@ -30,6 +30,6 @@ class Review(db.Model):
             'stars': self.stars,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'user': self.user.to_dict() if self.user else None,
-            'restaurant': self.restaurant.to_dict() if self.restaurant else None
+            # 'user': self.user.to_dict() if self.user else None,
+            # 'restaurant': self.restaurant.to_dict() if self.restaurant else None
         }

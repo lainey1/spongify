@@ -1,0 +1,12 @@
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div>
+        <label for="image">Image URL:</label>
+        {{ form.image(size=30) }}
+    </div>
+    <div>
+        <label for="is_preview">Is Preview Image:</label>
+        {{ form.is_preview() }}
+    </div>
+    <button type="submit">Upload Image</button>
+</form>
