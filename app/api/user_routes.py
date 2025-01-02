@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import User
+from app.models import db, User
 from app.forms import UserProfileForm
 
 
@@ -27,8 +27,7 @@ def user(id):
     return user.to_dict()
 
 
-# Update a profile
-@user_routes.route('/<int:user_id>/profile/edit', methods=['PUT'])
+@user_routes.route('/<int:user_id>', methods=['PUT'])
 @login_required
 def update_profile(user_id):
     """
@@ -38,27 +37,27 @@ def update_profile(user_id):
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
-    # Ensure the user is the one who created the reservation or is not the owner of the restaurant
+    # Ensure the current user is the profile owner
     if user_id != current_user.id:
-        return jsonify({'message': 'You are not authorized to update this profile'}), 403
+        return jsonify({'message': 'You are not authorized to update this user profile'}), 403
 
     form = UserProfileForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        # Update the reservation fields
-        reservation.date = form.date.data
-        reservation.party_size = form.party_size.data
+        user.location = form.location.data
+        user.favorite_cuisine = form.favorite_cuisine.data
+        user.headline = form.headline.data
 
         db.session.commit()
 
         return jsonify({
-            'message': 'Reservation updated successfully',
-            'reservation': reservation.to_dict()
+            'message': 'User profile updated successfully',
+            'user': user.to_dict()
         }), 200
 
     # If form validation fails
     return jsonify({
-        'message': 'Invalid reservation data',
+        'message': 'Invalid user data',
         'errors': form.errors
     }), 400

@@ -47,11 +47,11 @@ class User(db.Model, UserMixin):
             raise ValueError("Location must be in 'City, ST' format")
         return location
 
-    @validates('cuisine')
-    def validate_cuisine(self, key, cuisine):
-        if cuisine and len(cuisine) > 100:
+    @validates('favorite_cuisine')
+    def validate_cuisine(self, key, favorite_cuisine):
+        if favorite_cuisine and len(favorite_cuisine) > 100:
             raise ValueError("Cuisine must not exceed 100 characters.")
-        return cuisine
+        return favorite_cuisine
 
     @validates('headline')
     def validate_headline(self, key, headline):
@@ -66,7 +66,7 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email,
             'location': self.location,
-            'favorite_cuisine': self.cuisine,
+            'favorite_cuisine': self.favorite_cuisine,
             'headline': self.headline,
             # TODO Placeholder for profile_image
             # 'profile_image': self.profile_image.to_dict() if self.profile_image else None,
