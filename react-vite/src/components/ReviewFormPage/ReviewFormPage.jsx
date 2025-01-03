@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import * as reviewActions from '../../redux/review';
 import { FaStar } from 'react-icons/fa6';
 import './ReviewForm.css';
 
-function ReviewFormPage({ disabled, onChange }) {
+function ReviewFormPage() {
     const dispatch = useDispatch();
+    const restaurant_id = useParams().restaurant_id;
+    const currentUser = useSelector((state) => state.session.user);
 
     const [reviewBody, setReviewBody] = useState('');
     const [rating, setRating] = useState(0);
@@ -13,22 +16,15 @@ function ReviewFormPage({ disabled, onChange }) {
     const [errors, setErrors] = useState({});
 
     const handleMouseEnter = (index) => {
-        if (!disabled) {
-            setActiveRating(index);
-        }
+        setActiveRating(index);
     }
 
     const handleMouseLeave = () => {    
-        if (!disabled) {
-            setActiveRating(rating);
-        }
+        setActiveRating(rating);
     }
 
     const handleClick = (index) => {
-        if (!disabled && onChange) {
-            // console.log('Clicked rating:', index);
-            setRating(index);
-        }
+        setRating(index);
     }
 
     const handleSubmit = (e) => {
@@ -36,16 +32,23 @@ function ReviewFormPage({ disabled, onChange }) {
         setErrors({});
 
         const newReview = {
+            user_id: currentUser.id,
+            restaurant_id,
             review: reviewBody,
             stars: parseInt(rating),
         }
+
+        console.log("newReview: ", newReview);
 
         const validationErrors = {};
 
         if (!reviewBody) {
             validationErrors.reviewBody = "Review is required";
         }
-        if(!rating) {
+        if (reviewBody.length < 10) {
+            validationErrors.reviewBody = "Review must be at least 10 characters";
+        }
+        if (!rating) {
             validationErrors.rating = "Rating is required";
         }
 
@@ -58,12 +61,16 @@ function ReviewFormPage({ disabled, onChange }) {
         // console.log("newReview: ", newReview);
 
         return dispatch(
-            reviewActions.createReview(newReview)
+            reviewActions.createNewReview(newReview)
         )
             .catch(async (res) => {
-                const data = await res.json();
-                if (data?.errors) {
-                    setErrors(data.errors);
+                if (res.json) {
+                    const data = await res.json();
+                    if (data?.errors) {
+                        setErrors(data.errors);
+                    }
+                } else {
+                    setErrors({ Error: "An unexpected error occured" });
                 }
             }
         )
@@ -72,40 +79,42 @@ function ReviewFormPage({ disabled, onChange }) {
     return (
         <div className="review-form">
             <h1>Review Form</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="review-body">
-                    <label htmlFor="review">Review</label>
-                    <textarea 
-                        placeholder="Leave your review here..."
-                        value={reviewBody}
-                        rows="4"
-                        onChange={(e) => setReviewBody(e.target.value)}
-                        required
-                    ></textarea>
-                    {errors.reviewBody && <p>{errors.reviewBody}</p>}
-                </div>
-                <div className="stars">
-                    <label htmlFor="rating">Rating</label>
-                    <input type="number" id="rating" name="rating" min="1" max="5" />
-                    {[1, 2, 3, 4, 5].map((index) => (
-                        <div
-                            key={index}
-                            className={index <= activeRating ? 'filled' : 'empty'}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                            onClick={() => handleClick(index)}
-                        >
-                            <FaStar />
-                        </div>
-                    ))}
-                    {errors.rating && <p>{errors.rating}</p>}
-                </div>
-                <button
-                    className="submit-button"
-                    type="submit"
-                    disabled={reviewBody.length < 10 || rating === 0}
-                >Submit Your Review</button>
-            </form>
+            <div className="review-body">
+                <form onSubmit={handleSubmit}>
+                    <div className="review-text">
+                        {/* <label htmlFor="review">Review</label> */}
+                        <textarea 
+                            placeholder="Leave your review here..."
+                            value={reviewBody}
+                            rows="4"
+                            onChange={(e) => setReviewBody(e.target.value)}
+                            required
+                        ></textarea>
+                        {errors.reviewBody && <p>{errors.reviewBody}</p>}
+                    </div>
+                    <div className="stars">
+                        {/* <label htmlFor="rating">Rating</label> */}
+                        {[1, 2, 3, 4, 5].map((index) => (
+                            <div
+                                key={index}
+                                className={index <= activeRating ? 'filled' : 'empty'}
+                                onMouseEnter={() => handleMouseEnter(index)}
+                                onMouseLeave={handleMouseLeave}
+                                onClick={() => handleClick(index)}
+                            >
+                                <FaStar />
+                            </div>
+                        ))}
+                        {errors.rating && <p>{errors.rating}</p>}
+                    </div>
+                    <button
+                        className="submit-button"
+                        type="submit"
+                        disabled={reviewBody.length < 10 || rating === 0}
+                        title={reviewBody.length < 10 ? "Review must be at least 10 characters." : "Rating is required."}
+                    >Submit Your Review</button>
+                </form>
+            </div>
         </div>
     );
 }

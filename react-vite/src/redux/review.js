@@ -15,7 +15,7 @@ export const deleteReview = (reviewId) => ({ type: DELETE_REVIEW, reviewId });
 // Thunks
 export const createNewReview = (reviewData) => async (dispatch) => {
     try {
-        const response = await fetch('/api/reviews', {
+        const response = await fetch('/api/restaurant/:restaurant_id/new', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(reviewData),
@@ -79,23 +79,27 @@ const initialState = {};
 
 const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case CREATE_REVIEW:
+        case CREATE_REVIEW: {
             return { ...state, [action.review.id]: action.review };
+        }
 
-        case GET_ALL_REVIEWS:
+        case GET_ALL_REVIEWS: {
             const allReviews = {};
             action.reviews.forEach((review) => {
                 allReviews[review.id] = review;
             });
-            return allReviews;            
+            return allReviews; 
+        }           
 
-        case UPDATE_REVIEW:
+        case UPDATE_REVIEW: {
             return { ...state, [action.review.id]: action.review };
+        }
 
-        case DELETE_REVIEW:
+        case DELETE_REVIEW: {
             const newState = { ...state };
             delete newState[action.reviewId];
             return newState;
+        }
 
         default:
             return state;

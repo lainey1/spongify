@@ -64,6 +64,8 @@ def create_review(restaurant_id):
     form = ReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
+    print(form.data)
+
     if form.validate_on_submit():
         # Create new review
         new_review = Review(
@@ -72,6 +74,8 @@ def create_review(restaurant_id):
             review=form.data['review_text'],
             stars=form.data['stars']
         )
+
+        # print(new_review.to_dict())
 
         db.session.add(new_review)
         db.session.commit()

@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
         element: <SignupFormPage />,
       },
       {
-        path: "review",
+        path: "restaurant/:restaurant_id/reviews",
         element: <ReviewFormPage />,
       }
     ],
