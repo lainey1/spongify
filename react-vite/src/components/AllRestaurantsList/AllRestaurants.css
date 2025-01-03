@@ -74,14 +74,14 @@
   gap: 0.5em;
 }
 
+#restaurant-price-location {
+  display: flex;
+}
+
 /* Restaurant Location and Rating */
 .restaurant-location {
   display: flex;
   align-items: center;
-  gap: 0.25em;
-}
-
-.restaurant-location {
   font-size: 1rem;
   color: #333;
   font-weight: bold;

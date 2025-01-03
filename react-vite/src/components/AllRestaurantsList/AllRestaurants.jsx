@@ -54,15 +54,20 @@ function AllRestaurants() {
                     </p>
                   </span>
 
-                  <div className="restaurant-location">
+                  <div id="restaurant-price-location">
+                    <span>
+                      {restaurant?.price_point
+                        ? "$".repeat(restaurant.price_point)
+                        : "Price not available"}
+                    </span>
+                    <span style={{ padding: "0 0.5em" }}>•</span>
                     <p className="restaurant-location">
                       <IoLocationOutline />
-                      {restaurant.city}, {restaurant.state}
+                      {restaurant.city}
                     </p>
+                    <span style={{ padding: "0 0.5em" }}>•</span>
+                    <span>{restaurant?.cuisine}</span>
                   </div>
-                  <p style={{ textAlign: "left" }}>
-                    <strong>${restaurant.price_point}</strong> night
-                  </p>
                 </div>
               </Link>
             </div>
