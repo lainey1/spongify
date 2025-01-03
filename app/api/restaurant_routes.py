@@ -111,7 +111,7 @@ def create_restaurant():
             return jsonify({"error": str(e)}), 500
 
     else:
-        # Handle form input (when you're using the Flask form later)
+        # Handle form input (for Flask form later)
         form = RestaurantForm()
         form['csrf_token'].data = request.cookies['csrf_token']
 
