@@ -61,7 +61,7 @@ function ReviewFormPage() {
         // console.log("newReview: ", newReview);
 
         return dispatch(
-            reviewActions.createNewReview(newReview)
+            reviewActions.createNewReview(newReview, restaurant_id)
         )
             .catch(async (res) => {
                 if (res.json) {

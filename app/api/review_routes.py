@@ -55,7 +55,7 @@ def review(review_id):
     return jsonify({'review': review.to_dict()}), 200
 
 # Create a new review
-@review_routes.route('/restaurant/<int:restaurant_id>/new', methods=['POST'])
+@review_routes.route('/restaurant/<int:restaurant_id>/review', methods=['POST'])
 @login_required
 def create_review(restaurant_id):
     """

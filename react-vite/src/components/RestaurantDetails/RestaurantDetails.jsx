@@ -6,6 +6,7 @@ import { MdAddAPhoto } from "react-icons/md";
 import { IoIosInformationCircle } from "react-icons/io";
 import { fetchRestaurantThunk } from "../../redux/restaurants";
 import StarRating from "../StarRating";
+import ReviewsRestaurant from "../ReviewsRestaurant";
 import "./RestaurantDetails.css";
 
 function RestaurantDetails() {
@@ -244,6 +245,7 @@ function RestaurantDetails() {
           </div>
           <div className="sub-panel">
             <h2>[PLACEHOLDER: Restaurant Review Section]</h2>
+            {/* <ReviewsRestaurant /> */}
           </div>
         </div>
         <div id="restaurant-side-panel">
