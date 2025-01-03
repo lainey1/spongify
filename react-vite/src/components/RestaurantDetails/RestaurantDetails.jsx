@@ -30,40 +30,39 @@ function RestaurantDetails() {
   }, [dispatch, restaurantId]);
 
   useEffect(() => {
-    if (restaurant?.hours) {
-      checkIfOpen(restaurant.hours);
-    }
-  }, [restaurant]);
+    const checkIfOpen = (hours) => {
+      const daysOfWeek = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      const currentDay = daysOfWeek[new Date().getDay()];
+      const currentTime = new Date();
+      const currentMinutes =
+        currentTime.getHours() * 60 + currentTime.getMinutes();
 
-  const checkIfOpen = (hours) => {
-    const daysOfWeek = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const currentDay = daysOfWeek[new Date().getDay()];
-    const currentTime = new Date();
-    const currentMinutes =
-      currentTime.getHours() * 60 + currentTime.getMinutes();
-
-    const todayHours = hours[currentDay];
-    if (todayHours) {
-      const [openTime, closeTime] = todayHours.map((time) =>
-        parseTimeToMinutes(time)
-      );
-      if (currentMinutes >= openTime && currentMinutes <= closeTime) {
-        setIsOpen(true);
+      const todayHours = hours[currentDay];
+      if (todayHours) {
+        const [openTime, closeTime] = todayHours.map((time) =>
+          parseTimeToMinutes(time)
+        );
+        if (currentMinutes >= openTime && currentMinutes <= closeTime) {
+          setIsOpen(true);
+        } else {
+          setIsOpen(false);
+        }
       } else {
         setIsOpen(false);
       }
-    } else {
-      setIsOpen(false);
+    };
+    if (restaurant?.hours) {
+      checkIfOpen(restaurant.hours);
     }
-  };
+  }, [restaurant, restaurant.hours]);
 
   const parseTimeToMinutes = (time) => {
     const [hourMinute, meridiem] = time.split(" ");

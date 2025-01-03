@@ -1,0 +1,112 @@
+/* Grid Container */
+.restaurants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 0 5%;
+}
+
+.restaurant-tile:hover .restaurant-name {
+  opacity: 1;
+}
+
+/* ================================
+   Image Tiles
+================================ */
+/* Restaurant Image Container */
+.Restaurant-image-container {
+  display: block;
+  width: 100%;
+  height: 33vh;
+  border-radius: 0.5rem;
+  margin: 0 auto;
+  object-fit: cover;
+  object-position: center;
+  background-color: #4a91e2b7; /* Default shaded background */
+  display: flex; /* Align placeholder content (optional) */
+  justify-content: center;
+  align-items: center;
+  color: #333; /* text color for placeholder */
+}
+
+/* Restaurant Image */
+.Restaurant-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* When there's no image, add a shaded background */
+.Restaurant-image[alt=""] {
+  display: none; /* Hide the image element when alt is empty */
+}
+
+/* Restaurant Link */
+.restaurant-link,
+.restaurant-link a {
+  display: block;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Restaurant Name Overlay */
+.restaurant-name {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* Restaurant Details Container */
+.restaurant-details {
+  margin-top: auto; /* Pushes this container to the bottom of the tile */
+  text-align: left;
+  padding-top: 1rem;
+}
+
+.rating-line {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 0.5em;
+}
+
+/* Restaurant Location and Rating */
+.restaurant-location {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.restaurant-location {
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+  margin: 0;
+}
+
+/*
+  /* ================================
+     Responsive Layouts
+  ================================ */
+
+@media (min-width: 700px) {
+  .restaurants-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .restaurants-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .restaurants-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
