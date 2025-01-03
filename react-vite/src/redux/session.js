@@ -71,8 +71,18 @@ export const thunkLogout = () => async (dispatch) => {
 
 
 export const thunkUpdateProfile = (userId, userData) => async (dispatch) => {
-  const res = await fetch(`/api/user/${userId}`, {
+
+  const csrfToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrf_token='))
+    ?.split('=')[1];
+
+  const res = await fetch(`/api/users/${userId}`, {
     method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken, // Include the CSRF token in headers
+    },
     body: JSON.stringify(userData)
   })
 

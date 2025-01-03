@@ -11,7 +11,9 @@ function EditProfile () {
 
     const { userId } = useParams()
 
-    const currentUser = useSelector((state) => state.session.currentUser);
+    const currentUser = useSelector((state) => state.session.user);
+
+    // console.log("CURRENT USER==",currentUser)
 
     const [formData, setFormData] = useState({
         location: '',
@@ -68,22 +70,22 @@ function EditProfile () {
 
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    setHasSubmitted(true);
+        e.preventDefault();
+        setHasSubmitted(true);
 
-    const updatedProfile = {
-        location: formData.location,
-        favorite_cuisine: formData.favorite_cuisine,
-        headline: formData.headline,
+        const updatedProfile = {
+            location: formData.location,
+            favorite_cuisine: formData.favorite_cuisine,
+            headline: formData.headline,
+        };
+
+        console.log('DEBUG THUNK');
+        const res = await dispatch(thunkUpdateProfile(userId, updatedProfile));  
+
+        console.log("RES====", res);
+
+        navigate(`/user/${userId}`);
     };
-
-    console.log('DEBUG THUNK');
-    const res = await dispatch(thunkUpdateProfile(userId, updatedProfile));  
-
-    console.log("RES====", res);
-
-    navigate(`/user/${userId}`);
-};
 
 
     useEffect(() => {
