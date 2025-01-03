@@ -1,15 +1,21 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./UserProfile.css";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { thunkAuthenticate } from "../../redux/session";
 
 
 
 
 function UserProfile() {
 
-
+  const navigate = useNavigate();
   const currentUser = useSelector((state) => state.session.user);
-  
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(thunkAuthenticate)  // make GetCurrentUser thunk
+  }, [dispatch])
 
 
   return (
@@ -23,9 +29,16 @@ function UserProfile() {
             className="user-avatar"
           />
           <h2>{currentUser.username}</h2>
-          <p>Location: {currentUser.location}</p>
-          <button className="edit-profile-btn">Edit Profile</button>
+          <h4>Location: {currentUser.location}</h4>
+          <p>{currentUser.headline}</p>
+
+          <button key={currentUser.id} className="edit-profile-btn"
+                  onClick={() => navigate(`/user/${currentUser.id}/edit`)}
+          >Edit Profile</button>
         </div>
+        
+
+
         <nav className="menu">
           <button>Profile Overview</button>
           <button>Reviews</button>

@@ -16,6 +16,14 @@ const updateUser = user => ({
   payload: user
 })
 
+// export const thunkGetCurrentUser = () => async (dispatch) => {
+//     const response = await fetch("/api/auth/");
+//     const data = await response.json();
+//     dispatch(setUser(data)); 
+    
+// }
+
+
 export const thunkAuthenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/");
 	if (response.ok) {
@@ -71,22 +79,13 @@ export const thunkLogout = () => async (dispatch) => {
 
 
 export const thunkUpdateProfile = (userId, userData) => async (dispatch) => {
-
-  const csrfToken = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('csrf_token='))
-    ?.split('=')[1];
-
   const res = await fetch(`/api/users/${userId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken, // Include the CSRF token in headers
     },
     body: JSON.stringify(userData)
   })
-
-  console.log('INSIDE THUNK ----', res)
 
   const updatedProfile = await res.json();
   dispatch(updateUser(updatedProfile))
@@ -106,10 +105,8 @@ function sessionReducer(state = initialState, action) {
     case UPDATE_USER: {
       const newState = {
         ...state,
-        user: {
-          ...state.user,
-          [action.payload.id]: action
-        }
+        ...action.payload
+
       }
       return newState;
     }
