@@ -71,7 +71,7 @@ export const fetchAllReviews = () => async (dispatch) => {
         const response = await fetch('/api/reviews');
         if (response.ok) {
             const reviews = await response.json();
-            dispatch(getAllReviews(reviews));
+            dispatch(getReviews(reviews));
         } else {
             const error = await response.json();
             console.error('Error fetching reviews:', error);
