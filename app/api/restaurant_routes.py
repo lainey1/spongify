@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
+from sqlalchemy import func
 from app.forms import RestaurantForm
-from app.models import Restaurant, db
+from app.models import Restaurant, Review, db
 from flask_login import login_required, current_user
 
 
@@ -44,12 +45,35 @@ def restaurant(id):
         return {'error': f'Restaurant with ID {id} not found.'}, 404
 
     if request.method == 'GET':
-        return restaurant.to_dict(), 200
+        # Fetch aggregated review data for the restaurant
+        review_stats = (
+            db.session.query(
+                func.count(Review.id).label("reviewCount"),
+                func.avg(Review.stars).label("avgStarRating")
+            )
+            .filter(Review.restaurant_id == id)
+            .first()
+        )
+
+        # Convert the restaurant to a dictionary and add review stats
+        restaurant_data = restaurant.to_dict()
+        restaurant_data['reviewStats'] = {
+            "reviewCount": review_stats.reviewCount or 0,
+            "avgStarRating": float(review_stats.avgStarRating or 0),
+        }
+
+        return restaurant_data, 200
 
     if request.method == 'DELETE':
+        # Check if the current user is the owner of the restaurant
+        if restaurant.owner_id != current_user.id:
+            return {'error': 'You are not authorized to delete this restaurant.'}, 403
+
         db.session.delete(restaurant)
         db.session.commit()
         return {'message': f'Restaurant with ID {id} deleted successfully.'}, 200
+
+
 
 @restaurant_routes.route('/new', methods=['POST'])
 @login_required
@@ -87,7 +111,7 @@ def create_restaurant():
             return jsonify({"error": str(e)}), 500
 
     else:
-        # Handle form input (when you're using the Flask form later)
+        # Handle form input (for Flask form later)
         form = RestaurantForm()
         form['csrf_token'].data = request.cookies['csrf_token']
 

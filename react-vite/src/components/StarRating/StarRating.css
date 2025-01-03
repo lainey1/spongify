@@ -1,0 +1,27 @@
+.star-rating {
+  display: flex;
+  gap: 0.2em;
+  justify-content: center;
+  align-items: center;
+}
+
+.star {
+  font-size: 1.5em;
+  transition: transform 0.3s ease; /* Smooth effect when hovering */
+}
+
+.star.filled {
+  color: #ffd700; /* Gold color for filled stars */
+}
+
+.star.half-filled {
+  color: #ffd700; /* Gold color for half-filled stars */
+}
+
+.star.empty {
+  color: #d3d3d3; /* Light gray for empty stars */
+}
+
+.star:hover {
+  transform: scale(1.2); /* Slight zoom effect when hovering */
+}

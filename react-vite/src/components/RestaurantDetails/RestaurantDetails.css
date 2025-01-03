@@ -1,0 +1,115 @@
+.restaurant-page {
+  display: flex;
+  flex-direction: column;
+  max-width: 1100px;
+  margin: 0 auto; /* Centers the container */
+  padding: 0 15px;
+}
+
+#restaurant-layout {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 25px;
+}
+
+.highlights {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: bold;
+}
+
+#restaurant-main-panel {
+  flex: 1.75; /* Makes it take up more space compared to the side panel */
+  display: flex;
+  flex-direction: column;
+  margin-right: 25px; /* Space between main panel and side panel */
+}
+
+#restaurant-menu {
+  display: flex;
+  flex-wrap: wrap; /* Allows buttons to wrap if needed */
+  gap: 15px; /* Space between buttons */
+  margin-bottom: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.menu-button {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 15px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.menu-button .button-icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.sub-panel {
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.hours-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.hours-table .day-cell {
+  text-align: left;
+  font-weight: bold;
+  width: 30%;
+}
+
+.hours-table td:last-child {
+  text-align: left;
+}
+
+#restaurant-side-panel {
+  flex: 1; /* Side panel takes up less space compared to the main panel */
+  position: sticky; /* Keeps it fixed when scrolling */
+  top: 15px; /* Adds space from the top */
+  align-self: flex-start; /* Ensures it aligns with the top of the main panel */
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+/* ================================
+   Media Queries
+================================ */
+
+/* Medium Screens (769px to 1024px) */
+/* @media (min-width: 769px) and (max-width: 1024px) {
+
+} */
+
+/* Small Screens (up to 667px) */
+@media (max-width: 667px) {
+  #restaurant-layout {
+    display: flex;
+    flex-direction: column;
+  }
+}
