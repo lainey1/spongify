@@ -245,7 +245,7 @@ function RestaurantDetails() {
           </div>
           <div className="sub-panel">
             <h2>[PLACEHOLDER: Restaurant Review Section]</h2>
-            {/* <ReviewsRestaurant /> */}
+            <ReviewsRestaurant />
           </div>
         </div>
         <div id="restaurant-side-panel">

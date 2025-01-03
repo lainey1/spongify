@@ -65,11 +65,11 @@ def create_review(restaurant_id):
     form['csrf_token'].data = request.cookies['csrf_token']
 
     # print(form.data)
-    print("BEFORE VALIDATION")
+    # print("BEFORE VALIDATION")
 
     if form.validate_on_submit():
 
-        print("VALIDATED")
+        # print("VALIDATED")
         # Create new review
         new_review = Review(
             user_id=current_user.id,
@@ -87,8 +87,8 @@ def create_review(restaurant_id):
             'review': new_review.to_dict()
         }), 201
     
-    print("NO VALIDATION")
-    print(form.errors)
+    # print("NO VALIDATION")
+    # print(form.errors)
 
     # If form validation fails
     return jsonify({

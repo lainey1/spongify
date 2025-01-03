@@ -60,8 +60,8 @@ function ReviewFormPage() {
             return;
         }
 
-        console.log("validationErrors: ", validationErrors);
-        console.log("newReview: ", newReview);
+        // console.log("validationErrors: ", validationErrors);
+        // console.log("newReview: ", newReview);
 
         return dispatch(
             reviewActions.createNewReview(newReview, restaurantId)
