@@ -7,8 +7,11 @@ import './ReviewForm.css';
 
 function ReviewFormPage() {
     const dispatch = useDispatch();
-    const restaurant_id = useParams().restaurant_id;
+    const restaurantId = parseInt(useParams().restaurantId);
     const currentUser = useSelector((state) => state.session.user);
+
+    // console.log("currentUser: ", currentUser);
+    // console.log("restaurantId: ", restaurantId);
 
     const [reviewBody, setReviewBody] = useState('');
     const [rating, setRating] = useState(0);
@@ -33,12 +36,12 @@ function ReviewFormPage() {
 
         const newReview = {
             user_id: currentUser.id,
-            restaurant_id,
+            restaurant_id: restaurantId,
             review: reviewBody,
             stars: parseInt(rating),
         }
 
-        console.log("newReview: ", newReview);
+        // console.log("newReview: ", newReview);
 
         const validationErrors = {};
 
@@ -57,11 +60,11 @@ function ReviewFormPage() {
             return;
         }
 
-        // console.log("validationErrors: ", validationErrors);
-        // console.log("newReview: ", newReview);
+        console.log("validationErrors: ", validationErrors);
+        console.log("newReview: ", newReview);
 
         return dispatch(
-            reviewActions.createNewReview(newReview, restaurant_id)
+            reviewActions.createNewReview(newReview, restaurantId)
         )
             .catch(async (res) => {
                 if (res.json) {

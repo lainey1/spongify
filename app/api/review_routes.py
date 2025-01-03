@@ -18,13 +18,13 @@ def reviews():
     return jsonify({'reviews': [review.to_dict() for review in reviews]}), 200
 
 # Get all reviews of the current user
-@review_routes.route('/user')
+@review_routes.route('/user<int:user_id>')
 @login_required
-def user_reviews():
+def user_reviews(user_id):
     """
     Query for all reviews of the current user and returns them in a list of review dictionaries
     """
-    reviews = Review.query.filter(Review.user_id == current_user.id).all()
+    reviews = Review.query.filter(Review.user_id == user_id).all()
     if not reviews:
         return jsonify({'message': 'No reviews found'}), 404
     
@@ -64,15 +64,18 @@ def create_review(restaurant_id):
     form = ReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    print(form.data)
+    # print(form.data)
+    print("BEFORE VALIDATION")
 
     if form.validate_on_submit():
+
+        print("VALIDATED")
         # Create new review
         new_review = Review(
             user_id=current_user.id,
             restaurant_id=restaurant_id,
-            review=form.data['review_text'],
-            stars=form.data['stars']
+            review=form.review.data,
+            stars=form.stars.data
         )
 
         # print(new_review.to_dict())
@@ -84,6 +87,9 @@ def create_review(restaurant_id):
             'review': new_review.to_dict()
         }), 201
     
+    print("NO VALIDATION")
+    print(form.errors)
+
     # If form validation fails
     return jsonify({
         'message': 'Invalid review data',
