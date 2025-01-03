@@ -27,12 +27,19 @@ def search():
         query = query.filter(Restaurant.name.ilike(f"%{search_query}%"))
     if cuisine:
         query = query.filter(Restaurant.cuisine.ilike(f"%{cuisine}%"))
+
+
+    price_mapping = {"$": 1, "$$": 2, "$$$": 3, "$$$$": 4, "$$$$$": 5}
+
     if max_price:
         try:
-            max_price = float(max_price)  # Ensure max_price is a float
-            query = query.filter(Restaurant.price_point <= max_price)
+            max_price_numeric = price_mapping.get(max_price)
+            if not max_price_numeric:
+                raise ValueError("Invalid price point")
+            query = query.filter(Restaurant.price_point <= max_price_numeric)
         except ValueError:
             return jsonify({'error': 'Invalid price value'}), 400
+
     # Apply pagination
     paginated_results = query.paginate(page=page, per_page=per_page)
 

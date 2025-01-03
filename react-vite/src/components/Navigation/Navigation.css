@@ -1,15 +1,17 @@
 /* General Styles for the Navbar */
 .navbar {
   display: flex;
-  justify-content: left;
+  
   align-items:center;
-  background-color: #ecf2fd; /* Dark background */
+  background-color: #ecf2fd; 
   height: 100px;
   padding: 10px 20px;
   position: relative;
 }
 
 .logo img {
+  display: flex;
+ margin-right: 250px;
   height: 90px; /* Adjust logo size */
   
 }
@@ -23,10 +25,10 @@
 }
 
 /* Search Bar */
-/* .navbar li {
-  display: inline-flex;
-  align-items: center;  
-} */
+.navbar li {
+ display: flex;  
+ justify-content: center;  
+} 
 
 /* Menu Button */
 .menu-button {
@@ -77,13 +79,15 @@
 /* Profile Button */
 .profile-button {
   display: flex;
+  justify-content: left;
   align-items: center;
-  gap: 8px;
+  gap: 80px;
 }
 
 .profile-button img {
   height: 30px;
   border-radius: 50%;
+  justify-content: center;
 }
 
 /* Navbar Mobile Responsive */

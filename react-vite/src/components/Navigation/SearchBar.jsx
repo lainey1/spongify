@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaSearch, FaBars, FaFilter } from "react-icons/fa";
+import { NavLink } from "react-router-dom";  // Import NavLink
 import './SearchBar.css';
 
 const SearchBar = () => {
@@ -10,10 +11,11 @@ const SearchBar = () => {
     const [loading, setLoading] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
 
-    const cuisines = ["Italian", "Chinese", "Mexican", "Indian", "Japanese"];
+    const cuisines = ["Italian", "Chinese", "Mexican", "Indian", "Japanese", "American", "French"];
+    const maxPricePoints = ["$", "$$", "$$$", "$$$$", "$$$$$"];
 
     useEffect(() => {
-        if (query === "" || cuisine === "" || maxPrice === "") {
+        if (query === "" && cuisine === "" && maxPrice === "") {
             setResults([]);
             return;
         }
@@ -33,6 +35,11 @@ const SearchBar = () => {
 
         fetchResults();
     }, [query, cuisine, maxPrice]);
+
+    // Handle the filter button click to close the filters after applying
+    const handleApplyFilters = () => {
+        setShowFilters(false);  
+    };
 
     return (
         <div className="search-container">
@@ -65,16 +72,23 @@ const SearchBar = () => {
 
                             <div className="filter">
                                 <label htmlFor="maxPrice">Max Price</label>
-                                <input
+                                <select
                                     id="maxPrice"
-                                    type="number"
                                     value={maxPrice}
                                     onChange={(e) => setMaxPrice(e.target.value)}
-                                    placeholder="e.g., 50"
-                                />
+                                >
+                                    <option value="">Price Point</option>
+                                    {maxPricePoints.map((m, index) => (
+                                        <option key={index} value={m}>{m}</option>
+                                    ))}
+                                </select>
                             </div>
 
-                            <button className="filter-button" aria-label="Apply filters">
+                            <button 
+                                className="filter-button" 
+                                aria-label="Apply filters"
+                                onClick={handleApplyFilters}  
+                            >
                                 <FaFilter />
                             </button>
                         </div>
@@ -102,7 +116,15 @@ const SearchBar = () => {
             ) : (
                 <ul className="results">
                     {results.map((result, index) => (
-                        <li key={index}>{result.name}</li>
+                        <li key={index}>
+                            <NavLink
+                                to={`/restaurant/${result.id}`}  
+                                className="result-link"
+                                activeClassName="active-link"  
+                            >
+                                {result.name}
+                            </NavLink>
+                        </li>
                     ))}
                 </ul>
             )}
@@ -111,5 +133,6 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
+
 
 
