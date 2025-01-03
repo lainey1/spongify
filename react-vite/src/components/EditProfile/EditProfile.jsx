@@ -77,7 +77,7 @@ function EditProfile () {
         headline: formData.headline,
     };
 
-    console.log('DEBUG THUNK ');
+    console.log('DEBUG THUNK');
     const res = await dispatch(thunkUpdateProfile(userId, updatedProfile));  
 
     console.log("RES====", res);
