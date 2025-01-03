@@ -38,7 +38,7 @@ const SearchBar = () => {
 
     // Handle the filter button click to close the filters after applying
     const handleApplyFilters = () => {
-        setShowFilters(false);  
+        setShowFilters(false);  // Close the filter dropdown after applying
     };
 
     return (
