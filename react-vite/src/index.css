@@ -88,8 +88,8 @@ textarea {
 /* ================================
      Image Tiles
   ================================ */
-/* Spot Image Container */
-.spot-image-container {
+/* Restaurant Image Container */
+.restaurant-image-container {
   display: block;
   width: 100%;
   height: 33vh;
@@ -104,8 +104,8 @@ textarea {
   color: #051923; /* text color for placeholder */
 }
 
-/* Spot Image */
-.spot-image {
+/* Restaurant Image */
+.restaurant-image {
   display: block;
   width: 100%;
   height: 100%;
@@ -115,6 +115,6 @@ textarea {
 }
 
 /* When there's no image, add a shaded background */
-.spot-image[alt=""] {
+.restaurant-image[alt=""] {
   display: none; /* Hide the image element when alt is empty */
 }

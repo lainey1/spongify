@@ -23,7 +23,7 @@
   flex: 1.75; /* Makes it take up more space compared to the side panel */
   display: flex;
   flex-direction: column;
-  margin-right: 25px; /* Space between main panel and side panel */
+  margin-right: 25px;
 }
 
 #restaurant-menu {
@@ -111,5 +111,13 @@
   #restaurant-layout {
     display: flex;
     flex-direction: column;
+  }
+
+  #restaurant-main-panel {
+    margin: 0;
+  }
+
+  #restaurant-side-panel {
+    width: 90%;
   }
 }
