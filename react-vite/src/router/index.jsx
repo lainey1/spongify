@@ -4,6 +4,7 @@ import SignupFormPage from "../components/SignupFormPage";
 import RestaurantDetails from "../components/RestaurantDetails/RestaurantDetails";
 import Layout from "./Layout";
 import AllRestaurants from "../components/AllRestaurantsList/AllRestaurants";
+import ReviewFormPage from "../components/ReviewFormPage";
 
 export const router = createBrowserRouter([
   {
@@ -22,12 +23,16 @@ export const router = createBrowserRouter([
         element: <SignupFormPage />,
       },
       {
+        path: "/restaurants",
+        element: <AllRestaurants />,
+      },
+      {
         path: "/restaurants/:restaurantId",
         element: <RestaurantDetails />,
       },
       {
-        path: "/restaurants",
-        element: <AllRestaurants />,
+        path: "/restaurants/:restaurantId/review",
+        element: <ReviewFormPage />,
       },
     ],
   },

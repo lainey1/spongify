@@ -1,0 +1,123 @@
+/* 
+Color Palette::after
+E26D12
+ECF2FD
+4C5B61
+8C183E
+051923
+*/
+
+/* Global styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ECF2FD; /* Light blue background */
+    color: #051923; /* Dark blue text */
+}
+
+/* Center the review form on the page */
+.review-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Styling the review-body container */
+.review-body {
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #051923;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Styling the review text area */
+.review-text textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #051923;
+    border-radius: 4px;
+    resize: none;
+    font-size: 14px;
+}
+
+.review-text label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.review-text p {
+    color: red;
+    font-size: 12px;
+    margin: 5px 0 0;
+}
+
+/* Stars row */
+.stars {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.stars div {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.stars label {
+    font-weight: bold;
+}
+
+/* Styling the stars */
+.stars .filled svg {
+    color: #e26d12;
+    cursor: pointer;
+}
+
+.stars .empty svg {
+    color: #ccc;
+    cursor: pointer;
+}
+
+/* Styling error messages */
+.stars p {
+    color: red;
+    font-size: 12px;
+    margin: 5px 0 0;
+}
+
+/* Submit button */
+.submit-button {
+    background-color: #8C183E;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.submit-button:hover:not(:disabled) {
+    background-color: #8C183E;
+}
