@@ -37,6 +37,9 @@ class Review(db.Model):
             } if self.user else None,
             'restaurant': {
                 'id': self.restaurant.id,
-                'name': self.restaurant.name
+                'name': self.restaurant.name,
+                'city': self.restaurant.city,
+                'state': self.restaurant.state,
+                'country': self.restaurant.country,
             } if self.restaurant else None
         }

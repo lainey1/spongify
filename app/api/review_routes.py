@@ -18,12 +18,14 @@ def reviews():
     return jsonify({'reviews': [review.to_dict() for review in reviews]}), 200
 
 # Get all reviews of the current user
-@review_routes.route('/user<int:user_id>')
+@review_routes.route('/user/<int:user_id>')
 @login_required
 def user_reviews(user_id):
     """
     Query for all reviews of the current user and returns them in a list of review dictionaries
     """
+    if user_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to view these reviews'}), 403
     reviews = Review.query.filter(Review.user_id == user_id).all()
     if not reviews:
         return jsonify({'message': 'No reviews found'}), 404

@@ -3,9 +3,7 @@ import "./UserProfile.css";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { thunkAuthenticate } from "../../redux/session";
-
-
-
+import ReviewsUser from "../ReviewsUser";
 
 function UserProfile() {
 
@@ -16,7 +14,6 @@ function UserProfile() {
   useEffect(() => {
     dispatch(thunkAuthenticate)  // make GetCurrentUser thunk
   }, [dispatch])
-
 
   return (
     <div className="profile-page">
@@ -37,8 +34,6 @@ function UserProfile() {
           >Edit Profile</button>
         </div>
         
-
-
         <nav className="menu">
           <button>Profile Overview</button>
           <button>Reviews</button>
@@ -47,13 +42,10 @@ function UserProfile() {
         </nav>
       </div>
 
-
       {/* Main Content */}
       <div className="main-content">
         <div className="next-reservation">
           <h3>Next Reservation</h3>
-
-
           <button className="view-all-btn">View all reservations</button>
         </div>
 
@@ -66,6 +58,10 @@ function UserProfile() {
             <h4>Review Stars Distribution</h4>
             <p>-</p>
           </div>
+        </div>
+
+        <div className="review-section">
+          <ReviewsUser />
         </div>
 
         <div className="friends-section">
