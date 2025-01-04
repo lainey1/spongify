@@ -30,7 +30,7 @@ function ReviewsRestaurant() {
                 <ul>
                     {reviews.map((review) => (
                         <li key={review.id} className="review-item">
-                            <p>{review.user_id}</p>
+                            <p>{review.user.username}</p>
                             <p>{review.review}</p>
                             <p>{review.updated_at}</p>
                             <p><strong>Rating:</strong> {review.stars}</p>
