@@ -244,7 +244,6 @@ function RestaurantDetails() {
             <div>{formatHours(restaurant.hours)}</div>
           </div>
           <div className="sub-panel">
-            <h2>[PLACEHOLDER: Restaurant Review Section]</h2>
             <ReviewsRestaurant />
           </div>
         </div>
