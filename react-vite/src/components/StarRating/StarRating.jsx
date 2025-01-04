@@ -2,16 +2,17 @@ import { IoIosStar, IoIosStarHalf, IoIosStarOutline } from "react-icons/io";
 import "./StarRating.css";
 
 const StarRating = ({ rating }) => {
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    if (rating >= i) {
-      stars.push(<IoIosStar key={i} className="star filled" />);
-    } else if (rating >= i - 0.5) {
-      stars.push(<IoIosStarHalf key={i} className="star half-filled" />);
+  const stars = Array.from({ length: 5 }, (_, i) => {
+    const starValue = i + 1;
+    if (rating >= starValue) {
+      return <IoIosStar key={starValue} className="star filled" />;
+    } else if (rating >= starValue - 0.5) {
+      return <IoIosStarHalf key={starValue} className="star half-filled" />;
     } else {
-      stars.push(<IoIosStarOutline key={i} className="star empty" />);
+      return <IoIosStarOutline key={starValue} className="star empty" />;
     }
-  }
+  });
+
   return <div className="star-rating">{stars}</div>;
 };
 
