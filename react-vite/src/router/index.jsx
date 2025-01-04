@@ -1,3 +1,4 @@
+
 import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
@@ -6,6 +7,7 @@ import ReviewFormPage from '../components/ReviewFormPage';
 import UserProfile from '../components/UserProfile';
 import EditProfile from '../components/EditProfile';
 import Layout from './Layout';
+
 
 
 export const router = createBrowserRouter([
@@ -17,18 +19,23 @@ export const router = createBrowserRouter([
         element: <h1>Welcome!</h1>,
       },
       {
-        path: "login",
+        path: "/login",
         element: <LoginFormPage />,
       },
       {
-        path: "signup",
+        path: "/signup",
         element: <SignupFormPage />,
       },
       {
-        path: '/restaurants/:restaurantId',
-        element: <RestaurantDetails />
+        path: "/restaurants",
+        element: <AllRestaurants />,
       },
       {
+        path: "/restaurants/:restaurantId",
+        element: <RestaurantDetails />,
+      },
+      {
+
         path: '/restaurants/:restaurantId/review',
         element: <ReviewFormPage />
       },
@@ -39,6 +46,7 @@ export const router = createBrowserRouter([
       {
         path: "user/:userId/edit",
         element: <EditProfile />,
+
       },
     ],
   },
