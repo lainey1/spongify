@@ -4,7 +4,7 @@ import * as reviewActions from '../../redux/review';
 import { useModal } from '../../context/Modal';
 import './EditReviewModal.css';
 
-function EditReviewModal({ review, onClose }) {
+function EditReviewModal({ review }) {
     const dispatch = useDispatch();
     const [stars, setStars] = useState(review.stars);
     const [reviewText, setReviewText] = useState(review.review);
@@ -53,7 +53,7 @@ function EditReviewModal({ review, onClose }) {
                     onChange={(e) => setReviewText(e.target.value)}
                 />
                 <button onClick={handleSave}>Save</button>
-                <button onClick={onClose}>Cancel</button>
+                <button onClick={closeModal}>Cancel</button>
             </div>
         </div>
     );

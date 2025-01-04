@@ -46,17 +46,16 @@ function ReviewsUser() {
                                 <p className="restaurant-location">{review.restaurant.city}, {review.restaurant.state} {review.restaurant.country}</p>
                             </span>
                             <span className="review-buttons">
-                                <button className="edit-button">Edit</button>
-                                <button className="delete-button">Delete</button>
                                 <OpenModalButton
                                     modalComponent={<EditReviewModal 
                                         review={review} 
-                                        onClose={() => console.log('Modal closed')}
                                     />}
                                     buttonText="Edit"
                                 />
                                 <OpenModalButton
-                                    modalComponent={<DeleteReviewModal review={review} />}
+                                    modalComponent={<DeleteReviewModal 
+                                        review={review} 
+                                    />}
                                     buttonText="Delete"
                                 />
                             </span>
