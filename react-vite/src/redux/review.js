@@ -79,14 +79,19 @@ export const fetchReviewsByUser = (userId) => async (dispatch) => {
 };
 
 export const fetchAllReviews = () => async (dispatch) => {
-  try {
-    const response = await fetch("/api/reviews");
-    if (response.ok) {
-      const reviews = await response.json();
-      dispatch(getReviews(reviews));
-    } else {
-      const error = await response.json();
-      console.error("Error fetching reviews:", error);
+
+    try {
+        const response = await fetch('/api/reviews');
+        if (response.ok) {
+            const reviews = await response.json();
+            dispatch(getReviews(reviews));
+        } else {
+            const error = await response.json();
+            console.error('Error fetching reviews:', error);
+        }
+    } catch (err) {
+        console.error('Error fetching reviews:', err);
+
     }
   } catch (err) {
     console.error("Error fetching reviews:", err);

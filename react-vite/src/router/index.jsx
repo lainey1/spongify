@@ -1,10 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
-import LoginFormPage from "../components/LoginFormPage";
-import SignupFormPage from "../components/SignupFormPage";
-import RestaurantDetails from "../components/RestaurantDetails";
-import AllRestaurants from "../components/AllRestaurantsList/AllRestaurants";
-import ReviewFormPage from "../components/ReviewFormPage";
-import Layout from "./Layout";
+
+import { createBrowserRouter } from 'react-router-dom';
+import LoginFormPage from '../components/LoginFormPage';
+import SignupFormPage from '../components/SignupFormPage';
+import RestaurantDetails from '../components/RestaurantDetails';
+import ReviewFormPage from '../components/ReviewFormPage';
+import UserProfile from '../components/UserProfile';
+import EditProfile from '../components/EditProfile';
+import Layout from './Layout';
+
+
 
 export const router = createBrowserRouter([
   {
@@ -31,8 +35,18 @@ export const router = createBrowserRouter([
         element: <RestaurantDetails />,
       },
       {
-        path: "/restaurants/:restaurantId/review",
-        element: <ReviewFormPage />,
+
+        path: '/restaurants/:restaurantId/review',
+        element: <ReviewFormPage />
+      },
+      {
+        path: "user/:userId",
+        element: <UserProfile />,
+      },
+      {
+        path: "user/:userId/edit",
+        element: <EditProfile />,
+
       },
     ],
   },

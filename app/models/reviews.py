@@ -19,8 +19,9 @@ class Review(db.Model):
 
     # In your Review model
     review_images = db.relationship('ReviewImage', back_populates='review')
-
-
+    # users = db.relationship('User', backref='reviews')
+    # restaurants = db.relationship('Restaurant', backref='reviews')
+    
     def to_dict(self):
         return {
             'id': self.id,
@@ -30,6 +31,13 @@ class Review(db.Model):
             'stars': self.stars,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            # 'user': self.user.to_dict() if self.user else None,
-            # 'restaurant': self.restaurant.to_dict() if self.restaurant else None
+            # 'user': {
+            #     'id': self.user.id,
+            #     'username': self.user.username,
+            #     'email': self.user.email  # Adjust with desired fields
+            # } if self.user else None,
+            # 'restaurant': {
+            #     'id': self.restaurant.id,
+            #     'name': self.restaurant.name  # Adjust with desired fields
+            # } if self.restaurant else None,
         }
