@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from sqlalchemy import func
 from app.forms import RestaurantForm
-from app.models import Restaurant, Review, db
+from app.models import Restaurant, Review, RestaurantImage,db
 from flask_login import login_required, current_user
 
 
@@ -24,22 +24,28 @@ def restaurants():
                 func.count(Review.id).label("reviewCount"),
                 func.avg(Review.stars).label("avgStarRating")
             )
-            .filter(Review.restaurant_id == restaurant.id)  # Using the current restaurant's ID
+            .filter(Review.restaurant_id == restaurant.id)
             .first()
         )
+
+        # Fetch the preview image for the restaurant
+        preview_image = RestaurantImage.query.filter_by(restaurant_id=restaurant.id, is_preview=True).first()
+        preview_image_url = preview_image.url if preview_image else None
 
         # Convert the restaurant to a dictionary
         restaurant_data = restaurant.to_dict()
 
-        # Add review stats to the restaurant data
+        # Add review stats and preview image to the restaurant data
         restaurant_data['reviewStats'] = {
             "reviewCount": review_stats.reviewCount or 0,
             "avgStarRating": float(review_stats.avgStarRating or 0),
         }
+        restaurant_data['previewImage'] = preview_image_url
 
         restaurant_data_list.append(restaurant_data)
 
     return {'restaurants': restaurant_data_list}
+
 
 
 
@@ -105,12 +111,17 @@ def restaurant(id):
             .first()
         )
 
+        # Fetch images for the restaurant
+        restaurant_images = RestaurantImage.query.filter_by(restaurant_id=restaurant.id).all()
+        images = [image.to_dict() for image in restaurant_images]
+
         # Convert the restaurant to a dictionary and add review stats
         restaurant_data = restaurant.to_dict()
         restaurant_data['reviewStats'] = {
             "reviewCount": review_stats.reviewCount or 0,
             "avgStarRating": float(review_stats.avgStarRating or 0),
         }
+        restaurant_data['images'] = images
 
         return restaurant_data, 200
 

@@ -12,6 +12,25 @@
   margin-top: 25px;
 }
 
+.carousel-container {
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #8c183e;
+}
+
+.carousel-container .carousel img {
+  max-height: 300px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.carousel .legend {
+  font-size: 0.9em; /* Adjust the caption size */
+}
+
 .highlights {
   display: flex;
   flex-direction: row;

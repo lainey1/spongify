@@ -1,0 +1,41 @@
+#section-divider {
+  border-top: 1px solid #ccc;
+}
+
+.restaurant-tile {
+  min-width: 300px;
+}
+
+.manage-restaurants-page {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.header {
+  margin-left: 2.5em;
+}
+
+#create-restaurant-button {
+  width: 200px;
+}
+
+#manage-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.3em;
+  margin-bottom: 1em;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.3em;
+  width: 100%; /* Ensures the buttons share the same width */
+}
+
+.button-wrapper > * {
+  flex: 1;
+}

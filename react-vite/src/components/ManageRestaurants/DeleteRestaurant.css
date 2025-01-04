@@ -1,0 +1,54 @@
+/* ================================
+   Form Container
+================================ */
+#delete-restaurant-form {
+  position: fixed;
+  top: 25%;
+  left: 50%; /* Centers the modal horizontally */
+  transform: translateX(-50%); /* Adjusts centering based on its own width */
+  padding: 20px;
+  color: #4f4f4f;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================
+   Buttons Styling
+================================ */
+
+.confirm-delete {
+  background-image: none;
+  background-color: red;
+  margin-bottom: 1em;
+
+  transition: background-color 0.3s ease;
+}
+
+.confirm-delete:hover {
+  background-image: none;
+  background-color: darkred;
+}
+
+.cancel-delete {
+  background-image: none;
+  background-color: #4f4f4f;
+
+  transition: background-color 0.2s ease;
+}
+
+.cancel-delete:hover {
+  background-image: none;
+  background-color: #333;
+}
+
+/* ================================
+   Media Query for Small Screens (Phones)
+================================ */
+@media (max-width: 600px) {
+  #delete-restaurant-form {
+    width: 90%; /* Adjust the form width to be 90% of the screen */
+    padding: 15px; /* Reduce padding on smaller screens */
+  }
+}
