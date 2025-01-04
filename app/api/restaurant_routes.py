@@ -4,8 +4,25 @@ from app.forms import RestaurantForm
 from app.models import Restaurant, Review, RestaurantImage,db
 from flask_login import login_required, current_user
 
-
 restaurant_routes = Blueprint('restaurants', __name__)
+
+# A function to convert WTForms fields to JSON
+def form_to_json(form):
+    fields = {}
+    for field_name, field in form._fields.items():
+        fields[field_name] = {
+            "type": field.type,
+            "label": field.label.text,
+            "validators": [v.__class__.__name__ for v in field.validators],
+            "choices": getattr(field, 'choices', None),  # For SelectField
+            "default": field.default,
+        }
+    return fields
+
+@restaurant_routes.route('/form-schema', methods=['GET'])
+def get_form_schema():
+    form = RestaurantForm()
+    return jsonify(form_to_json(form))
 
 
 @restaurant_routes.route('/')
@@ -177,6 +194,8 @@ def create_restaurant():
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
+            print("Form has been submitted and validated.")
+            print(form.monday_open.data, form.monday_close.data)
             try:
                 new_restaurant = Restaurant(
                     owner_id=current_user.id,
@@ -201,6 +220,7 @@ def create_restaurant():
                         "Sunday": [form.sunday_open.data, form.sunday_close.data],
                     }
                 )
+
 
                 db.session.add(new_restaurant)
                 db.session.commit()

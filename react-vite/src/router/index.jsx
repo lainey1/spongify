@@ -4,6 +4,7 @@ import SignupFormPage from "../components/SignupFormPage";
 import RestaurantDetails from "../components/RestaurantDetails";
 import AllRestaurants from "../components/AllRestaurantsList/AllRestaurants";
 import ReviewFormPage from "../components/ReviewFormPage";
+import RestaurantForm from "../components/ManageRestaurants/RestaurantForm";
 import Layout from "./Layout";
 
 export const router = createBrowserRouter([
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "/restaurants/:restaurantId/review",
         element: <ReviewFormPage />,
+      },
+      {
+        path: "/restaurants/new",
+        element: <RestaurantForm />,
       },
     ],
   },
