@@ -32,6 +32,7 @@ def seed():
     seed_reservations()
     seed_review_image()
     seed_restaurant_image()
+
     # Add other seed functions here
 
 
@@ -44,4 +45,5 @@ def undo():
     undo_reservations()
     undo_review_image()
     undo_restaurant_image()
+
     # Add other undo functions here

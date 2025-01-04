@@ -47,19 +47,10 @@ class Restaurant(db.Model):
             'updated_at': self.updated_at,
         }
 
-        # If a form is provided, add hours data to the dictionary
-        if form:
-            restaurants_dict['hours'] = {
-                'monday': form.monday_hours.data,
-                'tuesday': form.tuesday_hours.data,
-                'wednesday': form.wednesday_hours.data,
-                'thursday': form.thursday_hours.data,
-                'friday': form.friday_hours.data,
-                'saturday': form.saturday_hours.data,
-                'sunday': form.sunday_hours.data
-            }
-        else:
-            # If no form is provided, return the hours stored in the database
+        # Use the stored hours directly from the database
+        if self.hours:
             restaurants_dict['hours'] = self.hours
+        else:
+            restaurants_dict['hours'] = {day: ['Closed', 'Closed'] for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}
 
         return restaurants_dict

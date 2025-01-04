@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Create a New Review</title>
+  </head>
+  <body>
+    <h1>Add a New Review</h1>
+
+    <form method="POST">
+        {{ form.csrf_token }}
+
+        <label for="review_text">Review:</label>
+        {{ form.review() }}<br />
+
+        <label for="stars">Rating:</label>
+        {{ form.stars() }}<br />
+
+        <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
