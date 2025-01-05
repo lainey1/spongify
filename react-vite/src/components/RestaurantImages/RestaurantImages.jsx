@@ -18,17 +18,24 @@ const RestaurantImages = ({ restaurantId }) => {
 
     const dispatch = useDispatch();
 
+    // const restaurant = useSelector((state) => state.restaurants.currentRestaurant.id)
+
     const images = useSelector((state) => state.restaurantImages.images);
 
 
     console.log("IMAGES", images)
 
 
-    // console.log("RESTAURANT-ID====",restaurantId)
+    // console.log("RESTAURANT-ID====",restaurant)
+
+
+    // const filteredImages = images.filter((image) => image.restaurant_id === restaurantId);
+
+
+    // console.log("Filtered Images",filteredImages)
 
 
 
-    
 
     const [imageUrl, setImageUrl] = useState('');
     const [isPreview, setIsPreview] = useState(false);
@@ -63,7 +70,7 @@ const RestaurantImages = ({ restaurantId }) => {
         setIsPreview(image.is_preview);
     };
 
-        useEffect(() => {
+    useEffect(() => {
         if (restaurantId) {
             dispatch(thunkFetchRestaurantImages(restaurantId));
         } else {

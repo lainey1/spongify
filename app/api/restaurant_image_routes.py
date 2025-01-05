@@ -86,7 +86,7 @@ def delete_image(image_id):
 
     if image:
         # Ensure the user is the one who created the image or is the owner of the restaurant
-        if image.user_id != current_user.id or image.restaurant.owner_id != current_user.id:
+        if image.user_id != current_user.id:
             return {'message': 'You are not authorized to delete this image.'}, 403
 
         db.session.delete(image)

@@ -33,6 +33,7 @@ export const thunkFetchAllImages = () => async (dispatch) => {
     }
 };
 
+
 export const thunkFetchRestaurantImages = (restaurantId) => async (dispatch) => {
     const response = await fetch(`/api/restaurant_images/restaurant/${restaurantId}/images`);
     if (response.ok) {
@@ -44,6 +45,7 @@ export const thunkFetchRestaurantImages = (restaurantId) => async (dispatch) => 
         console.error(error.message);
     }
 };
+
 
 export const thunkUploadImage = ({ restaurantId, imageUrl, isPreview }) => async (dispatch) => {
     const response = await fetch(`/api/restaurant_images/restaurant/${restaurantId}/images`, {
@@ -112,7 +114,7 @@ function restaurantImagesReducer(state = initialState, action) {
                     image.id === action.payload.id ? action.payload : image
                 ),
             };
-            
+
         default:
             return state;
     }
