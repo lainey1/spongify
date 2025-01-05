@@ -9,6 +9,7 @@ import EditProfile from "../components/EditProfile";
 import Layout from "./Layout";
 import About from "../components/About/About";
 import RestaurantForm from "../components/ManageRestaurants/RestaurantForm";
+import UpdateRestaurant from "../components/ManageRestaurants/UpdateRestaurant";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
       {
         path: "user/:userId/edit",
         element: <EditProfile />,
+      },
+      {
+        path: "restaurants/:restaurantId/edit",
+        element: <UpdateRestaurant />,
       },
     ],
   },
