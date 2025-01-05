@@ -21,7 +21,7 @@ class Review(db.Model):
     review_images = db.relationship('ReviewImage', back_populates='review')
     user = db.relationship('User', backref='reviews', lazy='joined')
     restaurant = db.relationship('Restaurant', backref='reviews', lazy='joined')
-    
+
     def to_dict(self):
         return {
             'id': self.id,
