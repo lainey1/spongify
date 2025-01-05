@@ -1,58 +1,92 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaUserCircle } from 'react-icons/fa';
+import { useNavigate, NavLink } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
 import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-import "./ProfileButton.css";
+import "./Navigation.css";
 
 function ProfileButton() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.session.user);
   const [showMenu, setShowMenu] = useState(false);
-  const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
 
+  // Toggle the dropdown menu
   const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
-    setShowMenu(!showMenu);
+    e.stopPropagation();
+    setShowMenu((prev) => !prev);
   };
 
-  useEffect(() => {
-    if (!showMenu) return;
-
-    const closeMenu = (e) => {
-      if (ulRef.current && !ulRef.current.contains(e.target)) {
-        setShowMenu(false);
-      }
-    };
-
-    document.addEventListener("click", closeMenu);
-
-    return () => document.removeEventListener("click", closeMenu);
-  }, [showMenu]);
-
+  // Close the dropdown menu
   const closeMenu = () => setShowMenu(false);
 
-  const logout = (e) => {
+  // Log out user
+  const handleLogout = (e) => {
     e.preventDefault();
     dispatch(thunkLogout());
     closeMenu();
+    navigate("/");
   };
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    if (!showMenu) return;
+
+    const handleClickOutside = (e) => {
+      if (ulRef.current && !ulRef.current.contains(e.target)) {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showMenu]);
+
   return (
-    <>
-      <button onClick={toggleMenu}>
+    <div className="profile-button-container">
+      <button className="profile-icon-button" onClick={toggleMenu}>
         <FaUserCircle />
       </button>
       {showMenu && (
-        <ul className={"profile-dropdown"} ref={ulRef}>
+        <ul className="profile-dropdown" ref={ulRef}>
           {user ? (
             <>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
+              <li className="dropdown-item">
+                {user.username} ({user.email})
+              </li>
+              <NavLink to="/user/:userId" className="dropdown-item">
+                Profile
+              </NavLink>
+              <NavLink
+                to="/reservations/user/<int:user_id>'"
+                className="dropdown-item"
+              >
+                Reservations
+              </NavLink>
+              <NavLink
+                to="/restaurants/user/<int:user_id>'"
+                className="dropdown-item"
+              >
+                Restaurants
+              </NavLink>
+
+              <NavLink
+                to="/reviews/user/<int:user_id>'"
+                className="dropdown-item"
+              >
+                Reviews
+              </NavLink>
               <li>
-                <button onClick={logout}>Log Out</button>
+                <button className="logout-button" onClick={handleLogout}>
+                  Log Out
+                </button>
               </li>
             </>
           ) : (
@@ -71,7 +105,7 @@ function ProfileButton() {
           )}
         </ul>
       )}
-    </>
+    </div>
   );
 }
 

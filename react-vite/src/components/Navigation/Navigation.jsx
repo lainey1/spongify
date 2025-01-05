@@ -1,34 +1,36 @@
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import eaterverseBanner from "../../../../app/static/images/eaterverse_banner.png";
 import ProfileButton from "./ProfileButton";
-import SearchBar from "./SearchBar";
-import logo from "../../../src/images/logo_eaterverse_transparent.png"; 
+// import SearchBar from "./SearchBar";
 import "./Navigation.css";
 
 function Navigation() {
-  const sessionUser = useSelector((state) => state.session.user);
-  
   return (
-    <nav className="navbar">
-      <div className="logo">
-        <NavLink to="/" aria-label="Home">
-          <img src={logo} alt="Eater-Verse" />
-        </NavLink>
+    <nav id="site-banner">
+      {/* Logo Section */}
+      <div id="logo-banner">
+        <Link to="/" className="logo-link">
+          <img src={eaterverseBanner} alt="Eaterverse Banner" />
+        </Link>
       </div>
 
-      <ul>
-        <li>
-          <SearchBar />
-        </li>
-        <li>
-          <ProfileButton user={sessionUser} />
-        </li>
-      </ul>
+      {/* Search Bar */}
+      {/* <div id="search-bar-container">
+        <SearchBar />
+      </div> */}
+
+      {/* Navigation Actions */}
+      <div id="actions-container">
+        <Link to="/about" className="nav-link">
+          About
+        </Link>
+        {/* <Link to="/restaurants" className="nav-link">
+          Restaurants
+        </Link> */}
+        <ProfileButton />
+      </div>
     </nav>
   );
 }
 
 export default Navigation;
-
-
-
