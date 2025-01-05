@@ -20,7 +20,6 @@ class User(db.Model, UserMixin):
     headline = db.Column(db.String(255), nullable=True)
 
     review_images = db.relationship('ReviewImage', back_populates='user')
-
     restaurant_images = db.relationship('RestaurantImage', back_populates='user')
 
     # TODO Future Enhancement - In your Profile model -

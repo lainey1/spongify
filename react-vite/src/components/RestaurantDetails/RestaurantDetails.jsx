@@ -14,6 +14,7 @@ import {
 } from "../../utils/restaurantHelpers";
 import { parseTimeToMinutes, formatTimeAgo } from "../../utils/timeHelpers";
 import RestaurantHours from "./RestaurantHours";
+import ReviewsRestaurant from "../ReviewsRestaurant";
 import StarRating from "../StarRating";
 import "./RestaurantDetails.css";
 
@@ -135,7 +136,7 @@ function RestaurantDetails() {
             <RestaurantHours hours={restaurant?.hours} />
           </div>
           <div className="sub-panel">
-            <h2>[PLACEHOLDER: Restaurant Review Section]</h2>
+            <ReviewsRestaurant />
           </div>
         </div>
         <div id="restaurant-side-panel">

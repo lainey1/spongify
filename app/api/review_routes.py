@@ -18,12 +18,14 @@ def reviews():
     return jsonify({'reviews': [review.to_dict() for review in reviews]}), 200
 
 # Get all reviews of the current user
-@review_routes.route('/user<int:user_id>')
+@review_routes.route('/user/<int:user_id>')
 @login_required
 def user_reviews(user_id):
     """
     Query for all reviews of the current user and returns them in a list of review dictionaries
     """
+    if user_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to view these reviews'}), 403
     reviews = Review.query.filter(Review.user_id == user_id).all()
     if not reviews:
         return jsonify({'message': 'No reviews found'}), 404
@@ -110,23 +112,36 @@ def update_review(review_id):
     if review.user_id != current_user.id:
         return jsonify({'message': 'You are not authorized to update this review'}), 403
     
-    form = ReviewForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    data = request.get_json()
+    stars = data.get('stars')
+    review_text = data.get('review')
 
-    if form.validate_on_submit():
-        review.review = form.data['review_text']
-        review.stars = form.data['stars']
-        db.session.commit()
-        return jsonify({
-            'message': 'Review updated successfully',
-            'review': review.to_dict()
-        }), 200
+    if not stars and not review_text:
+        return jsonify({'message': 'Invalid data'}), 400
     
-    # If form validation fails
-    return jsonify({
-        'message': 'Invalid review data',
-        'errors': form.errors
-    }), 401
+    review.stars = stars
+    review.review = review_text
+    db.session.commit()
+
+    return jsonify({ 'message': 'Review updated successfully', 'review': review.to_dict() }), 200
+
+    # form = ReviewForm()
+    # form['csrf_token'].data = request.cookies['csrf_token']
+
+    # if form.validate_on_submit():
+    #     review.review = form.data['review_text']
+    #     review.stars = form.data['stars']
+    #     db.session.commit()
+    #     return jsonify({
+    #         'message': 'Review updated successfully',
+    #         'review': review.to_dict()
+    #     }), 200
+    
+    # # If form validation fails
+    # return jsonify({
+    #     'message': 'Invalid review data',
+    #     'errors': form.errors
+    # }), 401
 
 # Delete a review
 @review_routes.route('/<int:review_id>', methods=['DELETE'])

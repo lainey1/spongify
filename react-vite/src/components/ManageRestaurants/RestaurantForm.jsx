@@ -185,9 +185,9 @@ function RestaurantForm() {
     <form className="restaurant-form" onSubmit={handleSubmit}>
       <h1 className="form-title">Create Restaurant</h1>
       <p>
-        All fields are a must! Once you hit "Submit," we'll whisk you away to
-        your freshly minted restaurant page in Eaterverse, where you can show
-        off your new restaurant and add some delicious images.
+        All fields are a must! Once you hit &quot;Submit,&quot; we&#39;ll whisk
+        you away to your freshly minted restaurant page in Eaterverse, where you
+        can show off your new restaurant and add some delicious images.
       </p>
 
       {/* Basic Information Section */}

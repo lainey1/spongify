@@ -1,0 +1,15 @@
+.reviews-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
