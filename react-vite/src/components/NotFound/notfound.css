@@ -1,0 +1,25 @@
+.not-found-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .not-found-container h2 {
+    font-size: 4em;
+    color: #ff0000; 
+  }
+  
+  .not-found-container p {
+    font-size: 2.5em;
+  }
+  
+  .home-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-image: linear-gradient(to right, #e26d12, #8c183e);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  

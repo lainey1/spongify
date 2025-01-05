@@ -7,6 +7,14 @@ import ReviewFormPage from "../components/ReviewFormPage";
 import UserProfile from "../components/UserProfile";
 import EditProfile from "../components/EditProfile";
 import Layout from "./Layout";
+import UserReservations from "../components/Reservations/UserReservations";
+import ManageReservations from "../components/Reservations/ManageReservations";
+import CreateReservations from "../components/Reservations/CreateReservations";
+import ReservationsByRestaurant from "../components/Reservations/ReservationsByRestaurant"
+import UpdateReservations from "../components/Reservations/UpdateReservations";
+import NotFound from "../components/NotFound/NotFound";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -44,7 +52,30 @@ export const router = createBrowserRouter([
         path: "user/:userId/edit",
         element: <EditProfile />,
       },
+      {
+        path: "reservations/user",
+        element: <UserReservations />,
+      },
+      {
+        path: "reservations/:reservationId",
+        element: <ManageReservations />,
+      },
+      {
+        path: "/restaurant/:restaurantId/new",
+        element: <CreateReservations />,
+      },
+      {
+        path: "/reservations/restaurant/:restaurantId",
+        element: <ReservationsByRestaurant />,
+      },
+      {
+        path: "/reservations/:reservationsId/edit",
+        element: <UpdateReservations />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
   },
 ]);
-lea

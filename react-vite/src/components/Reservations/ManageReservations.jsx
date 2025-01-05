@@ -1,76 +1,63 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ManageReservations = () => {
     const [reservations, setReservations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
+    // Fetch reservations on mount
     useEffect(() => {
-        fetch('/api/reservations/user', {
-            method: 'GET',
-            credentials: 'include', // Include cookies for authentication (session-based login)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error fetching reservations');
+        const fetchReservations = async () => {
+            try {
+                const response = await fetch('/api/reservations/user', {
+                    method: 'GET',
+                    credentials: 'include', // Include cookies for authentication (session-based login)
+                });
+                if (!response.ok) {
+                    throw new Error('Error fetching reservations');
+                }
+                const data = await response.json();
+                setReservations(data.reservations);
+            } catch (err) {
+                console.error('Error fetching reservations:', err);
+                setError('There was an error fetching your reservations.');
+            } finally {
+                setLoading(false); // Ensure loading is turned off
             }
-            return response.json();
-        })
-        .then(data => {
-            setReservations(data.reservations);
-            setLoading(false);  // Update loading state once data is fetched
-        })
-        .catch(err => {
-            console.error('Error fetching reservations:', err);
-            setError('There was an error fetching your reservations.');
-            setLoading(false); // Ensure loading is turned off even on error
-        });
+        };
+
+        fetchReservations();
     }, []); 
 
-    const handleOnClick = (reservationId) => {
+    // Handle reservation deletion
+    const handleOnClick = async (reservationId) => {
         setLoading(true);  // Set loading true while deleting
-        fetch(`/api/reservations/${reservationId}`, { 
-            method: 'DELETE',
-            credentials: 'include', 
-        })
-        .then(response => {
+        try {
+            const response = await fetch(`/api/reservations/${reservationId}`, {
+                method: 'DELETE',
+                credentials: 'include', 
+            });
             if (!response.ok) {
                 throw new Error('Error deleting reservation');
             }
-            return response.json();
-        })
-        .then(data => {
-            setReservations(data.reservations); 
-            setLoading(false);  // Update after deletion
-        })
-        .catch(err => {
+            const data = await response.json();
+            // Remove deleted reservation from the list
+            setReservations(prevReservations => 
+                prevReservations.filter(reservation => reservation.id !== reservationId)
+            );
+        } catch (err) {
             console.error('Error deleting reservation:', err);
             setError('There was an error deleting your reservation.');
-            setLoading(false); // Ensure loading is turned off even on error
-        });
+        } finally {
+            setLoading(false); // Ensure loading is turned off
+        }
     };
 
+    // Navigate to the reservation update page
     const updatedOnClick = (reservationId) => {
-        setLoading(true);  // Set loading true while updating
-        fetch(`/api/reservations/${reservationId}`, { 
-            method: 'PUT',
-            credentials: 'include', 
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error updating reservation');
-            }
-            return response.json();
-        })
-        .then(data => {
-            setReservations(data.reservations); 
-            setLoading(false); 
-        })
-        .catch(err => {
-            console.error('Error updating reservation:', err);
-            setError('There was an error updating your reservation.');
-            setLoading(false); 
-        });
+        navigate(`/reservations/${reservationId}/edit`);  // Use backticks to correctly interpolate the reservation ID
     };
 
     if (loading) return <div>Loading reservations...</div>;
@@ -87,11 +74,17 @@ const ManageReservations = () => {
                         <li key={reservation.id}>
                             <p>Date: {new Date(reservation.date).toLocaleString()}</p>
                             <p>Party Size: {reservation.party_size}</p>
-                            <button onClick={() => handleOnClick(reservation.id)}>
-                                Delete Reservation 
+                            <button 
+                                onClick={() => handleOnClick(reservation.id)}
+                                disabled={loading}  // Disable button while loading
+                            >
+                                {loading ? 'Deleting...' : 'Delete Reservation'}
                             </button>
-                            <button onClick={() => updatedOnClick(reservation.id)}>
-                                Update Reservation
+                            <button 
+                                onClick={() => updatedOnClick(reservation.id)} 
+                                disabled={loading}  // Disable button while loading
+                            >
+                                {loading ? 'Loading...' : 'Update Reservation'}
                             </button>
                         </li>
                     ))
@@ -102,3 +95,4 @@ const ManageReservations = () => {
 };
 
 export default ManageReservations;
+

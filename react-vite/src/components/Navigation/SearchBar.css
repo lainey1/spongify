@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    /* max-width: 1200px; */
+    
     background-color: #f8f8f8;
     padding: 10px;
     border-radius: 8px;
@@ -155,12 +155,12 @@
 }
 
 .result-link:hover {
-    color: #007bff;  /* Change to any color on hover */
+    color: #007bff; 
 }
 
 .active-link {
     font-weight: bold;
-    color: #007bff;  /* Highlight active link */
+    color: #007bff;  
 }
 
 .loading {

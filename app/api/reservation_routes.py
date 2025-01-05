@@ -31,6 +31,7 @@ def user_reservations():
     reservations = Reservation.query.filter(Reservation.user_id == current_user.id).all()
     return {'reservations': [reservation.to_dict() for reservation in reservations]}
 
+#Get all Reservations by Restaurant
 @reservation_routes.route('/restaurant/<int:restaurant_id>', methods=['GET'])
 @login_required
 def get_restaurant_reservations(restaurant_id):
@@ -53,14 +54,15 @@ def get_restaurant_reservations(restaurant_id):
 
     return jsonify({'reservations': [reservation.to_dict() for reservation in reservations]})
 
-@reservation_routes.route('/restaurant/<int:restaurant_id>/new', methods=['POST'])
+#Create Reservation
+@reservation_routes.route('/restaurant/<int:restaurant_id>/new', methods=['GET, POST'])
 @login_required
 def create_reservation(restaurant_id):
     """
     Create a new reservation and return it as a reservation dictionary
     """
     form = ReservationForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    # form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
         # Create a new reservation using the validated form data
