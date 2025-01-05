@@ -7,6 +7,8 @@ import ReviewFormPage from "../components/ReviewFormPage";
 import UserProfile from "../components/UserProfile";
 import EditProfile from "../components/EditProfile";
 import Layout from "./Layout";
+import About from "../components/About/About";
+import RestaurantForm from "../components/ManageRestaurants/RestaurantForm";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +31,10 @@ export const router = createBrowserRouter([
         element: <AllRestaurants />,
       },
       {
+        path: "/restaurants/new",
+        element: <RestaurantForm />,
+      },
+      {
         path: "/restaurants/:restaurantId",
         element: <RestaurantDetails />,
       },
@@ -39,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "user/:userId",
         element: <UserProfile />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
       {
         path: "user/:userId/edit",

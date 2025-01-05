@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import StarRating from "../StarRating";
 import { fetchAllRestaurantsThunk } from "../../redux/restaurants";
+import eaterverse_banner from "../../../../app/static/images/eaterverse_banner.png";
 import "./AllRestaurants.css";
 
 function AllRestaurants() {
@@ -16,6 +17,11 @@ function AllRestaurants() {
 
   return (
     <div className="all-restaurants-page">
+      <img
+        src={eaterverse_banner}
+        alt="Eaterverse banner"
+        id="eaterverse-banner"
+      />
       <div className="restaurants-grid">
         {restaurants?.map((restaurant) => {
           // Calculate the average star rating for each restaurant

@@ -1,0 +1,54 @@
+/* /* ================================
+   Session Form
+================================ */
+#signup-form {
+  position: fixed;
+  top: 25%;
+  transform: translateX(-50%); /* Adjusts centering based on its own width */
+  width: 375px;
+  margin: 0; /* No margin, as it's fixed */
+  z-index: 1001; /* Ensure it's above the banner */
+  background-color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(100, 100, 111, 0.2);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+/* Media query for smaller screens (phones) */
+@media screen and (max-width: 600px) {
+  #signup-form {
+    width: 80%; /* Increase width for better use of space */
+    margin-left: 0.5em; /* Reduced margin for smaller screens */
+    margin-right: 0.5em; /* Reduced margin for smaller screens */
+  }
+
+  .error-message {
+    font-size: 0.8em; /* Make error messages smaller on mobile */
+  }
+
+  .demo-link {
+    font-size: 0.9em; /* Adjust demo link font size on mobile */
+    padding-bottom: 1.5em; /* Reduce padding for mobile screens */
+  }
+}
+
+/* ================================
+         Errors Container
+      ================================ */
+#login-errors-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 2rem;
+}
+
+.error {
+  color: red;
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9em; /* Optional: adjust the font size */
+}
