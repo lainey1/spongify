@@ -18,8 +18,12 @@ const UpdateRestaurant = () => {
   );
 
   // State Hooks
-  const [errors, setErrors] = useState({});
+  const [constants, setConstants] = useState({
+    time_choices: [],
+    popular_cuisines: [],
+  });
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -44,33 +48,12 @@ const UpdateRestaurant = () => {
     },
   });
 
-  const TIME_CHOICES = [
-    "Closed",
-    "12:00 AM",
-    "1:00 AM",
-    "2:00 AM",
-    "3:00 AM",
-    "4:00 AM",
-    "5:00 AM",
-    "6:00 AM",
-    "7:00 AM",
-    "8:00 AM",
-    "9:00 AM",
-    "10:00 AM",
-    "11:00 AM",
-    "12:00 PM",
-    "1:00 PM",
-    "2:00 PM",
-    "3:00 PM",
-    "4:00 PM",
-    "5:00 PM",
-    "6:00 PM",
-    "7:00 PM",
-    "8:00 PM",
-    "9:00 PM",
-    "10:00 PM",
-    "11:00 PM",
-  ];
+  useEffect(() => {
+    fetch("/api/restaurants/constants")
+      .then((response) => response.json())
+      .then((data) => setConstants(data))
+      .catch((error) => console.error("Error fetching constants:", error));
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -87,8 +70,6 @@ const UpdateRestaurant = () => {
         address: restaurant.address || "",
         city: restaurant.city || "",
         state: restaurant.state || "",
-        lat: restaurant.lat || "",
-        lng: restaurant.lng || "",
         name: restaurant.name || "",
         description: restaurant.description || "",
         price_point: restaurant.price_point || "",
@@ -339,9 +320,9 @@ const UpdateRestaurant = () => {
                     }
                     required
                   >
-                    {TIME_CHOICES.map((time) => (
-                      <option key={time} value={time}>
-                        {time}
+                    {constants.time_choices.map((choice, index) => (
+                      <option key={index} value={choice[0]}>
+                        {choice[1]}
                       </option>
                     ))}
                   </select>
@@ -354,11 +335,16 @@ const UpdateRestaurant = () => {
                     }
                     required
                   >
-                    {TIME_CHOICES.map((time) => (
-                      <option key={time} value={time}>
-                        {time}
-                      </option>
-                    ))}
+                    {/* If the open time is 'Closed', set 'Closed' as the only option for close */}
+                    {formData.hours[day].open === "Closed" ? (
+                      <option value="Closed">Closed</option>
+                    ) : (
+                      constants.time_choices.map((time) => (
+                        <option key={time[0]} value={time[0]}>
+                          {time[1]}
+                        </option>
+                      ))
+                    )}
                   </select>
                 </div>
               </div>
