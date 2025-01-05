@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import LoginFormPage from "../components/LoginFormPage";
 import SignupFormPage from "../components/SignupFormPage";
-import RestaurantDetails from "../components/RestaurantDetails";
 import AllRestaurants from "../components/AllRestaurantsList/AllRestaurants";
+import RestaurantDetails from "../components/RestaurantDetails";
 import ReviewFormPage from "../components/ReviewFormPage";
-import RestaurantForm from "../components/ManageRestaurants/RestaurantForm";
+import UserProfile from "../components/UserProfile";
+import EditProfile from "../components/EditProfile";
 import Layout from "./Layout";
 
 export const router = createBrowserRouter([
@@ -13,7 +14,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <AllRestaurants />,
       },
       {
         path: "login",
@@ -36,8 +37,12 @@ export const router = createBrowserRouter([
         element: <ReviewFormPage />,
       },
       {
-        path: "/restaurants/new",
-        element: <RestaurantForm />,
+        path: "user/:userId",
+        element: <UserProfile />,
+      },
+      {
+        path: "user/:userId/edit",
+        element: <EditProfile />,
       },
     ],
   },
