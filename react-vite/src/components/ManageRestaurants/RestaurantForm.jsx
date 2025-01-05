@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { validateField } from "../../utils/validateField";
 import "./RestaurantForm.css";
 
 function RestaurantForm() {
@@ -19,10 +20,17 @@ function RestaurantForm() {
       })
       .then((data) => {
         setFormSchema(data);
+
+        // Initialize formData with defaults (if available)
         const initialData = {};
         Object.keys(data).forEach((field) => {
           initialData[field] = data[field].default || "";
         });
+
+        // Add the default choices for `cuisine` and `price_point`
+        initialData["cuisine"] = "American";
+        initialData["price_point"] = "1";
+
         setFormData(initialData);
         setLoading(false);
       })
@@ -32,82 +40,14 @@ function RestaurantForm() {
       });
   }, []);
 
-  const validateField = (name, value) => {
-    let error = "";
-
-    // Regular expressions for email, phone, and website validation
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const phoneRegex = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/; // Example: 111-111-1111
-    const websiteRegex =
-      /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-_.]*)*$/;
-
-    switch (name) {
-      case "name":
-      case "address":
-      case "city":
-      case "state":
-      case "country":
-        if (!value) {
-          error = `${
-            name.charAt(0).toUpperCase() + name.slice(1)
-          } is required.`;
-        }
-        break;
-      case "description":
-        if (!value || value.length < 30) {
-          error = "Description needs 30 or more characters.";
-        }
-        break;
-      case "price_point":
-        if (!value) error = "Price point is required.";
-        else if (isNaN(Number(value))) error = "Price must be a valid number.";
-        break;
-      case "email":
-        if (value && !emailRegex.test(value)) {
-          error = "Invalid email format.";
-        }
-        break;
-      case "phone_number":
-        if (value && !phoneRegex.test(value)) {
-          error = "Phone number must be in the format 111-111-1111.";
-        }
-        break;
-      case "website":
-        if (value && !websiteRegex.test(value)) {
-          error = "Invalid website URL.";
-        }
-        break;
-      case "monday_open":
-      case "monday_close":
-      case "tuesday_open":
-      case "tuesday_close":
-      case "wednesday_open":
-      case "wednesday_close":
-      case "thursday_open":
-      case "thursday_close":
-      case "friday_open":
-      case "friday_close":
-      case "saturday_open":
-      case "saturday_close":
-      case "sunday_open":
-      case "sunday_close":
-        if (!value)
-          error = `${
-            name.charAt(0).toUpperCase() + name.slice(1)
-          } is required.`;
-        break;
-      default:
-        break;
-    }
-
-    return error;
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Log the name of the field and its new value
+    // console.log("Field:", name, "Value:", value);
+
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Validate field immediately after change
     const fieldError = validateField(name, value);
     setError((prevErrors) => ({
       ...prevErrors,
@@ -117,6 +57,7 @@ function RestaurantForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // You can now include the csrfToken in the request headers or form data
 
     // Log form data before submitting
     console.log("Submitting form data: ", formData);
@@ -160,21 +101,20 @@ function RestaurantForm() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(transformedData), // Send the transformed data as JSON
+      body: JSON.stringify(transformedData),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
           setError(data.error);
         } else {
-          // Handle successful form submission (e.g., redirect or show a success message)
           console.log("Restaurant created:", data);
           navigate(`/restaurants/${data.id}`);
         }
       })
       .catch((err) => {
+        console.error("Error during form submission:", err);
         setError("Error submitting form");
-        console.error(err);
       });
   };
 

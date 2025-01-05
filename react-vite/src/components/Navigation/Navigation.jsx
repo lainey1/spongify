@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import eaterverseLogo from "../../../../app/static/images/logo_eaterverse_transparent.png";
+import eaterverseHeader from "../../../public/eaterverse_site-banner.png";
 import ProfileButton from "./ProfileButton";
 // import SearchBar from "./SearchBar";
 import "./Navigation.css";
@@ -10,7 +10,7 @@ function Navigation() {
       {/* Logo Section */}
       <div id="logo-banner">
         <Link to="/" className="logo-link">
-          <img src={eaterverseLogo} alt="Eaterverse Logo" />
+          <img src={eaterverseHeader} alt="Eaterverse Logo" />
         </Link>
       </div>
 

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import StarRating from "../StarRating";
 import { fetchAllRestaurantsThunk } from "../../redux/restaurants";
-import eaterverse_banner from "../../../../app/static/images/eaterverse_banner.png";
+import eaterverse_banner from "../../../public/eaterverse_page-banner.png";
 import "./AllRestaurants.css";
 
 function AllRestaurants() {

@@ -1,11 +1,11 @@
-import logo from "../../../../app/static/images/eaterverse-logo-transparent.png";
+import large_logo from "../../../public/eaterverse_logo-large.png";
 import "./About.css";
 
 const About = () => {
   return (
     <div className="about-us-container">
       <div className="about-us-image">
-        <img src={logo} alt="EaterVerse" />
+        <img src={large_logo} alt="EaterVerse" />
       </div>
       <div className="about-us-content">
         <h1>About Eaterverse</h1>
