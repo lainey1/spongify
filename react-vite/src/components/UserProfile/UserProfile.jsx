@@ -6,14 +6,13 @@ import { thunkAuthenticate } from "../../redux/session";
 import ReviewsUser from "../ReviewsUser";
 
 function UserProfile() {
-
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(thunkAuthenticate)  // make GetCurrentUser thunk
-  }, [dispatch])
+    dispatch(thunkAuthenticate); // make GetCurrentUser thunk
+  }, [dispatch]);
 
   return (
     <div className="profile-page">
@@ -29,11 +28,15 @@ function UserProfile() {
           <h4>Location: {currentUser.location}</h4>
           <p>{currentUser.headline}</p>
 
-          <button key={currentUser.id} className="edit-profile-btn"
-                  onClick={() => navigate(`/user/${currentUser.id}/edit`)}
-          >Edit Profile</button>
+          <button
+            key={currentUser.id}
+            className="edit-profile-btn"
+            onClick={() => navigate(`/user/${currentUser.id}/edit`)}
+          >
+            Edit Profile
+          </button>
         </div>
-        
+
         <nav className="menu">
           <button>Profile Overview</button>
           <button>Reviews</button>
