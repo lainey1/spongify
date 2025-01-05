@@ -43,7 +43,7 @@ export const fetchAllRestaurantsThunk = () => async (dispatch) => {
     const response = await fetch("/api/restaurants");
     if (response.ok) {
       const restaurants = await response.json();
-      console.log(restaurants);
+      // console.log(restaurants);
       dispatch(loadRestaurants(restaurants));
     } else {
       const errors = await response.json();

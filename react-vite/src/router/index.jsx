@@ -6,6 +6,7 @@ import RestaurantDetails from "../components/RestaurantDetails";
 import ReviewFormPage from "../components/ReviewFormPage";
 import UserProfile from "../components/UserProfile";
 import EditProfile from "../components/EditProfile";
+import RestaurantImages from "../components/RestaurantImages"
 import Layout from "./Layout";
 
 export const router = createBrowserRouter([
@@ -44,6 +45,14 @@ export const router = createBrowserRouter([
         path: "user/:userId/edit",
         element: <EditProfile />,
       },
+
+
+     {
+        path: "/restaurants/:restaurantId/images",
+        element: <RestaurantImages />,
+      },
+
+
     ],
   },
 ]);

@@ -1,11 +1,9 @@
 from flask import Blueprint, jsonify, request
-
 from app.forms import ImageForm
 from app.models import Restaurant, db, RestaurantImage
 from flask_login import current_user, login_required
 
 restaurant_images = Blueprint('restaurant_images', __name__)
-
 
 @restaurant_images.route('/')
 def all_images():
@@ -13,7 +11,6 @@ def all_images():
     Query for all restaurant images and return them in a list of image dictionaries.
     """
     images = RestaurantImage.query.all()
-
     return {'restaurant_images': [image.to_dict() for image in images]}
 
 
@@ -32,7 +29,7 @@ def upload_image(restaurant_id):
 
     # Handle GET request to fetch images
     if request.method == 'GET':
-        images = RestaurantImage.query.filter_by(restaurant_id=restaurant_id).all();
+        images = RestaurantImage.query.filter_by(restaurant_id=restaurant_id).all()
         if not images:
             return jsonify({"message": "No images found for this restaurant"}), 404
 
@@ -89,7 +86,7 @@ def delete_image(image_id):
 
     if image:
         # Ensure the user is the one who created the image or is the owner of the restaurant
-        if image.user_id != current_user.id and image.restaurant.owner_id != current_user.id:
+        if image.user_id != current_user.id or image.restaurant.owner_id != current_user.id:
             return {'message': 'You are not authorized to delete this image.'}, 403
 
         db.session.delete(image)
@@ -99,3 +96,44 @@ def delete_image(image_id):
 
     return {'error': 'Image not found.'}, 404
 
+
+
+@restaurant_images.route('/<int:image_id>', methods=['PUT'])
+@login_required
+def update_image(image_id):
+    """
+    Update a restaurant image by ID
+    """
+    image = RestaurantImage.query.filter_by(id=image_id).first()
+
+    if not image:
+        return jsonify({"error": "Image not found"}), 404
+
+    # Ensure the user is the one who created the image or is the owner of the restaurant
+    if image.user_id != current_user.id or image.restaurant.owner_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to update this image.'}), 403
+
+    form = ImageForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if not form.validate_on_submit():
+        return jsonify({"error": "Invalid form submission", "errors": form.errors}), 400
+
+    image_url = form.image_url.data
+    is_preview = form.is_preview.data
+
+    if image_url and not image_url.startswith(('http://', 'https://')):
+        return jsonify({"error": f"Invalid URL: {image_url}"}), 400
+
+    try:
+        # Update the image attributes
+        if image_url:
+            image.url = image_url
+        if is_preview is not None:
+            image.is_preview = is_preview
+
+        db.session.commit()
+        return jsonify({"message": "Image updated successfully", "image": image.to_dict()}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Error updating image: {str(e)}"}), 500
