@@ -112,7 +112,7 @@ function ManageRestaurants() {
                   <button
                     className="update-button"
                     onClick={() => {
-                      navigate(`/spots/${spot.id}/edit`);
+                      navigate(`/restaurants/${restaurants.id}/edit`);
                     }}
                   >
                     Update
