@@ -69,7 +69,7 @@ export const fetchAllRestaurantsThunk = () => async (dispatch) => {
 export const editRestaurantThunk =
   (restaurantId, restaurantData) => async (dispatch) => {
     try {
-      const response = await fetch(`/api/restaurants/${restaurantId}`, {
+      const response = await fetch(`/api/restaurants/${restaurantId}/edit`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(restaurantData),
