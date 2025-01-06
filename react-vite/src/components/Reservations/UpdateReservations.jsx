@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-const UpdateReservations = ({ reservationId }) => {
+const UpdateReservations = () => {
+
+  const { reservationId } = useParams();
+
+  console.log('RESERVE ID',reservationId)
+
   const [reservation, setReservation] = useState({
     date: '',
     partySize: 1,
@@ -12,28 +18,7 @@ const UpdateReservations = ({ reservationId }) => {
   const user = useSelector((store) => store.session.user);
   const restaurantId = useSelector((state) => state.restaurants.currentRestaurant.id);
 
-  useEffect(() => {
-    const fetchReservation = async () => {
-      try {
-        const response = await fetch(`/api/reservations/${reservationId}`);
-        const data = await response.json();
 
-        if (response.ok) {
-          setReservation({
-            
-            date: data.reservation.date,
-            partySize: data.reservation.party_size,
-          });
-        } else {
-          setError(data.message);
-        }
-      } catch (err) {
-        setError('An error occurred while fetching the reservation');
-      }
-    };
-
-    fetchReservation();
-  }, [reservationId, user.id, restaurantId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,10 +42,10 @@ const UpdateReservations = ({ reservationId }) => {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
         },
         body: JSON.stringify({
-          restaurant_id: restaurantId,
+          restaurant_id: parseInt(restaurantId),
           user_id: user.id,
-          date: reservation.date,
-          party_size: reservation.partySize,
+          date: reservation.date+':00',
+          party_size: parseInt(reservation.partySize),
         }),
       });
 
@@ -77,6 +62,32 @@ const UpdateReservations = ({ reservationId }) => {
       setLoading(false);
     }
   };
+
+
+    useEffect(() => {
+    const fetchReservation = async () => {
+      try {
+        const response = await fetch(`/api/reservations/${reservationId}`);
+        const data = await response.json();
+
+
+        if (response.ok) {
+          setReservation({
+            
+            date: data.reservation.date,
+            partySize: data.reservation.party_size,
+          });
+        } else {
+          setError(data.message);
+        }
+      } catch (err) {
+        setError('An error occurred while fetching the reservation');
+      }
+    };
+
+    fetchReservation();
+  }, [reservationId, user.id, restaurantId]);
+
 
   return (
     <div>

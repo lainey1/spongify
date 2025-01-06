@@ -38,7 +38,7 @@ const CreateReservations = () => {
             date: date+':00',
             party_size: parseInt(partySize),
         };
-        console.log("REVDATA", reservationData);
+        // console.log("REVDATA", reservationData);
 
 
         const fetchCreate = async () => {
