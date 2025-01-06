@@ -52,12 +52,16 @@ export const router = createBrowserRouter([
         path: "user/:userId/edit",
         element: <EditProfile />,
       },
+
+
       {
-        path: "reservations/user",
+        path: "reservations/:userId",
         element: <UserReservations />,
       },
+
+
       {
-        path: "reservations/:reservationId",
+        path: "/reservations/:reservationId",
         element: <ManageReservations />,
       },
       {
@@ -72,6 +76,8 @@ export const router = createBrowserRouter([
         path: "/reservations/:reservationsId/edit",
         element: <UpdateReservations />,
       },
+
+
       {
         path: "*",
         element: <NotFound />,

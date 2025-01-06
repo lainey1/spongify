@@ -35,10 +35,11 @@ const CreateReservations = () => {
         const reservationData = {
             restaurant_id: parseInt(restaurantId),
             user_id: currentUserId,
-            date: date,
+            date: date+':00',
             party_size: parseInt(partySize),
         };
         console.log("REVDATA", reservationData);
+
 
         const fetchCreate = async () => {
           try {
