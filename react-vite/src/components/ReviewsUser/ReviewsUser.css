@@ -1,15 +1,53 @@
+.review-top .restaurant-name {
+  font-size: 1.5rem; /* Increase font size */
+  font-weight: bold; /* Make it bold */
+  color: #333; /* Darker color for emphasis */
+  margin-bottom: 5px; /* Add some space below */
+}
+
 .reviews-section {
   display: flex;
   flex-direction: column;
+  gap: 20px; /* Add space between review items */
+  padding: 20px; /* Add padding around the section */
+  background-color: #f9f9f9; /* Light background for better readability */
 }
 
 .review-item {
   display: flex;
   flex-direction: column;
+  gap: 15px; /* Space between review details */
+  border: 1px solid #e0e0e0; /* Add a border for separation */
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #fff; /* White background for items */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .review-top {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center; /* Align content vertically */
+  padding-bottom: 10px; /* Add space below the top section */
+  border-bottom: 1px solid #e0e0e0; /* Separate top section */
+}
+
+.restaurant-image {
+  width: 100%; /* Responsive width */
+  max-width: 275px; /* Ensure max width */
+}
+
+.restaurant-image img {
+  width: 100%; /* Make the image fully responsive */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+@media (max-width: 768px) {
+  .review-top .restaurant-name {
+    font-size: 1.25rem; /* Slightly smaller font size on smaller screens */
+  }
 }
