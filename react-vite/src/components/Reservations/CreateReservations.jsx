@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -74,7 +74,7 @@ const CreateReservations = () => {
               setError(null);
       
               if (data.reservation) {
-                  navigate(`/reservations/${data.reservation.id}`);
+                  navigate(`/reservations/user`);
               }
           } catch (err) {
               setLoading(false);
@@ -85,6 +85,7 @@ const CreateReservations = () => {
       };     
 
         fetchCreate();
+        
     };
 
     return (

@@ -14,7 +14,7 @@ def reviews():
     reviews = Review.query.all()
     if not reviews:
         return jsonify({'message': 'No reviews found'}), 404
-    
+
     return jsonify({'reviews': [review.to_dict() for review in reviews]}), 200
 
 # Get all reviews of the current user
@@ -29,7 +29,7 @@ def user_reviews(user_id):
     reviews = Review.query.filter(Review.user_id == user_id).all()
     if not reviews:
         return jsonify({'message': 'No reviews found'}), 404
-    
+
     return jsonify({'reviews': [review.to_dict() for review in reviews]}), 200
 
 # Get all reviews of a specific restaurant
@@ -41,7 +41,7 @@ def restaurant_reviews(restaurant_id):
     reviews = Review.query.filter(Review.restaurant_id == restaurant_id).all()
     if not reviews:
         return jsonify({'message': 'No reviews found'}), 404
-    
+
     return jsonify({'reviews': [review.to_dict() for review in reviews]}), 200
 
 # Get a specific review
@@ -53,7 +53,7 @@ def review(review_id):
     review = Review.query.get(review_id)
     if not review:
         return jsonify({'message': 'Review not found'}), 404
-    
+
     return jsonify({'review': review.to_dict()}), 200
 
 # Create a new review
@@ -88,7 +88,7 @@ def create_review(restaurant_id):
             'message': 'Review created successfully',
             'review': new_review.to_dict()
         }), 201
-    
+
     # print("NO VALIDATION")
     # print(form.errors)
 
@@ -108,17 +108,17 @@ def update_review(review_id):
     review = Review.query.get(review_id)
     if not review:
         return jsonify({'message': 'Review not found'}), 404
-    
+
     if review.user_id != current_user.id:
         return jsonify({'message': 'You are not authorized to update this review'}), 403
-    
+
     data = request.get_json()
     stars = data.get('stars')
     review_text = data.get('review')
 
     if not stars and not review_text:
         return jsonify({'message': 'Invalid data'}), 400
-    
+
     review.stars = stars
     review.review = review_text
     db.session.commit()
@@ -136,7 +136,7 @@ def update_review(review_id):
     #         'message': 'Review updated successfully',
     #         'review': review.to_dict()
     #     }), 200
-    
+
     # # If form validation fails
     # return jsonify({
     #     'message': 'Invalid review data',
@@ -153,13 +153,13 @@ def delete_review(review_id):
     review = Review.query.get(review_id)
     if not review:
         return jsonify({'message': 'Review not found'}), 404
-    
+
     if review.user_id != current_user.id:
         return jsonify({'message': 'You are not authorized to delete this review'}), 403
-    
+
     if review:
         db.session.delete(review)
         db.session.commit()
         return jsonify({'message': 'Review deleted successfully'}), 200
-    
+
     return jsonify({'error': 'Something went wrong'}), 500

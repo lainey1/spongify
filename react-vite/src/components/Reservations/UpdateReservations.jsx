@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const UpdateReservations = () => {
+
+  const navigate = useNavigate();
 
   const { reservationId } = useParams();
 
@@ -61,6 +63,8 @@ const UpdateReservations = () => {
     } finally {
       setLoading(false);
     }
+    
+    navigate(`/reservations/user`);
   };
 
 
@@ -87,6 +91,7 @@ const UpdateReservations = () => {
 
     fetchReservation();
   }, [reservationId, user.id, restaurantId]);
+
 
 
   return (
@@ -120,7 +125,7 @@ const UpdateReservations = () => {
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} >
           {loading ? 'Updating...' : 'Update Reservation'}
         </button>
       </form>

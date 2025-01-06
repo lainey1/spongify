@@ -3,6 +3,7 @@ from sqlalchemy import func
 from app.forms import RestaurantForm
 from app.models import Restaurant, Review, RestaurantImage,db
 from flask_login import login_required, current_user
+from ..constants import TIME_CHOICES, POPULAR_CUISINES
 
 restaurant_routes = Blueprint('restaurants', __name__)
 
@@ -24,6 +25,13 @@ def get_form_schema():
     form = RestaurantForm()
     return jsonify(form_to_json(form))
 
+
+@restaurant_routes.route('/constants', methods=['GET'])
+def get_constants():
+    return jsonify({
+        'time_choices': TIME_CHOICES,
+        'popular_cuisines': POPULAR_CUISINES
+    })
 
 @restaurant_routes.route('/')
 def restaurants():
@@ -159,6 +167,7 @@ def create_restaurant():
     """
     Query to add a restaurant to the DB using either JSON or Form data
     """
+
     if request.is_json:
         # Handle JSON input (from Postman)
         data = request.get_json()
@@ -231,3 +240,49 @@ def create_restaurant():
                 return jsonify({"error": str(e)}), 500
         else:
             return jsonify({"errors": form.errors}), 400
+
+
+# Update a restaurant
+@restaurant_routes.route('/<int:restaurant_id>/edit', methods=['PUT'])
+@login_required
+def update_restaurant(restaurant_id):
+    """
+    Update a restaurant by ID
+    """
+    # Fetch the restaurant by ID
+    restaurant = Restaurant.query.get(restaurant_id)
+    if not restaurant:
+        return jsonify({'message': 'Restaurant not found'}), 404
+
+    # Check if the current user is the owner
+    if restaurant.owner_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to update this restaurant. Please log in as the owner to update this restaurant.'}), 403
+
+    # Get data from the request
+    data = request.get_json()
+    print(data)
+
+    # Validate required fields
+    required_fields = ['name', 'address', 'city', 'state', 'country', 'hours']
+    missing_fields = [field for field in required_fields if field not in data]
+    if missing_fields:
+        return jsonify({'message': f'Missing required fields: {", ".join(missing_fields)}'}), 400
+
+    # Update the restaurant fields
+    restaurant.name = data['name']
+    restaurant.address = data['address']
+    restaurant.city = data['city']
+    restaurant.state = data['state']
+    restaurant.country = data['country']
+    restaurant.phone_number = data.get('phone_number')
+    restaurant.email = data.get('email')
+    restaurant.website = data.get('website')
+    restaurant.cuisine = data.get('cuisine')
+    restaurant.price_point = data.get('price_point')
+    restaurant.description = data.get('description')
+    restaurant.hours = data['hours']
+
+    # Save changes to the database
+    db.session.commit()
+
+    return jsonify({'message': 'Restaurant updated successfully', 'restaurant': restaurant.to_dict()}), 200

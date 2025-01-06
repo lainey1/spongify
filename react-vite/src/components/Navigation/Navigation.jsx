@@ -1,19 +1,36 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import eaterverseHeader from "../../../public/eaterverse_site-banner.png";
 import ProfileButton from "./ProfileButton";
+// import SearchBar from "./SearchBar";
 import "./Navigation.css";
 
 
 function Navigation() {
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
+    <nav id="site-banner">
+      {/* Logo Section */}
+      <div id="logo-banner">
+        <Link to="/" className="logo-link">
+          <img src={eaterverseHeader} alt="Eaterverse Logo" />
+        </Link>
+      </div>
 
-      <li>
+      {/* Search Bar */}
+      {/* <div id="search-bar-container">
+        <SearchBar />
+      </div> */}
+
+      {/* Navigation Actions */}
+      <div id="actions-container">
+        <Link to="/about" className="nav-link">
+          About
+        </Link>
+        {/* <Link to="/restaurants" className="nav-link">
+          Restaurants
+        </Link> */}
         <ProfileButton />
-      </li>
-    </ul>
+      </div>
+    </nav>
   );
 }
 

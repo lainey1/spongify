@@ -1,0 +1,290 @@
+/* General Styling for the Navigation Bar */
+#site-banner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#logo-banner img {
+  height: 50px;
+  width: auto;
+  padding: 0;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filter-dropdown {
+  position: relative;
+}
+
+.filters {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  z-index: 10;
+}
+
+.filter {
+  margin-bottom: 1rem;
+}
+
+.filter-button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  background-color: #357ab9;
+}
+
+.results {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.result-link {
+  display: block;
+  padding: 0.5rem;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 1px solid #eee;
+}
+
+.result-link:hover {
+  background-color: #f9f9f9;
+}
+
+.error-message {
+  color: red;
+  margin-top: 1rem;
+}
+
+.nav-link {
+  margin-right: 1.5rem;
+  font-size: 1rem;
+  color: #333333;
+  text-decoration: none;
+  padding: 15px;
+  transition: color 0.3s ease;
+  border-radius: 10px;
+}
+
+.nav-link:hover {
+  background-color: #e26d12;
+  padding: 15px;
+}
+
+#actions-container {
+  display: flex;
+  align-items: center;
+}
+
+/* ================================
+   Profile Dropdown Button
+================================ */
+#profile-dropdown-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  color: white;
+  background-color: #e26d12;
+
+  padding: 0.5em 1em;
+  border: 1px solid rgba(100, 100, 111, 0.2);
+  box-shadow: 0px 7px 29px rgba(100, 100, 111, 0.2);
+  border-radius: 2.125em;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+#profile-dropdown-button > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#icon-user {
+  font-size: 3rem;
+  color: white;
+}
+
+/* ================================
+   Dropdown Menu
+================================ */
+.profile-dropdown {
+  position: absolute;
+  right: 2rem;
+  z-index: 1;
+  min-width: 12.5rem;
+  margin-top: 0.5rem;
+  padding-bottom: 1rem;
+  background: #ffffff;
+  border-radius: 0.625rem;
+  box-shadow: rgba(100, 100, 111, 0.25) 0px 7px 15px 0px;
+  text-align: left;
+}
+
+.profile-dropdown > * {
+  padding-left: 0em;
+  cursor: pointer;
+}
+
+.profile-dropdown.hidden {
+  display: none;
+}
+
+.profile-dropdown ul {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.profile-dropdown li {
+  display: flex;
+  padding: 1em 1.1em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.profile-dropdown li:hover {
+  background-color: #faf7f7;
+}
+
+.profile-text {
+  margin: 1rem;
+}
+
+.profile-dropdown {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: 0;
+  top: 100%;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  width: 200px;
+  z-index: 100;
+}
+
+/* Remove background for the username/email list item */
+.profile-dropdown .username-email {
+  background: transparent !important; /* Ensure no background is applied */
+  color: #8c183e;
+  text-align: center;
+  font-size: 1.25em;
+}
+
+.profile-dropdown .username-email:hover {
+  background: transparent !important; /* Prevent hover background */
+  color: #8c183e;
+}
+
+.dropdown-item {
+  border: none;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  text-align: left;
+  font-weight: 500;
+  background: transparent !important; /* Ensure no background is applied */
+  color: #051923;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #e26d12;
+}
+
+/* ================================
+   Dropdown Menu Links
+================================ */
+.navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation li {
+  display: inline;
+  padding: 0 1em;
+}
+
+.navigation a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ================================
+   Logout Button
+================================ */
+.button-logout {
+  margin: 1em 0 0 1em;
+  width: 80%;
+}
+
+/* ================================
+   Media Queries
+================================ */
+
+/* Small Screens (up to 667px) */
+
+@media (max-width: 667px) {
+  #site-banner {
+    padding: 1em 1em;
+  }
+
+  #logo-banner {
+    font-size: 2em;
+  }
+
+  .site-name {
+    font-size: 0.75em;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: flex-end;
+    font-size: 1em;
+    padding-right: 0.25em;
+  }
+
+  #profile-dropdown-button {
+    font-size: 0.8em;
+  }
+}

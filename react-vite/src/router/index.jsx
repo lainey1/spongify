@@ -6,15 +6,16 @@ import RestaurantDetails from "../components/RestaurantDetails";
 import ReviewFormPage from "../components/ReviewFormPage";
 import UserProfile from "../components/UserProfile";
 import EditProfile from "../components/EditProfile";
+import RestaurantImages from "../components/RestaurantImages";
 import Layout from "./Layout";
-import UserReservations from "../components/Reservations/UserReservations";
-import ManageReservations from "../components/Reservations/ManageReservations";
+import About from "../components/About/About";
+import CreateRestaurant from "../components/ManageRestaurants/CreateRestaurant";
+import UpdateRestaurant from "../components/ManageRestaurants/UpdateRestaurant";
 import CreateReservations from "../components/Reservations/CreateReservations";
-import ReservationsByRestaurant from "../components/Reservations/ReservationsByRestaurant"
+import ManageReservations from "../components/Reservations/ManageReservations";
+import ReservationsByRestaurant from "../components/Reservations/ReservationsByRestaurant";
 import UpdateReservations from "../components/Reservations/UpdateReservations";
-import NotFound from "../components/NotFound/NotFound";
-
-
+import UserReservations from "../components/Reservations/UserReservations";
 
 export const router = createBrowserRouter([
   {
@@ -25,16 +26,20 @@ export const router = createBrowserRouter([
         element: <AllRestaurants />,
       },
       {
-        path: "login",
+        path: "/login",
         element: <LoginFormPage />,
       },
       {
-        path: "signup",
+        path: "/signup",
         element: <SignupFormPage />,
       },
       {
         path: "/restaurants",
         element: <AllRestaurants />,
+      },
+      {
+        path: "/restaurants/new",
+        element: <CreateRestaurant />,
       },
       {
         path: "/restaurants/:restaurantId",
@@ -47,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: "user/:userId",
         element: <UserProfile />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
       {
         path: "user/:userId/edit",
@@ -80,6 +89,38 @@ export const router = createBrowserRouter([
         path: "*",
         element: <NotFound />,
       },
+      {
+        path: "restaurants/:restaurantId/edit",
+        element: <UpdateRestaurant />,
+      },
+      {
+        path: "/restaurants/:restaurantId/images",
+        element: <RestaurantImages />,
+      },
+
+
+      {
+        path: "reservations/user",
+        element: <UserReservations />,
+      },
+      {
+        path: "/reservations/:reservationId/manage",
+        element: <ManageReservations />,
+      },
+      {
+        path: "/restaurant/:restaurantId/new",
+        element: <CreateReservations />,
+      },
+      {
+        path: "/reservations/restaurant/:restaurantId",
+        element: <ReservationsByRestaurant />,
+      },
+      {
+        path: "/reservations/:reservationId/edit",
+        element: <UpdateReservations />,
+      },
+
+
     ],
   },
 ]);

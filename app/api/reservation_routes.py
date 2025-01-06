@@ -121,7 +121,7 @@ def update_reservation(reservation_id):
 
     # If form validation fails
     return jsonify({
-        'message': 'Invalid reservation data',
+        # 'message': 'Invalid reservation data',
         'errors': form.errors
     }), 400
 

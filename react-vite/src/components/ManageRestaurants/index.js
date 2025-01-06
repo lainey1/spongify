@@ -1,4 +1,4 @@
-export { default as ManageSpots } from "./ManageSpots";
-export { default as CreateSpot } from "./CreateSpot";
-export { default as UpdateSpot } from "./UpdateSpot";
-export { default as DeleteSpot } from "./DeleteSpot";
+export { default as ManageRestaurants } from "./ManageRestaurants";
+export { default as CreateRestaurant } from "./CreateRestaurant";
+export { default as UpdateRestaurant } from "./UpdateRestaurant";
+export { default as DeleteRestaurant } from "./DeleteRestaurant";

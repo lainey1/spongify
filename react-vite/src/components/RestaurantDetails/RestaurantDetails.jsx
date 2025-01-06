@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
@@ -20,6 +21,7 @@ import "./RestaurantDetails.css";
 
 function RestaurantDetails() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { restaurantId } = useParams();
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -56,12 +58,21 @@ function RestaurantDetails() {
     }
   }, [restaurant?.hours]);
 
-  const handleReserveClick = () => {
-    alert("Feature coming soon...");
+  const handleWriteReviewClick = () => {
+    navigate(`/restaurants/${restaurantId}/review`);
   };
 
-  const handleManageClick = () => {
-    alert("Manage your restaurant settings...");
+  const handleReserveClick = () => {
+    navigate(`/restaurant/${restaurantId}/new`);
+  };
+
+  const handleNavigateToImages = () => {
+    navigate("images");
+  };
+
+  // Navigate to UserProfile with active section
+  const navigateToSection = (section) => {
+    navigate(`/user/${currentUser.id}?section=${section}`);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -83,7 +94,9 @@ function RestaurantDetails() {
         <span>
           <div className="highlights">
             <StarRating rating={avgStarRating} />
+            <span style={{ padding: "0 0.5em" }}></span>
             {formatStarRating(avgStarRating)}
+            <span style={{ padding: "0 0.5em" }}></span>
             {formatReviewCount(reviewCount)}
           </div>
           <div className="highlights">
@@ -91,7 +104,7 @@ function RestaurantDetails() {
               className="open-or-closed"
               style={{
                 color: isOpen ? "green" : "red",
-                fontWeight: "bold", // Optional for emphasis
+                fontWeight: "bold",
               }}
             >
               {isOpen ? "Open Now" : "Closed"}
@@ -118,11 +131,12 @@ function RestaurantDetails() {
       <div id="restaurant-layout">
         <div id="restaurant-main-panel">
           <div id="restaurant-menu">
-            <button className="menu-button" onClick={handleReserveClick}>
+            <button className="menu-button" onClick={handleWriteReviewClick}>
               <IoIosStarOutline className="button-icon" />
               Write a Review
             </button>
-            <button className="menu-button" onClick={handleReserveClick}>
+
+            <button className="menu-button" onClick={handleNavigateToImages}>
               <MdAddAPhoto className="button-icon" />
               Add Photo
             </button>
@@ -158,7 +172,9 @@ function RestaurantDetails() {
               </p>
             </div>
             {isOwner && (
-              <button onClick={handleManageClick}>Manage Restaurant</button>
+              <button onClick={() => navigateToSection("restaurants")}>
+                Manage Restaurant
+              </button>
             )}
           </div>
         </div>

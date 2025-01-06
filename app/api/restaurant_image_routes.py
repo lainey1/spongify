@@ -13,13 +13,11 @@ def all_images():
     images = RestaurantImage.query.all()
     return {'restaurant_images': [image.to_dict() for image in images]}
 
-
-
-@restaurant_images.route('/restaurant/<int:restaurant_id>/images', methods=['GET','POST'])
+@restaurant_images.route('/restaurant/<int:restaurant_id>/images', methods=['GET'])
 @login_required
-def upload_image(restaurant_id):
+def get_images(restaurant_id):
     """
-    Query to post and delete a restaurant image.
+    Query and return all images for a specific restaurant.
     """
     restaurant = Restaurant.query.get(restaurant_id)
 
@@ -27,23 +25,32 @@ def upload_image(restaurant_id):
     if not restaurant:
         return jsonify({"error": "Restaurant not found"}), 404
 
-    # Handle GET request to fetch images
-    if request.method == 'GET':
-        images = RestaurantImage.query.filter_by(restaurant_id=restaurant_id).all();
-        if not images:
-            return jsonify({"message": "No images found for this restaurant"}), 404
+    images = RestaurantImage.query.filter_by(restaurant_id=restaurant_id).all()
+    if not images:
+        return jsonify({"message": "No images found for this restaurant"}), 404
 
-        return jsonify({
-            "restaurant_id": restaurant_id,
-            "image": [image.url for image in images]
-        }), 200
+    return jsonify({
+        "restaurant_id": restaurant_id,
+        "images": [image.to_dict() for image in images]  # Include image data (with ID)
+    }), 200
 
+@restaurant_images.route('/restaurant/<int:restaurant_id>/images', methods=['POST'])
+@login_required
+def upload_image(restaurant_id):
+    """
+    Handle image upload for a specific restaurant.
+    """
+    restaurant = Restaurant.query.get(restaurant_id)
+
+    # Validate restaurant existence
+    if not restaurant:
+        return jsonify({"error": "Restaurant not found"}), 404
 
     # Handle POST request to upload images
     form = ImageForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    # Validate form
+    # Validate form submission
     if not form.validate_on_submit():
         return jsonify({"error": "Invalid form submission", "errors": form.errors}), 400
 
@@ -67,13 +74,14 @@ def upload_image(restaurant_id):
         )
 
         db.session.add(restaurant_image)
-
         db.session.commit()
+
+        return jsonify({"message": "Image uploaded successfully", "image": restaurant_image.to_dict()}), 201
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"Error saving images: {str(e)}"}), 500
 
-    return jsonify({"message": "Image uploaded successfully",}), 200
 
 
 @restaurant_images.route('/<int:image_id>', methods=['DELETE'])
@@ -86,7 +94,7 @@ def delete_image(image_id):
 
     if image:
         # Ensure the user is the one who created the image or is the owner of the restaurant
-        if image.user_id != current_user.id and image.restaurant.owner_id != current_user.id:
+        if image.user_id != current_user.id:
             return {'message': 'You are not authorized to delete this image.'}, 403
 
         db.session.delete(image)
@@ -95,3 +103,45 @@ def delete_image(image_id):
         return {'message': 'Image deleted successfully'}
 
     return {'error': 'Image not found.'}, 404
+
+
+
+@restaurant_images.route('/<int:image_id>', methods=['PUT'])
+@login_required
+def update_image(image_id):
+    """
+    Update a restaurant image by ID
+    """
+    image = RestaurantImage.query.filter_by(id=image_id).first()
+
+    if not image:
+        return jsonify({"error": "Image not found"}), 404
+
+    # Ensure the user is the one who created the image or is the owner of the restaurant
+    if image.user_id != current_user.id or image.restaurant.owner_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to update this image.'}), 403
+
+    form = ImageForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if not form.validate_on_submit():
+        return jsonify({"error": "Invalid form submission", "errors": form.errors}), 400
+
+    image_url = form.image_url.data
+    is_preview = form.is_preview.data
+
+    if image_url and not image_url.startswith(('http://', 'https://')):
+        return jsonify({"error": f"Invalid URL: {image_url}"}), 400
+
+    try:
+        # Update the image attributes
+        if image_url:
+            image.url = image_url
+        if is_preview is not None:
+            image.is_preview = is_preview
+
+        db.session.commit()
+        return jsonify({"message": "Image updated successfully", "image": image.to_dict()}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Error updating image: {str(e)}"}), 500

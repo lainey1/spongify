@@ -36,7 +36,9 @@ h3 {
   color: #051923;
 }
 
-input {
+input,
+select,
+textarea {
   color: #4c5b61;
   font-weight: 1rem;
 
@@ -44,6 +46,10 @@ input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  width: 100%; /* Ensure input, select, and textarea take full width */
+  box-sizing: border-box; /* Includes padding and border within the width */
+  text-align: left; /* Ensure text inside fields is left-aligned */
 }
 
 input::placeholder,
@@ -59,17 +65,11 @@ textarea:focus {
 }
 
 select {
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-
   font-weight: 1rem;
 }
 
 textarea {
-  width: calc(100% - 20px); /* Matches the container padding */
+  width: 100%; /* Ensure textarea stretches to 100% width */
   min-width: 300px;
   min-height: 2em;
   max-width: 480px;
@@ -97,7 +97,6 @@ textarea {
   margin: 0 auto;
   object-fit: cover;
   object-position: center;
-  background-color: #4a91e2b7; /* Default shaded background */
   display: flex; /* Align placeholder content (optional) */
   justify-content: center;
   align-items: center;

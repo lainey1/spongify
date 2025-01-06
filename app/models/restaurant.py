@@ -19,13 +19,13 @@ class Restaurant(db.Model):
     email = db.Column(db.String(255), nullable=True)
     website = db.Column(db.String(255), nullable=True)
     hours = db.Column(db.JSON, nullable=True)
-    cuisine = db.Column(db.String(50), nullable=True)
-    price_point = db.Column(db.Integer, nullable=True)
+    cuisine = db.Column(db.String(50), nullable=False)
+    price_point = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(500), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True)
 
-    restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant')
+    restaurant_images = db.relationship('RestaurantImage', back_populates='restaurant', cascade="all, delete-orphan")
 
     def to_dict(self, form=None):
         # Initialize the dictionary with all other fields
@@ -43,6 +43,7 @@ class Restaurant(db.Model):
             'cuisine': self.cuisine,
             'price_point': self.price_point,
             'description': self.description,
+            'restaurant_images': [image.to_dict() for image in self.restaurant_images],
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }

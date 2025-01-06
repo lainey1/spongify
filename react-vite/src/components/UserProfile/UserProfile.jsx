@@ -1,19 +1,33 @@
-import { useDispatch, useSelector } from "react-redux";
-import "./UserProfile.css";
+import ProfileOverview from "./ProfileOverview";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { thunkAuthenticate } from "../../redux/session";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ReviewsUser from "../ReviewsUser";
+import ManageRestaurants from "../ManageRestaurants/ManageRestaurants";
+import ManageReservations from "../Reservations/ManageReservations";
+import { thunkAuthenticate } from "../../redux/session";
+import "./UserProfile.css";
 
 function UserProfile() {
-
+  const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.session.user);
-  const dispatch = useDispatch();
+
+  // Extract the 'section' query parameter
+  const queryParams = new URLSearchParams(location.search);
+  const activeSection = queryParams.get("section") || "profile";
 
   useEffect(() => {
-    dispatch(thunkAuthenticate)  // make GetCurrentUser thunk
-  }, [dispatch])
+    if (!currentUser) {
+      dispatch(thunkAuthenticate()); // Load current user data
+    }
+  }, [dispatch, currentUser]);
+
+  if (!currentUser) {
+    return <div>Loading...</div>; // or a loading spinner
+  }
 
   return (
     <div className="profile-page">
@@ -26,52 +40,54 @@ function UserProfile() {
             className="user-avatar"
           />
           <h2>{currentUser.username}</h2>
-          <h4>Location: {currentUser.location}</h4>
+          <h4>{currentUser.location}</h4>
           <p>{currentUser.headline}</p>
 
-          <button key={currentUser.id} className="edit-profile-btn"
-                  onClick={() => navigate(`/user/${currentUser.id}/edit`)}
-          >Edit Profile</button>
+          {/* user/:userId/edit */}
+          <div>
+            <Link
+              to={`/user/${currentUser.id}/edit`}
+              className="edit-profile-link"
+            >
+              Edit Profile
+            </Link>
+          </div>
         </div>
-        
+
         <nav className="menu">
-          <button>Profile Overview</button>
-          <button>Reviews</button>
-          <button>Restaurants</button>
-          <button>Reservations</button>
+          <button
+            onClick={() => navigate(`/user/${currentUser.id}?section=profile`)}
+          >
+            Profile Overview
+          </button>
+          <button
+            onClick={() => navigate(`/user/${currentUser.id}?section=reviews`)}
+          >
+            Reviews
+          </button>
+          <button
+            onClick={() =>
+              navigate(`/user/${currentUser.id}?section=restaurants`)
+            }
+          >
+            Restaurants
+          </button>
+          <button
+            onClick={() =>
+              navigate(`/user/${currentUser.id}?section=reservations`)
+            }
+          >
+            Reservations
+          </button>
         </nav>
       </div>
 
       {/* Main Content */}
       <div className="main-content">
-        <div className="next-reservation">
-          <h3>Next Reservation</h3>
-          <button className="view-all-btn">View all reservations</button>
-        </div>
-
-        <div className="stats-section">
-          <div className="top-cuisines">
-            <h4>Top 3 Cuisines</h4>
-            <p>{currentUser.favorite_cuisine}</p>
-          </div>
-          <div className="review-stars">
-            <h4>Review Stars Distribution</h4>
-            <p>-</p>
-          </div>
-        </div>
-
-        <div className="review-section">
-          <ReviewsUser />
-        </div>
-
-        <div className="friends-section">
-          <h4>Friends (feature coming!)</h4>
-          <div className="friends-placeholder">
-            <div className="friend-avatar">Avatar</div>
-            <div className="friend-avatar">Avatar</div>
-            <div className="friend-avatar">Avatar</div>
-          </div>
-        </div>
+        {activeSection === "profile" && <ProfileOverview user={currentUser} />}
+        {activeSection === "reviews" && <ReviewsUser />}
+        {activeSection === "restaurants" && <ManageRestaurants />}
+        {activeSection === "reservations" && <ManageReservations />}
       </div>
     </div>
   );

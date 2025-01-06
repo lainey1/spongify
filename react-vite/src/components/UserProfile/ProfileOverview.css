@@ -1,0 +1,139 @@
+.profile-overview {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Favorite Cuisine Section */
+.favorite-cuisine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.favorite-cuisine h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.favorite-cuisine p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Location Section */
+.user-location {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.user-location h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.user-location p {
+  margin: 5px 0 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Review Rating Distribution Placeholder (optional for future use) */
+.rating-graph {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.rating-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar {
+  width: 30px;
+  background-color: #4caf50;
+  border-radius: 4px;
+}
+
+.rating-label {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* ================================
+   Responsive Layouts for Medium and Small Screens
+================================ */
+
+@media (max-width: 1000px) {
+  .profile-overview {
+    padding: 15px;
+  }
+
+  .favorite-cuisine,
+  .user-location {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .favorite-cuisine h4,
+  .user-location h4 {
+    font-size: 16px;
+  }
+
+  .favorite-cuisine p,
+  .user-location p {
+    font-size: 14px;
+  }
+
+  .rating-graph {
+    gap: 8px;
+  }
+
+  .rating-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 700px) {
+  .profile-overview {
+    padding: 10px;
+  }
+
+  .favorite-cuisine,
+  .user-location {
+    gap: 10px;
+  }
+
+  .favorite-cuisine h4,
+  .user-location h4 {
+    font-size: 14px;
+  }
+
+  .favorite-cuisine p,
+  .user-location p {
+    font-size: 12px;
+  }
+
+  .rating-graph {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .bar {
+    width: 25px; /* Adjust bar size for smaller screens */
+  }
+
+  .rating-label {
+    font-size: 10px;
+  }
+}

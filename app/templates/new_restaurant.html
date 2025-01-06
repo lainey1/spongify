@@ -8,7 +8,8 @@
     <h1>Add a New Restaurant</h1>
 
     <form method="POST">
-      {{ form.csrf_token }}
+      <!-- {{ form.csrf_token }} -->
+      {{ form.hidden_tag() }}
 
       <label for="name">Name:</label>
       {{ form.name() }}<br />
@@ -43,47 +44,26 @@
       <label for="description">Description:</label>
       {{ form.description() }}<br />
 
-      <label for="monday_open">Monday Open:</label>
-      {{ form.monday_open() }}<br />
+      <label for="monday_hours">Monday Hours:</label>
+      {{ form.monday_hours() }}<br />
 
-      <label for="monday_close">Monday Close:</label>
-      {{ form.monday_close() }}<br />
+      <label for="tuesday_hours">Tuesday Hours:</label>
+      {{ form.tuesday_hours() }}<br />
 
-      <label for="tuesday_open">Tuesday Open:</label>
-      {{ form.tuesday_open() }}<br />
+      <label for="wednesday_hours">Wednesday Hours:</label>
+      {{ form.wednesday_hours() }}<br />
 
-      <label for="tuesday_close">Tuesday Close:</label>
-      {{ form.tuesday_close() }}<br />
+      <label for="thursday_hours">Thursday Hours:</label>
+      {{ form.thursday_hours() }}<br />
 
-      <label for="wednesday_open">Wednesday Open:</label>
-      {{ form.wednesday_open() }}<br />
+      <label for="friday_hours">Friday Hours:</label>
+      {{ form.friday_hours() }}<br />
 
-      <label for="wednesday_close">Wednesday Close:</label>
-      {{ form.wednesday_close() }}<br />
+      <label for="saturday_hours">Saturday Hours:</label>
+      {{ form.saturday_hours() }}<br />
 
-      <label for="thursday_open">Thursday Open:</label>
-      {{ form.thursday_open() }}<br />
-
-      <label for="thursday_close">Thursday Close:</label>
-      {{ form.thursday_close() }}<br />
-
-      <label for="friday_open">Friday Open:</label>
-      {{ form.friday_open() }}<br />
-
-      <label for="friday_close">Friday Close:</label>
-      {{ form.friday_close() }}<br />
-
-      <label for="saturday_open">Saturday Open:</label>
-      {{ form.saturday_open() }}<br />
-
-      <label for="saturday_close">Saturday Close:</label>
-      {{ form.saturday_close() }}<br />
-
-      <label for="sunday_open">Sunday Open:</label>
-      {{ form.sunday_open() }}<br />
-
-      <label for="sunday_close">Sunday Close:</label>
-      {{ form.sunday_close() }}<br />
+      <label for="sunday_hours">Sunday Hours:</label>
+      {{ form.sunday_hours() }}<br />
 
       <button type="submit">Add Restaurant</button>
     </form>
