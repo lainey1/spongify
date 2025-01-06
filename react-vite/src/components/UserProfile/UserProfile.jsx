@@ -1,12 +1,10 @@
 import ProfileOverview from "./ProfileOverview";
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ReviewsUser from "../ReviewsUser";
 import ManageRestaurants from "../ManageRestaurants/ManageRestaurants";
-// import ManageReservations from "./ManageReservations/ManageReservations";
 import { thunkAuthenticate } from "../../redux/session";
 import "./UserProfile.css";
 
@@ -21,8 +19,14 @@ function UserProfile() {
   const activeSection = queryParams.get("section") || "profile";
 
   useEffect(() => {
-    dispatch(thunkAuthenticate()); // Load current user data
-  }, [dispatch]);
+    if (!currentUser) {
+      dispatch(thunkAuthenticate()); // Load current user data
+    }
+  }, [dispatch, currentUser]);
+
+  if (!currentUser) {
+    return <div>Loading...</div>; // or a loading spinner
+  }
 
   return (
     <div className="profile-page">
@@ -79,9 +83,6 @@ function UserProfile() {
 
       {/* Main Content */}
       <div className="main-content">
-        {/* {activeSection === "profile" && (
-          <ProfileOverview user={currentUser} reviewRatings={reviewRatings} />
-        )} */}
         {activeSection === "profile" && <ProfileOverview user={currentUser} />}
         {activeSection === "reviews" && <ReviewsUser />}
         {activeSection === "restaurants" && <ManageRestaurants />}
