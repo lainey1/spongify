@@ -58,11 +58,15 @@ function RestaurantDetails() {
   }, [restaurant?.hours]);
 
   const handleReserveClick = () => {
-    alert("Feature coming soon...");
+    navigate(`/restaurant/${restaurantId}/new`);
   };
 
   const handleManageClick = () => {
-    alert("Manage your restaurant settings...");
+    navigate(`edit`);
+  };
+
+  const handleReviewClick = () => {
+    navigate(`/restaurants/${restaurantId}/review`);
   };
 
 
@@ -125,7 +129,7 @@ function RestaurantDetails() {
       <div id="restaurant-layout">
         <div id="restaurant-main-panel">
           <div id="restaurant-menu">
-            <button className="menu-button" onClick={handleReserveClick}>
+            <button className="menu-button" onClick={handleReviewClick}>
               <IoIosStarOutline className="button-icon" />
               Write a Review
             </button>

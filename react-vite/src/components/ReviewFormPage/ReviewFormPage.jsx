@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as reviewActions from '../../redux/review';
 import { FaStar } from 'react-icons/fa6';
 import './ReviewForm.css';
 
 function ReviewFormPage() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const restaurantId = parseInt(useParams().restaurantId);
     const currentUser = useSelector((state) => state.session.user);
 
@@ -64,8 +65,10 @@ function ReviewFormPage() {
         // console.log("newReview: ", newReview);
 
         return dispatch(
-            reviewActions.createNewReview(newReview, restaurantId)
+            reviewActions.createNewReview(newReview, restaurantId),
+            navigate(`/restaurants/${restaurantId}`)
         )
+        
             .catch(async (res) => {
                 if (res.json) {
                     const data = await res.json();
@@ -75,8 +78,11 @@ function ReviewFormPage() {
                 } else {
                     setErrors({ Error: "An unexpected error occured" });
                 }
+                
             }
+            
         )
+        
     }
 
     return (

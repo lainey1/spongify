@@ -11,6 +11,11 @@ import Layout from "./Layout";
 import About from "../components/About/About";
 import CreateRestaurant from "../components/ManageRestaurants/CreateRestaurant";
 import UpdateRestaurant from "../components/ManageRestaurants/UpdateRestaurant";
+import CreateReservations from "../components/Reservations/CreateReservations";
+import ManageReservations from "../components/Reservations/ManageReservations";
+import ReservationsByRestaurant from "../components/Reservations/ReservationsByRestaurant";
+import UpdateReservations from "../components/Reservations/UpdateReservations";
+import UserReservations from "../components/Reservations/UserReservations";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +69,30 @@ export const router = createBrowserRouter([
         path: "/restaurants/:restaurantId/images",
         element: <RestaurantImages />,
       },
+
+
+      {
+        path: "reservations/user",
+        element: <UserReservations />,
+      },
+      {
+        path: "/reservations/:reservationId/manage",
+        element: <ManageReservations />,
+      },
+      {
+        path: "/restaurant/:restaurantId/new",
+        element: <CreateReservations />,
+      },
+      {
+        path: "/reservations/restaurant/:restaurantId",
+        element: <ReservationsByRestaurant />,
+      },
+      {
+        path: "/reservations/:reservationId/edit",
+        element: <UpdateReservations />,
+      },
+
+
     ],
   },
 ]);

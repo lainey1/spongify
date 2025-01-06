@@ -31,6 +31,7 @@ def user_reservations():
     reservations = Reservation.query.filter(Reservation.user_id == current_user.id).all()
     return {'reservations': [reservation.to_dict() for reservation in reservations]}
 
+#Get all Reservations by Restaurant
 @reservation_routes.route('/restaurant/<int:restaurant_id>', methods=['GET'])
 @login_required
 def get_restaurant_reservations(restaurant_id):
@@ -53,6 +54,7 @@ def get_restaurant_reservations(restaurant_id):
 
     return jsonify({'reservations': [reservation.to_dict() for reservation in reservations]})
 
+#Create Reservation
 @reservation_routes.route('/restaurant/<int:restaurant_id>/new', methods=['POST'])
 @login_required
 def create_reservation(restaurant_id):
@@ -86,7 +88,7 @@ def create_reservation(restaurant_id):
     }), 400
 
 # Update a reservation
-@reservation_routes.route('/<int:reservation_id>', methods=['PUT'])
+@reservation_routes.route('/<int:reservation_id>', methods=['GET','PUT'])
 @login_required
 def update_reservation(reservation_id):
     """
@@ -105,6 +107,8 @@ def update_reservation(reservation_id):
 
     if form.validate_on_submit():
         # Update the reservation fields
+        # reservation.restaurant_id = restaurantId.data
+        # reservation.user_id = userId.data
         reservation.date = form.date.data
         reservation.party_size = form.party_size.data
 
@@ -117,7 +121,7 @@ def update_reservation(reservation_id):
 
     # If form validation fails
     return jsonify({
-        'message': 'Invalid reservation data',
+        # 'message': 'Invalid reservation data',
         'errors': form.errors
     }), 400
 
