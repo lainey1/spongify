@@ -5,6 +5,8 @@
 const LOAD_RESTAURANT = "/restaurants/LOAD_RESTAURANT";
 const LOAD_RESTAURANTS = "/restaurants/LOAD_RESTAURANTS";
 const SET_ERRORS = "/restaurants/SET_ERRORS";
+const UPDATE_RESTAURANT = "/restaurants/UPDATE_RESTAURANT";
+const DELETE_RESTAURANT = "/restaurants/DELETE_RESTAURANT";
 
 // Action Creators encapsulate the creation of action objects (POJOs) to describe events or changes in app state.
 const loadRestaurant = (restaurant) => ({
@@ -22,13 +24,24 @@ const setErrors = (errors) => ({
   errors,
 });
 
+export const updateRestaurant = (restaurant) => ({
+  type: UPDATE_RESTAURANT,
+  payload: restaurant,
+});
+export const deleteRestaurant = (restaurantId) => ({
+  type: DELETE_RESTAURANT,
+  payload: restaurantId,
+});
+
 // Thunk Action Creators handle async logic using redux-thunk middleware to dispatch actions and access the current state.
 export const fetchRestaurantThunk = (restaurant_id) => async (dispatch) => {
   try {
     const response = await fetch(`/api/restaurants/${restaurant_id}`);
+
     if (response.ok) {
       const restaurant = await response.json();
       dispatch(loadRestaurant(restaurant));
+      console.log(restaurant); // Check the structure of the restaurant object
     } else {
       const errors = await response.json();
       dispatch(setErrors(errors));
@@ -43,7 +56,6 @@ export const fetchAllRestaurantsThunk = () => async (dispatch) => {
     const response = await fetch("/api/restaurants");
     if (response.ok) {
       const restaurants = await response.json();
-      console.log(restaurants);
       dispatch(loadRestaurants(restaurants));
     } else {
       const errors = await response.json();
@@ -51,6 +63,36 @@ export const fetchAllRestaurantsThunk = () => async (dispatch) => {
     }
   } catch (err) {
     dispatch(setErrors({ message: "Network error" }));
+  }
+};
+
+export const editRestaurantThunk =
+  (restaurantId, restaurantData) => async (dispatch) => {
+    try {
+      const response = await fetch(`/api/restaurants/${restaurantId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(restaurantData),
+      });
+      if (response.ok) {
+        const restaurant = await response.json();
+        dispatch(updateRestaurant(restaurant));
+      }
+    } catch (err) {
+      console.error("Error updating restaurant:", err);
+    }
+  };
+
+export const deleteRestaurantThunk = (restaurantId) => async (dispatch) => {
+  try {
+    const response = await fetch(`/api/restaurants/${restaurantId}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      dispatch(deleteRestaurant(restaurantId));
+    }
+  } catch (err) {
+    console.error("Error deleting restaurant:", err);
   }
 };
 
@@ -72,6 +114,16 @@ export default function restaurantsReducer(
         currentRestaurant: state.currentRestaurant,
         ...payload,
       };
+
+    case UPDATE_RESTAURANT: {
+      return { ...state, [payload.id]: payload };
+    }
+
+    case DELETE_RESTAURANT: {
+      const newState = { ...state };
+      delete newState[payload];
+      return newState;
+    }
 
     default:
       return state;

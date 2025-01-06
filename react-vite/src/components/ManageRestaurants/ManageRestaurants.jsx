@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import OpenModalButton from "../OpenModalButton/OpenModalButton";
-import DeleteRestaurant from "./DeleteRestaurant";
+// import OpenModalButton from "../OpenModalButton/OpenModalButton";
+// import DeleteRestaurant from "./DeleteRestaurant";
 import { fetchAllRestaurantsThunk } from "../../redux/restaurants";
-import {
-  getAvgStarRating,
-  getReviewCount,
-  formatStarRating,
-  formatReviewCount,
-} from "../../utils/restaurantHelpers";
+import { IoLocationOutline } from "react-icons/io5";
+
 import StarRating from "../StarRating";
 import "./ManageRestaurants.css";
 
@@ -17,7 +13,7 @@ function ManageRestaurants() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const restaurants = useSelector((state) => state.restaurants.Restaurants);
+  const restaurants = useSelector((state) => state.restaurants.restaurants);
   const currentUser = useSelector((state) => state.session.user);
   const [loading, setLoading] = useState(true);
 
@@ -47,74 +43,73 @@ function ManageRestaurants() {
       </div>
 
       {!userRestaurants.length ? (
-        <button
-          id="create-restaurant-button"
-          onClick={() => {
-            navigate("/restaurants/new");
-          }}
-        >
-          Create a New Restaurant
-        </button>
+        <div className="create-restaurant-container">
+          <button
+            id="create-restaurant-button"
+            onClick={() => {
+              navigate("/restaurants/new");
+            }}
+          >
+            Create a New Restaurant
+          </button>
+        </div>
       ) : (
         <div className="restaurants-grid">
           {userRestaurants?.map((restaurant) => {
-            const avgStarRating = getAvgStarRating(restaurant?.reviewStats);
-            const reviewCount = getReviewCount(restaurant?.reviewStats);
+            // Calculate the average star rating for each restaurant
+            const avgStarRating = restaurant?.reviewStats?.avgStarRating || 0;
+            const reviewCount = restaurant?.reviewStats?.reviewCount || 0;
 
-            <div key={restaurant.id} className="restaurant-tile">
-              <Link
-                to={`/restaurants/${restaurant.id}`}
-                className="restaurant-link"
-              >
-                <div className="restaurant-image-container">
-                  {restaurant.previewImage ? (
-                    <img
-                      src={restaurant.previewImage}
-                      alt={restaurant.name}
-                      className="restaurant-image"
-                    />
-                  ) : (
-                    <div>No Image Available</div>
-                  )}
-                </div>
-                <div className="restaurant-details">
-                  <h3 className="restaurant-name">{restaurant.name}</h3>
-                  <div className="restaurant-location-rating">
-                    <p className="restaurant-location">
-                      {restaurant.city}, {restaurant.state}
-                    </p>
-                    <span className="average-rating">
-                      <div className="highlights">
-                        <StarRating rating={avgStarRating} />
-                        {formatStarRating(avgStarRating)}
-                        {formatReviewCount(reviewCount)}
-                      </div>
-                    </span>
-                  </div>
-                  <p style={{ textAlign: "left" }}>
-                    <strong>${restaurant.price.toFixed(2)}</strong> night
-                  </p>
-                </div>
-              </Link>
-
-              <span className="button-wrapper">
-                <button
-                  className="update-button"
-                  onClick={() => {
-                    navigate(`/restaurants/${restaurant.id}/edit`);
-                  }}
+            return (
+              <div key={restaurant.id} className="restaurant-tile">
+                <Link
+                  to={`/restaurants/${restaurant.id}`}
+                  className="restaurant-link"
                 >
-                  Update
-                </button>
-                <OpenModalButton
-                  buttonText={"Delete"}
-                  modalComponent={
-                    <DeleteRestaurant restaurantId={restaurant.id} />
-                  }
-                  className="delete-button"
-                />
-              </span>
-            </div>;
+                  <div className="restaurant-image-container">
+                    {restaurant?.previewImage ? (
+                      <img
+                        src={restaurant.previewImage}
+                        alt={restaurant.name}
+                        className="restaurant-image"
+                      />
+                    ) : (
+                      <div>No Image Available</div>
+                    )}
+                  </div>
+                  <div className="restaurant-details">
+                    <h3 className="restaurant-name">{restaurant.name}</h3>
+                    <span className="rating-line">
+                      {/* Pass the avgStarRating to the StarRating component */}
+                      <StarRating rating={avgStarRating} />
+                      {avgStarRating > 0 ? (
+                        <span>{Number(avgStarRating).toFixed(1)}</span>
+                      ) : (
+                        <span>New</span>
+                      )}
+                      <p style={{ fontWeight: "normal", color: "4c5b61" }}>
+                        ({reviewCount} Reviews)
+                      </p>
+                    </span>
+
+                    <div id="restaurant-price-location">
+                      <span>
+                        {restaurant?.price_point
+                          ? "$".repeat(restaurant.price_point)
+                          : "Price not available"}
+                      </span>
+                      <span style={{ padding: "0 0.5em" }}>•</span>
+                      <p className="restaurant-location">
+                        <IoLocationOutline />
+                        {restaurant.city}
+                      </p>
+                      <span style={{ padding: "0 0.5em" }}>•</span>
+                      <span>{restaurant?.cuisine}</span>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            );
           })}
         </div>
       )}
