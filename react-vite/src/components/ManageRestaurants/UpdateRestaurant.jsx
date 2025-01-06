@@ -25,6 +25,7 @@ const UpdateRestaurant = () => {
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
+    owner_id: "",
     name: "",
     address: "",
     city: "",
@@ -33,10 +34,9 @@ const UpdateRestaurant = () => {
     phone_number: "",
     email: "",
     website: "",
-    owner_id: "",
-    description: "",
-    price_point: "",
     cuisine: "",
+    price_point: "",
+    description: "",
     hours: {
       Monday: { open: "Closed", close: "Closed" },
       Tuesday: { open: "Closed", close: "Closed" },
@@ -66,13 +66,17 @@ const UpdateRestaurant = () => {
     if (restaurant) {
       const updatedFormData = {
         owner_id: restaurant.owner_id || "",
-        country: restaurant.country || "",
+        name: restaurant.name || "",
         address: restaurant.address || "",
         city: restaurant.city || "",
         state: restaurant.state || "",
-        name: restaurant.name || "",
-        description: restaurant.description || "",
+        country: restaurant.country || "",
+        phone_number: restaurant.phone_number || "",
+        email: restaurant.email || "",
+        website: restaurant.website || "",
+        cuisine: restaurant.cuisine || "",
         price_point: restaurant.price_point || "",
+        description: restaurant.description || "",
         hours: restaurant.hours || {
           Monday: ["Closed", "Closed"],
           Tuesday: ["9:00 AM", "9:00 PM"],
@@ -94,25 +98,33 @@ const UpdateRestaurant = () => {
     let error = "";
 
     switch (name) {
-      case "country":
-      case "address":
-      case "city":
-      case "state":
       case "name":
         if (!value)
           error = `${
             name.charAt(0).toUpperCase() + name.slice(1)
           } is required.`;
         break;
-      case "description":
-        if (!value || value.length < 30)
-          error = "Description needs 30 or more characters.";
+      case "address":
+        if (!value) error = "Address is required.";
+        break;
+      case "city":
+        if (!value) error = "City is required.";
+        break;
+      case "state":
+        if (!value) error = "State is required.";
+        break;
+      case "country":
+        if (!value) error = "Country is required.";
+        break;
+      case "cuisine":
+        if (!value) error = "Cuisine type is required.";
         break;
       case "price_point":
         if (!value) error = "Price range is required.";
         break;
-      case "cuisine":
-        if (!value) error = "Cuisine type is required.";
+      case "description":
+        if (!value || value.length < 30)
+          error = "Description needs 30 or more characters.";
         break;
       default:
         break;
@@ -123,20 +135,20 @@ const UpdateRestaurant = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.country) newErrors.country = "Country is required";
+    if (!formData.name) newErrors.name = "Name of your restaurant is required";
+    
     if (!formData.address) newErrors.address = "Address is required";
     if (!formData.city) newErrors.city = "City is required";
     if (!formData.state) newErrors.state = "State is required";
-    if (!formData.name) newErrors.name = "Name of your restaurant is required";
-    if (!formData.description || formData.description.length < 30)
-      newErrors.description = "Description needs 30 or more characters";
-    if (!formData.price_point)
-      newErrors.price_point =
-        "Price range is required. Please select a range from the options provided.";
+    if (!formData.country) newErrors.country = "Country is required";
     if (!formData.cuisine)
       newErrors.cuisine =
         "Cuisine type is required. Please select cuisine from the options provided.";
-
+    if (!formData.price_point)
+      newErrors.price_point =
+        "Price range is required. Please select a range from the options provided.";
+    if (!formData.description || formData.description.length < 30)
+      newErrors.description = "Description needs 30 or more characters";
     return newErrors;
   };
 
@@ -196,6 +208,29 @@ const UpdateRestaurant = () => {
       <form onSubmit={handleSubmit}>
         <h1 className="form-title">Update Your Restaurant</h1>
 
+        {/* Restaurant Name */}
+        <section className="form-section">
+          <h2>Create a title for your restaurant</h2>
+          <p>
+            Catch guests&apos; attention with a restaurant title that highlights
+            what makes your place special.
+          </p>
+
+          {/* Name */}
+          <div className="form-group">
+            <input
+              className="form-input"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Name of your restaurant"
+              required
+            />
+            {errors.name && <p className="form-error">{errors.name}</p>}
+          </div>
+        </section>
+
+        {/* Address and Contact Information */}
         <section className="form-section">
           <h2>Where&apos;s your place located?</h2>
           <p>
@@ -203,6 +238,46 @@ const UpdateRestaurant = () => {
             reservation.
           </p>
 
+          {/* Address */}
+          <div className="form-group">
+            <input
+              className="form-input"
+              name="address"
+              value={formData.address}
+              onChange={handleInputChange}
+              placeholder="Street Address"
+              required
+            />
+            {errors.address && <p className="form-error">{errors.address}</p>}
+          </div>
+
+          {/* City */}
+          <div className="form-group">
+            <input
+              className="form-input"
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              placeholder="City"
+              required
+            />
+            {errors.city && <p className="form-error">{errors.city}</p>}
+          </div>
+
+          {/* State */}
+          <div className="form-group">
+            <input
+              className="form-input"
+              name="state"
+              value={formData.state}
+              onChange={handleInputChange}
+              placeholder="State"
+              required
+            />
+            {errors.state && <p className="form-error">{errors.state}</p>}
+          </div>
+
+          {/* Country */}
           <div className="form-group">
             <select
               className="form-input"
@@ -228,43 +303,94 @@ const UpdateRestaurant = () => {
             {errors.country && <p className="form-error">{errors.country}</p>}
           </div>
 
+          {/* Phone Number */}
           <div className="form-group">
             <input
               className="form-input"
-              name="address"
-              value={formData.address}
+              name="phone_number"
+              value={formData.phone_number}
               onChange={handleInputChange}
-              placeholder="Street Address"
-              required
+              placeholder="Phone Number"
             />
-            {errors.address && <p className="form-error">{errors.address}</p>}
+            {errors.phone_number && <p className="form-error">{errors.phone_number}</p>}
           </div>
 
+          {/* Email */}
           <div className="form-group">
             <input
               className="form-input"
-              name="city"
-              value={formData.city}
+              name="email"
+              value={formData.email}
               onChange={handleInputChange}
-              placeholder="City"
-              required
+              placeholder="Email"
             />
-            {errors.city && <p className="form-error">{errors.city}</p>}
+            {errors.email && <p className="form-error">{errors.email}</p>}
           </div>
 
+          {/* Website */}
           <div className="form-group">
             <input
               className="form-input"
-              name="state"
-              value={formData.state}
+              name="website"
+              value={formData.website}
               onChange={handleInputChange}
-              placeholder="State"
-              required
+              placeholder="Website"
             />
-            {errors.state && <p className="form-error">{errors.state}</p>}
+            {errors.website && <p className="form-error">{errors.website}</p>}
           </div>
         </section>
 
+        {/* Restaurant Price Point and Cuisine */}
+        <section className="form-section">
+          <h2>Set your restaurant&apos;s price point and cuisine</h2>
+          <p>
+            Choose a price range and cuisine type that best describes your
+            restaurant.
+          </p>
+
+          {/* Price Point */}
+          <div className="form-group">
+            <select 
+              className="form-input"
+              name="price_point"
+              value={formData.price_point}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled>
+                Select a Price Range
+              </option>
+              <option value="1">Inexpensive ($10 and under)</option>
+              <option value="2">Moderate ($11 - $30)</option>
+              <option value="3">Pricey ($31 - $60)</option>
+              <option value="4">Ultra High-End ($61 and up)</option>
+            </select>
+            {errors.price_point && <p className="form-error">{errors.price_point}</p>}
+          </div>
+
+          {/* Cuisine */}
+          <div className="form-group">
+            <select
+              className="form-input"
+              name="cuisine"
+              value={formData.cuisine}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled>
+                Select a Cuisine Type
+              </option>
+              {constants.popular_cuisines.map((cuisine) => (
+                <option key={cuisine} value={cuisine}>
+                  {cuisine}
+                </option>
+              ))}
+            </select>
+            {errors.cuisine && <p className="form-error">{errors.cuisine}</p>}
+          </div>
+        </section>
+        
+        {/* Restaurant Description */}
         <section className="form-section">
           <h2>Describe your place to guests</h2>
           <p>
@@ -286,25 +412,7 @@ const UpdateRestaurant = () => {
           </div>
         </section>
 
-        <section className="form-section">
-          <h2>Create a title for your restaurant</h2>
-          <p>
-            Catch guests&apos; attention with a restaurant title that highlights
-            what makes your place special.
-          </p>
-          <div className="form-group">
-            <input
-              className="form-input"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              placeholder="Name of your restaurant"
-              required
-            />
-            {errors.name && <p className="form-error">{errors.name}</p>}
-          </div>
-        </section>
-
+        {/* Restaurant Hours */}
         <section className="form-section">
           <h2>Set your restaurant&apos;s hours</h2>
           {formData.hours &&
