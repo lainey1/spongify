@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, Outlet, useNavigate } from "react-router-dom";
+import { useParams, Outlet, Link, useNavigate } from "react-router-dom";
 // import { Carousel } from "react-responsive-carousel";
 // import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { IoIosStarOutline, IoIosInformationCircle } from "react-icons/io";
@@ -19,7 +19,7 @@ import StarRating from "../StarRating";
 import "./RestaurantDetails.css";
 
 function RestaurantDetails() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { restaurantId } = useParams();
   const [loading, setLoading] = useState(true);

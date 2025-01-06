@@ -2,12 +2,17 @@ const SET_IMAGES = 'restaurantImages/setImages';
 const ADD_IMAGE = 'restaurantImages/addImage';
 const REMOVE_IMAGE = 'restaurantImages/removeImage';
 const UPDATE_IMAGE = 'restaurantImages/updateImage';
-
+const SET_RESTAURANT_IMAGES = 'restaurantImages/setRestaurantImages'
 // Action Creators
 const setImages = (images) => ({
     type: SET_IMAGES,
     payload: images
 });
+
+const setRestaurantImages = (images) => ({
+    type: SET_RESTAURANT_IMAGES,
+    payload: images
+})
 
 const addImage = (image) => ({
     type: ADD_IMAGE,
@@ -48,6 +53,9 @@ export const thunkFetchRestaurantImages = (restaurantId) => async (dispatch) => 
 
 
 export const thunkUploadImage = ({ restaurantId, imageUrl, isPreview }) => async (dispatch) => {
+
+    console.log("RESTAURANTID  --   inTHUNK",restaurantId)
+
     const response = await fetch(`/api/restaurant_images/restaurant/${restaurantId}/images`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,13 +101,16 @@ export const thunkUpdateImage = ({ imageId, imageUrl, isPreview }) => async (dis
 };
 
 // Initial State
-const initialState = { images: [] };
+const initialState = { images: [], selectedImages: [] };
 
 // Reducer
 function restaurantImagesReducer(state = initialState, action) {
     switch (action.type) {
         case SET_IMAGES:
             return { ...state, images: action.payload };
+
+        case SET_RESTAURANT_IMAGES:
+            return { ...state, selectedImages: action.payload}
 
         case ADD_IMAGE:
             return { ...state, images: [...state.images, action.payload] };

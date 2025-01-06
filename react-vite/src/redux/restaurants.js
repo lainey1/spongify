@@ -58,6 +58,7 @@ export const fetchAllRestaurantsThunk = () => async (dispatch) => {
 
 const initialState = {
   currentRestaurant: {},
+  selectedRestaurant: {},
 };
 
 export default function restaurantsReducer(
@@ -66,7 +67,7 @@ export default function restaurantsReducer(
 ) {
   switch (type) {
     case LOAD_RESTAURANT:
-      return { ...state, currentRestaurant: payload };
+      return { ...state, currentRestaurant: payload, selectedRestaurant: payload };
     case LOAD_RESTAURANTS:
       return {
         currentRestaurant: state.currentRestaurant,

@@ -9,32 +9,25 @@ import {
 } from '../../redux/restaurantImages';
 
 import "./RestaurantImages.css";
-// import { useParams } from 'react-router-dom';
 
-const RestaurantImages = ({ restaurantId }) => {
+import { useParams } from 'react-router-dom';
 
-    // let { restaurantId } = useParams();
-
+const RestaurantImages = () => {
 
     const dispatch = useDispatch();
 
-    // const restaurant = useSelector((state) => state.restaurants.currentRestaurant.id)
+    const { restaurantId } = useParams();
+
+    const restaurant = useSelector((state) => state.restaurants.currentRestaurant.id)
 
     const images = useSelector((state) => state.restaurantImages.images);
 
-
     console.log("IMAGES", images)
-
-
-    // console.log("RESTAURANT-ID====",restaurant)
-
+    console.log("RESTAURANT-ID====",restaurant)
 
     // const filteredImages = images.filter((image) => image.restaurant_id === restaurantId);
 
-
     // console.log("Filtered Images",filteredImages)
-
-
 
 
     const [imageUrl, setImageUrl] = useState('');
@@ -42,7 +35,7 @@ const RestaurantImages = ({ restaurantId }) => {
     const [editImageId, setEditImageId] = useState(null);
 
 
-    
+    // Upload Image
     const handleUpload = async (e) => {
         e.preventDefault();
         await dispatch(thunkUploadImage({ restaurantId, imageUrl, isPreview }));
@@ -50,11 +43,12 @@ const RestaurantImages = ({ restaurantId }) => {
         setIsPreview(false);
     };
 
+    // Delete Image
     const handleDelete = async (imageId) => {
         await dispatch(thunkDeleteImage(imageId));
     };
 
-
+    // Edit Image
     const handleEdit = async (e) => {
         e.preventDefault();
         await dispatch(thunkUpdateImage({ imageId: editImageId, imageUrl, isPreview }));
