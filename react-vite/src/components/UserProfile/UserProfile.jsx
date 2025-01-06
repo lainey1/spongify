@@ -1,22 +1,26 @@
+import ProfileOverview from "./ProfileOverview";
+
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "./UserProfile.css";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { thunkAuthenticate } from "../../redux/session";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReviewsUser from "../ReviewsUser";
 import ManageRestaurants from "../ManageRestaurants/ManageRestaurants";
 // import ManageReservations from "../ManageReservations";
+import { thunkAuthenticate } from "../../redux/session";
+import "./UserProfile.css";
 
 function UserProfile() {
+  const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.session.user);
-  const dispatch = useDispatch();
 
-  // State to track the active module
-  const [activeModule, setActiveModule] = useState("overview");
+  // Extract the 'section' query parameter
+  const queryParams = new URLSearchParams(location.search);
+  const activeSection = queryParams.get("section") || "profile";
 
   useEffect(() => {
-    dispatch(thunkAuthenticate); // make GetCurrentUser thunk
+    dispatch(thunkAuthenticate()); // Load current user data
   }, [dispatch]);
 
   return (
@@ -30,80 +34,47 @@ function UserProfile() {
             className="user-avatar"
           />
           <h2>{currentUser.username}</h2>
-          <h4>Location: {currentUser.location}</h4>
+          <h4>{currentUser.location}</h4>
           <p>{currentUser.headline}</p>
-
-          <button
-            key={currentUser.id}
-            className="edit-profile-btn"
-            onClick={() => navigate(`/user/${currentUser.id}/edit`)}
-          >
-            Edit Profile
-          </button>
         </div>
 
         <nav className="menu">
-          <button onClick={() => setActiveModule("overview")}>
+          <button
+            onClick={() => navigate(`/user/${currentUser.id}?section=profile`)}
+          >
             Profile Overview
           </button>
-          <button onClick={() => setActiveModule("reviews")}>Reviews</button>
-          <button onClick={() => setActiveModule("restaurants")}>
+          <button
+            onClick={() => navigate(`/user/${currentUser.id}?section=reviews`)}
+          >
+            Reviews
+          </button>
+          <button
+            onClick={() =>
+              navigate(`/user/${currentUser.id}?section=restaurants`)
+            }
+          >
             Restaurants
           </button>
-          <button onClick={() => setActiveModule("reservations")}>
+          {/* <button
+            onClick={() =>
+              navigate(`/user/${currentUser.id}?section=reservations`)
+            }
+          >
             Reservations
-          </button>
+          </button> */}
         </nav>
       </div>
 
       {/* Main Content */}
       <div className="main-content">
-        {activeModule === "overview" && (
-          <div className="overview-section">
-            <div className="next-reservation">
-              <h3>Next Reservation</h3>
-              <button className="view-all-btn">View all reservations</button>
-            </div>
-
-            <div className="stats-section">
-              <div className="top-cuisines">
-                <h4>Top 3 Cuisines</h4>
-                <p>{currentUser.favorite_cuisine}</p>
-              </div>
-              <div className="review-stars">
-                <h4>Review Stars Distribution</h4>
-                <p>-</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeModule === "reviews" && (
-          <div className="review-section">
-            <ReviewsUser />
-          </div>
-        )}
-
-        {activeModule === "restaurants" && (
-          <div className="restaurant-section">
-            <ManageRestaurants />
-          </div>
-        )}
-
-        {/* {activeModule === "reservations" && (
-          <div className="reservation-section">
-            <ManageReservations />
-          </div>
+        {/* {activeSection === "profile" && (
+          <ProfileOverview user={currentUser} reviewRatings={reviewRatings} />
         )} */}
-
-        <div className="friends-section">
-          <h4>Friends (feature coming!)</h4>
-          <div className="friends-placeholder">
-            <div className="friend-avatar">Avatar</div>
-            <div className="friend-avatar">Avatar</div>
-            <div className="friend-avatar">Avatar</div>
-          </div>
-        </div>
+        {activeSection === "profile" && <ProfileOverview user={currentUser} />}
+        {activeSection === "reviews" && <ReviewsUser />}
+        {activeSection === "restaurants" && <ManageRestaurants />}
+        {/* {activeSection === "reservations" && <ManageReservations />} */}
       </div>
     </div>
   );

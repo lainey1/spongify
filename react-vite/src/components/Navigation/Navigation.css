@@ -204,17 +204,23 @@
 /* Remove background for the username/email list item */
 .profile-dropdown .username-email {
   background: transparent !important; /* Ensure no background is applied */
-  color: #051923;
+  color: #8c183e;
+  text-align: center;
+  font-size: 1.25em;
 }
 
 .profile-dropdown .username-email:hover {
   background: transparent !important; /* Prevent hover background */
-  color: #051923;
+  color: #8c183e;
 }
 
 .dropdown-item {
+  border: none;
   padding: 0.5rem 1rem;
   text-decoration: none;
+  text-align: left;
+  font-weight: 500;
+  background: transparent !important; /* Ensure no background is applied */
   color: #051923;
   cursor: pointer;
   transition: background 0.3s ease;

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
@@ -49,6 +49,12 @@ function ProfileButton() {
     };
   }, [showMenu]);
 
+  // Navigate to UserProfile with active section
+  const navigateToSection = (section) => {
+    navigate(`/user/${user.id}?section=${section}`);
+    closeMenu();
+  };
+
   return (
     <div className="profile-button-container">
       <button id="profile-dropdown-button" onClick={toggleMenu}>
@@ -58,25 +64,36 @@ function ProfileButton() {
         <ul className="profile-dropdown" ref={ulRef}>
           {user ? (
             <>
-              <li className="dropdown-item username-email">
+              <li
+                className="dropdown-item username-email"
+                style={{ fontWeight: "bold" }}
+              >
                 Hi {user.username}! ({user.email})
               </li>
-              <NavLink to="/user/:userid" className="dropdown-item">
-                Profile
-              </NavLink>
-              <NavLink
-                to="/reservations/user/:userId"
+              <button
                 className="dropdown-item"
+                onClick={() => navigateToSection("profile")}
+              >
+                Profile Overview
+              </button>
+              <button
+                className="dropdown-item"
+                onClick={() => navigateToSection("reservations")}
               >
                 My Reservations
-              </NavLink>
-              <NavLink to="/reviews/user/:userId" className="dropdown-item">
+              </button>
+              <button
+                className="dropdown-item"
+                onClick={() => navigateToSection("reviews")}
+              >
                 My Reviews
-              </NavLink>
-              <NavLink to="/restaurants/user/:userId" className="dropdown-item">
+              </button>
+              <button
+                className="dropdown-item"
+                onClick={() => navigateToSection("restaurants")}
+              >
                 Manage Restaurants
-              </NavLink>
-
+              </button>
               <li>
                 <button className="logout-button" onClick={handleLogout}>
                   Log Out
