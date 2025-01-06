@@ -15,37 +15,47 @@ import { useParams } from "react-router-dom";
 const RestaurantImages = () => {
   const dispatch = useDispatch();
   const { restaurantId } = useParams();
-  // const restaurant = useSelector((state) => state.restaurants.currentRestaurant.id);
   const images = useSelector((state) => state.restaurantImages.images);
 
   const [imageUrl, setImageUrl] = useState("");
   const [isPreview, setIsPreview] = useState(false);
   const [editImageId, setEditImageId] = useState(null);
+  const [error, setError] = useState("");
+
+  const validateUrl = (url) => {
+    return url.startsWith("https://");
+  };
 
   const handleUpload = async (e) => {
     e.preventDefault();
+    if (!validateUrl(imageUrl)) {
+      setError("Image URL must start with 'https://'.");
+      return;
+    }
+    setError(""); // Clear any existing errors
     await dispatch(thunkUploadImage({ restaurantId, imageUrl, isPreview }));
 
-    // After upload, re-fetch the images to ensure the new image is included
     if (restaurantId) {
       dispatch(thunkFetchRestaurantImages(restaurantId));
     } else {
       dispatch(thunkFetchAllImages());
     }
 
-    // Reset form fields
     setImageUrl("");
     setIsPreview(false);
   };
 
-  // Delete Image
   const handleDelete = async (image) => {
     await dispatch(thunkDeleteImage(image));
   };
 
-  // Edit Image
   const handleEdit = async (e) => {
     e.preventDefault();
+    if (!validateUrl(imageUrl)) {
+      setError("Image URL must start with 'https://'.");
+      return;
+    }
+    setError(""); // Clear any existing errors
     await dispatch(
       thunkUpdateImage({ imageId: editImageId, imageUrl, isPreview })
     );
@@ -106,6 +116,7 @@ const RestaurantImages = () => {
             </button>
           )}
         </form>
+        {error && <p className="error-message">{error}</p>}
       </div>
 
       <div>
@@ -115,7 +126,6 @@ const RestaurantImages = () => {
             {images?.map((image) => (
               <li key={image.id}>
                 <img src={image.url} alt="Restaurant" />
-                {/* <p>{image.is_preview ? "Preview" : "Regular"}</p> */}
                 <button onClick={() => startEdit(image)}>Edit</button>
                 <button
                   className="delete"
