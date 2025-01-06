@@ -17,9 +17,9 @@ export default defineConfig((mode) => ({
       "/api": "http://127.0.0.1:8000",
     },
   },
-  build: {
-    rollupOptions: {
-      external: ["react-responsive-carousel"],
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     external: ["react-responsive-carousel"],
+  //   },
+  // },
 }));
