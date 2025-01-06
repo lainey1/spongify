@@ -55,13 +55,11 @@ export const router = createBrowserRouter([
 
 
       {
-        path: "reservations/user/:userId",
+        path: "reservations/user",
         element: <UserReservations />,
       },
-
-
       {
-        path: "/reservations/:reservationId",
+        path: "/reservations/:reservationId/manage",
         element: <ManageReservations />,
       },
       {
@@ -72,9 +70,6 @@ export const router = createBrowserRouter([
         path: "/reservations/restaurant/:restaurantId",
         element: <ReservationsByRestaurant />,
       },
-
-
-
       {
         path: "/reservations/:reservationId/edit",
         element: <UpdateReservations />,

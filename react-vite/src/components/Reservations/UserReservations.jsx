@@ -11,12 +11,12 @@ const UserReservations = () => {
     // Filter reservations based on the current user's ID
     const userReservations = reservations?.filter((reservation) => reservation.user_id === currentUser.id);
 
-    const navigate = useNavigate(); // Correct usage of navigate
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('/api/reservations/user', {
             method: 'GET',
-            credentials: 'include', // Include cookies for authentication (session-based login)
+            credentials: 'include', 
         })
         .then(response => {
             if (!response.ok) {
@@ -36,7 +36,7 @@ const UserReservations = () => {
     }, []); 
 
     const handleOnClick = (reservationId) => {
-        navigate(`/reservations/${reservationId}`);
+        navigate(`/reservations/${reservationId}/manage`);
     }
 
     if (loading) return <div>Loading reservations...</div>;
