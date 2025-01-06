@@ -66,13 +66,13 @@ function UserProfile() {
           >
             Restaurants
           </button>
-          {/* <button
+          <button
             onClick={() =>
               navigate(`/user/${currentUser.id}?section=reservations`)
             }
           >
             Reservations
-          </button> */}
+          </button>
         </nav>
       </div>
 

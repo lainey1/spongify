@@ -95,6 +95,7 @@ function RestaurantDetails() {
           <div className="highlights">
             <StarRating rating={avgStarRating} />
             {formatStarRating(avgStarRating)}
+            <span style={{ padding: "0 0.5em" }}></span>
             {formatReviewCount(reviewCount)}
           </div>
           <div className="highlights">
@@ -102,7 +103,7 @@ function RestaurantDetails() {
               className="open-or-closed"
               style={{
                 color: isOpen ? "green" : "red",
-                fontWeight: "bold", // Optional for emphasis
+                fontWeight: "bold",
               }}
             >
               {isOpen ? "Open Now" : "Closed"}
