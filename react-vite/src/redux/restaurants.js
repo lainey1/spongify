@@ -83,19 +83,18 @@ export const editRestaurantThunk =
     }
   };
 
-export const deleteExistingRestaurantThunk =
-  (restaurantId) => async (dispatch) => {
-    try {
-      const response = await fetch(`/api/restaurants/${restaurantId}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        dispatch(deleteRestaurant(restaurantId));
-      }
-    } catch (err) {
-      console.error("Error deleting restaurant:", err);
+export const deleteRestaurantThunk = (restaurantId) => async (dispatch) => {
+  try {
+    const response = await fetch(`/api/restaurants/${restaurantId}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      dispatch(deleteRestaurant(restaurantId));
     }
-  };
+  } catch (err) {
+    console.error("Error deleting restaurant:", err);
+  }
+};
 
 // Reducer handles state updates based on dispatch actions. They take current state as inputs and return a new state.
 

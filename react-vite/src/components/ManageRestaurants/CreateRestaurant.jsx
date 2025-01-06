@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { validateField } from "../../utils/validateField";
 import "./RestaurantForm.css";
 
-function RestaurantForm() {
+function CreateRestaurant() {
   const navigate = useNavigate();
   const [formSchema, setFormSchema] = useState(null);
   const [formData, setFormData] = useState({});
@@ -331,4 +331,4 @@ function RestaurantForm() {
   );
 }
 
-export default RestaurantForm;
+export default CreateRestaurant;

@@ -2,8 +2,8 @@ import { useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   deleteRestaurantThunk,
-  fetchRestaurantsList,
-} from "../../store/restaurants/thunks";
+  fetchAllRestaurantsThunk,
+} from "../../redux/restaurants";
 import { useModal } from "../../context/Modal";
 import "./deleteRestaurant.css";
 
@@ -16,7 +16,7 @@ const DeleteRestaurant = ({ restaurantId }) => {
   const confirmDelete = (e) => {
     e.preventDefault();
     dispatch(deleteRestaurantThunk(restaurantId))
-      .then(() => dispatch(fetchRestaurantsList()))
+      .then(() => dispatch(fetchAllRestaurantsThunk()))
       .then(() => closeModal());
   };
 

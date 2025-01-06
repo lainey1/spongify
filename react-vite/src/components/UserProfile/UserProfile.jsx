@@ -1,19 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./UserProfile.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { thunkAuthenticate } from "../../redux/session";
 import ReviewsUser from "../ReviewsUser";
+import ManageRestaurants from "../ManageRestaurants/ManageRestaurants";
+// import ManageReservations from "../ManageReservations";
 
 function UserProfile() {
-
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
 
+  // State to track the active module
+  const [activeModule, setActiveModule] = useState("overview");
+
   useEffect(() => {
-    dispatch(thunkAuthenticate)  // make GetCurrentUser thunk
-  }, [dispatch])
+    dispatch(thunkAuthenticate); // make GetCurrentUser thunk
+  }, [dispatch]);
 
   return (
     <div className="profile-page">
@@ -29,40 +33,68 @@ function UserProfile() {
           <h4>Location: {currentUser.location}</h4>
           <p>{currentUser.headline}</p>
 
-          <button key={currentUser.id} className="edit-profile-btn"
-                  onClick={() => navigate(`/user/${currentUser.id}/edit`)}
-          >Edit Profile</button>
+          <button
+            key={currentUser.id}
+            className="edit-profile-btn"
+            onClick={() => navigate(`/user/${currentUser.id}/edit`)}
+          >
+            Edit Profile
+          </button>
         </div>
-        
+
         <nav className="menu">
-          <button>Profile Overview</button>
-          <button>Reviews</button>
-          <button>Restaurants</button>
-          <button>Reservations</button>
+          <button onClick={() => setActiveModule("overview")}>
+            Profile Overview
+          </button>
+          <button onClick={() => setActiveModule("reviews")}>Reviews</button>
+          <button onClick={() => setActiveModule("restaurants")}>
+            Restaurants
+          </button>
+          <button onClick={() => setActiveModule("reservations")}>
+            Reservations
+          </button>
         </nav>
       </div>
 
       {/* Main Content */}
       <div className="main-content">
-        <div className="next-reservation">
-          <h3>Next Reservation</h3>
-          <button className="view-all-btn">View all reservations</button>
-        </div>
+        {activeModule === "overview" && (
+          <div className="overview-section">
+            <div className="next-reservation">
+              <h3>Next Reservation</h3>
+              <button className="view-all-btn">View all reservations</button>
+            </div>
 
-        <div className="stats-section">
-          <div className="top-cuisines">
-            <h4>Top 3 Cuisines</h4>
-            <p>{currentUser.favorite_cuisine}</p>
+            <div className="stats-section">
+              <div className="top-cuisines">
+                <h4>Top 3 Cuisines</h4>
+                <p>{currentUser.favorite_cuisine}</p>
+              </div>
+              <div className="review-stars">
+                <h4>Review Stars Distribution</h4>
+                <p>-</p>
+              </div>
+            </div>
           </div>
-          <div className="review-stars">
-            <h4>Review Stars Distribution</h4>
-            <p>-</p>
-          </div>
-        </div>
+        )}
 
-        <div className="review-section">
-          <ReviewsUser />
-        </div>
+        {activeModule === "reviews" && (
+          <div className="review-section">
+            <ReviewsUser />
+          </div>
+        )}
+
+        {activeModule === "restaurants" && (
+          <div className="restaurant-section">
+            <ManageRestaurants />
+          </div>
+        )}
+
+        {/* {activeModule === "reservations" && (
+          <div className="reservation-section">
+            <ManageReservations />
+          </div>
+        )} */}
 
         <div className="friends-section">
           <h4>Friends (feature coming!)</h4>

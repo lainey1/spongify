@@ -8,7 +8,7 @@ import UserProfile from "../components/UserProfile";
 import EditProfile from "../components/EditProfile";
 import Layout from "./Layout";
 import About from "../components/About/About";
-import RestaurantForm from "../components/ManageRestaurants/RestaurantForm";
+import CreateRestaurant from "../components/ManageRestaurants/CreateRestaurant";
 import UpdateRestaurant from "../components/ManageRestaurants/UpdateRestaurant";
 
 export const router = createBrowserRouter([
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/restaurants/new",
-        element: <RestaurantForm />,
+        element: <CreateRestaurant />,
       },
       {
         path: "/restaurants/:restaurantId",
