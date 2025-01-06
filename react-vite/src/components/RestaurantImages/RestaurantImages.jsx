@@ -21,9 +21,18 @@ const RestaurantImages = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [isPreview, setIsPreview] = useState(false);
   const [editImageId, setEditImageId] = useState(null);
+  const [error, setError] = useState("");
+  const validateUrl = (url) => {
+    return url.startsWith("https://");
+  };
 
   const handleUpload = async (e) => {
     e.preventDefault();
+    if (!validateUrl(imageUrl)) {
+      setError("Image URL must start with 'https://'.");
+      return;
+    }
+    setError(""); // Clear any existing errors
     await dispatch(thunkUploadImage({ restaurantId, imageUrl, isPreview }));
 
     // After upload, re-fetch the images to ensure the new image is included
@@ -46,6 +55,12 @@ const RestaurantImages = () => {
   // Edit Image
   const handleEdit = async (e) => {
     e.preventDefault();
+    if (!validateUrl(imageUrl)) {
+      setError("Image URL must start with 'https://'.");
+      return;
+    }
+    setError(""); // Clear any existing errors
+
     await dispatch(
       thunkUpdateImage({ imageId: editImageId, imageUrl, isPreview })
     );
@@ -106,6 +121,7 @@ const RestaurantImages = () => {
             </button>
           )}
         </form>
+        {error && <p className="error-message">{error}</p>}
       </div>
 
       <div>

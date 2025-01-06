@@ -63,7 +63,7 @@ function RestaurantDetails() {
   };
 
   const handleReserveClick = () => {
-    navigate(`/restaurants/${restaurantId}/review`);
+    navigate(`/restaurant/${restaurantId}/new`);
   };
 
   const handleNavigateToImages = () => {
