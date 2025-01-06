@@ -17,11 +17,13 @@ const RestaurantImages = () => {
   const { restaurantId } = useParams();
   // const restaurant = useSelector((state) => state.restaurants.currentRestaurant.id);
   const images = useSelector((state) => state.restaurantImages.images);
+  const currentUser = useSelector((state) => state.session.user);
 
   const [imageUrl, setImageUrl] = useState("");
   const [isPreview, setIsPreview] = useState(false);
   const [editImageId, setEditImageId] = useState(null);
   const [error, setError] = useState("");
+  const isOwner = currentUser?.id === images?.owner_id;
   const validateUrl = (url) => {
     return url.startsWith("https://");
   };
@@ -132,13 +134,20 @@ const RestaurantImages = () => {
               <li key={image.id}>
                 <img src={image.url} alt="Restaurant" />
                 {/* <p>{image.is_preview ? "Preview" : "Regular"}</p> */}
-                <button onClick={() => startEdit(image)}>Edit</button>
-                <button
-                  className="delete"
-                  onClick={() => handleDelete(image.id)}
-                >
-                  Delete
-                </button>
+                <p>Posty by {image.user.email}</p>
+
+                {isOwner && (
+                  <button onClick={() => startEdit(image)}>Edit</button>
+                )}
+
+                {isOwner && (
+                  <button
+                    className="delete"
+                    onClick={() => handleDelete(image.id)}
+                  >
+                    Delete
+                  </button>
+                )}
               </li>
             ))}
           </ul>

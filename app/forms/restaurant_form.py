@@ -35,20 +35,20 @@ class RestaurantForm(FlaskForm):
     monday_open = SelectField('Monday Open', choices=TIME_CHOICES, default='Closed')
     monday_close = SelectField('Monday Close', choices=TIME_CHOICES, default='Closed')
 
-    tuesday_open = SelectField('Tuesday Open', choices=TIME_CHOICES, default='10:00 AM')
-    tuesday_close = SelectField('Tuesday Close', choices=TIME_CHOICES, default='10:00 PM')
+    tuesday_open = SelectField('Tuesday Open', choices=TIME_CHOICES, default='Closed')
+    tuesday_close = SelectField('Tuesday Close', choices=TIME_CHOICES, default='Closed')
 
-    wednesday_open = SelectField('Wednesday Open', choices=TIME_CHOICES, default='10:00 AM')
-    wednesday_close = SelectField('Wednesday Close', choices=TIME_CHOICES, default='10:00 PM')
+    wednesday_open = SelectField('Wednesday Open', choices=TIME_CHOICES, default='Closed')
+    wednesday_close = SelectField('Wednesday Close', choices=TIME_CHOICES, default='Closed')
 
-    thursday_open = SelectField('Thursday Open', choices=TIME_CHOICES, default='10:00 AM')
-    thursday_close = SelectField('Thursday Close', choices=TIME_CHOICES, default='10:00 PM')
+    thursday_open = SelectField('Thursday Open', choices=TIME_CHOICES, default='Closed')
+    thursday_close = SelectField('Thursday Close', choices=TIME_CHOICES, default='Closed')
 
-    friday_open = SelectField('Friday Open', choices=TIME_CHOICES, default='10:00 AM')
-    friday_close = SelectField('Friday Close', choices=TIME_CHOICES, default='10:00 PM')
+    friday_open = SelectField('Friday Open', choices=TIME_CHOICES, default='Closed')
+    friday_close = SelectField('Friday Close', choices=TIME_CHOICES, default='Closed')
 
-    saturday_open = SelectField('Saturday Open', choices=TIME_CHOICES, default='10:00 AM')
-    saturday_close = SelectField('Saturday Close', choices=TIME_CHOICES, default='10:00 PM')
+    saturday_open = SelectField('Saturday Open', choices=TIME_CHOICES, default='Closed')
+    saturday_close = SelectField('Saturday Close', choices=TIME_CHOICES, default='Closed')
 
-    sunday_open = SelectField('Sunday Open', choices=TIME_CHOICES, default='10:00 AM')
-    sunday_close = SelectField('Sunday Close', choices=TIME_CHOICES, default='10:00 PM')
+    sunday_open = SelectField('Sunday Open', choices=TIME_CHOICES, default='Closed')
+    sunday_close = SelectField('Sunday Close', choices=TIME_CHOICES, default='Closed')
