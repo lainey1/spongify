@@ -1,18 +1,3 @@
-.restaurant-image-tile {
-  width: 150px; /* Adjust the width */
-  height: 150px; /* Adjust the height */
-  overflow: hidden;
-  border-radius: 8px; /* Optional: rounded corners for the tile */
-  border: 1px solid #ddd; /* Border to define the tile area */
-  margin-right: 15px;
-}
-
-.restaurant-image-tile img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensure the image covers the entire tile area */
-}
-
 .reviews-section {
   display: flex;
   flex-direction: column;
@@ -27,9 +12,4 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.review-star-and-text {
-  display: flex;
-  justify-content: center;
 }

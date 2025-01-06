@@ -3,9 +3,9 @@ import ProfileOverview from "./ProfileOverview";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ReviewsUser from "../ReviewsUser";
 import ManageRestaurants from "../ManageRestaurants/ManageRestaurants";
-// import ManageReservations from "../ManageReservations";
 import { thunkAuthenticate } from "../../redux/session";
 import "./UserProfile.css";
 
@@ -36,6 +36,16 @@ function UserProfile() {
           <h2>{currentUser.username}</h2>
           <h4>{currentUser.location}</h4>
           <p>{currentUser.headline}</p>
+
+          {/* user/:userId/edit */}
+          <div>
+            <Link
+              to={`/user/${currentUser.id}/edit`}
+              className="edit-profile-link"
+            >
+              Edit Profile
+            </Link>
+          </div>
         </div>
 
         <nav className="menu">

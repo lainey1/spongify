@@ -35,13 +35,16 @@ body {
   margin-bottom: 10px;
 }
 
-.edit-profile-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
+.edit-profile-link {
+  color: #8c183e;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.edit-profile-link:hover {
+  color: #e26d12;
+  text-decoration: none;
 }
 
 .menu button {
@@ -66,7 +69,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 
 .view-all-btn {
   margin-top: 10px;
