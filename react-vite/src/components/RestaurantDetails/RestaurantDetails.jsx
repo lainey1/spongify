@@ -70,8 +70,9 @@ function RestaurantDetails() {
     alert("Feature coming soon...");
   };
 
-  const handleManageClick = () => {
-    alert("Manage your restaurant settings...");
+  // Navigate to UserProfile with active section
+  const navigateToSection = (section) => {
+    navigate(`/user/${currentUser.id}?section=${section}`);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -169,7 +170,9 @@ function RestaurantDetails() {
               </p>
             </div>
             {isOwner && (
-              <button onClick={handleManageClick}>Manage Restaurant</button>
+              <button onClick={() => navigateToSection("restaurants")}>
+                Manage Restaurant
+              </button>
             )}
           </div>
         </div>
