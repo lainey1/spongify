@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { thunkLogin } from "../../redux/session";
 
@@ -9,7 +9,7 @@ import "./LoginForm.css";
 function LoginFormModal() {
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -45,7 +45,7 @@ function LoginFormModal() {
     dispatch(thunkLogin(demoUser))
       .then(() => {
         closeModal(); // Close modal after successful login
-        navigate("/user/:userid"); // Navigate to the user page after login
+        // navigate("/user/1"); // Navigate to the user page after login
       })
       .catch((error) => {
         console.error("Login failed", error); // Handle error if login fails

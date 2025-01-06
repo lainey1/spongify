@@ -94,6 +94,7 @@ function RestaurantDetails() {
         <span>
           <div className="highlights">
             <StarRating rating={avgStarRating} />
+            <span style={{ padding: "0 0.5em" }}></span>
             {formatStarRating(avgStarRating)}
             <span style={{ padding: "0 0.5em" }}></span>
             {formatReviewCount(reviewCount)}
