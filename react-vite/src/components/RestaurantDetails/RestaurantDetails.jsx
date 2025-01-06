@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, Outlet, Link, useNavigate } from "react-router-dom";
-// import { Carousel } from "react-responsive-carousel";
-// import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useParams } from "react-router-dom";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { IoIosStarOutline, IoIosInformationCircle } from "react-icons/io";
 import { MdAddAPhoto } from "react-icons/md";
 import { fetchRestaurantThunk } from "../../redux/restaurants";
@@ -19,8 +20,8 @@ import StarRating from "../StarRating";
 import "./RestaurantDetails.css";
 
 function RestaurantDetails() {
-  const navigate = useNavigate()
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { restaurantId } = useParams();
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -57,37 +58,36 @@ function RestaurantDetails() {
     }
   }, [restaurant?.hours]);
 
-  const handleReserveClick = () => {
-    navigate(`/restaurant/${restaurantId}/new`);
-  };
-
-  const handleManageClick = () => {
-    navigate(`edit`);
-  };
-
-  const handleReviewClick = () => {
+  const handleWriteReviewClick = () => {
     navigate(`/restaurants/${restaurantId}/review`);
   };
 
-
-  const handleNavigateToImages = () => {
-    navigate("images"); // Programmatic navigation to the 'images' route
+  const handleReserveClick = () => {
+    navigate(`/restaurants/${restaurantId}/review`);
   };
 
-   
+  const handleNavigateToImages = () => {
+    navigate("images");
+  };
+
+  // Navigate to UserProfile with active section
+  const navigateToSection = (section) => {
+    navigate(`/user/${currentUser.id}?section=${section}`);
+  };
+
   if (loading) return <div>Loading...</div>;
 
   return (
     <div className="restaurant-page">
       <div className="carousel-container">
-        {/* <Carousel>
+        <Carousel>
           {restaurant.images.map((image, idx) => (
             <div key={idx}>
               <img src={image.url} alt={`Restaurant image ${idx + 1}`} />
               <p className="legend">{image.caption || `Image ${idx + 1}`}</p>
             </div>
           ))}
-        </Carousel> */}
+        </Carousel>
       </div>
       <div className="restaurant-page-banner">
         <h2 className="restaurant-name">{restaurant?.name}</h2>
@@ -95,6 +95,7 @@ function RestaurantDetails() {
           <div className="highlights">
             <StarRating rating={avgStarRating} />
             {formatStarRating(avgStarRating)}
+            <span style={{ padding: "0 0.5em" }}></span>
             {formatReviewCount(reviewCount)}
           </div>
           <div className="highlights">
@@ -102,7 +103,7 @@ function RestaurantDetails() {
               className="open-or-closed"
               style={{
                 color: isOpen ? "green" : "red",
-                fontWeight: "bold", // Optional for emphasis
+                fontWeight: "bold",
               }}
             >
               {isOpen ? "Open Now" : "Closed"}
@@ -129,10 +130,11 @@ function RestaurantDetails() {
       <div id="restaurant-layout">
         <div id="restaurant-main-panel">
           <div id="restaurant-menu">
-            <button className="menu-button" onClick={handleReviewClick}>
+            <button className="menu-button" onClick={handleWriteReviewClick}>
               <IoIosStarOutline className="button-icon" />
               Write a Review
             </button>
+
             <button className="menu-button" onClick={handleNavigateToImages}>
               <MdAddAPhoto className="button-icon" />
               Add Photo
@@ -169,12 +171,13 @@ function RestaurantDetails() {
               </p>
             </div>
             {isOwner && (
-              <button onClick={handleManageClick}>Manage Restaurant</button>
+              <button onClick={() => navigateToSection("restaurants")}>
+                Manage Restaurant
+              </button>
             )}
           </div>
         </div>
       </div>
-      <Outlet />
     </div>
   );
 }

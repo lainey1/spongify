@@ -21,33 +21,30 @@
    Image Tiles
 ================================ */
 /* Restaurant Image Container */
-.Restaurant-image-container {
+.restaurant-image-container {
   display: block;
   width: 100%;
-  height: 33vh;
+  min-height: 33vh; /* Set a minimum height instead of fixed height */
   border-radius: 0.5rem;
   margin: 0 auto;
-  object-fit: cover;
-  object-position: center;
-  background-color: #4a91e2b7; /* Default shaded background */
   display: flex; /* Align placeholder content (optional) */
   justify-content: center;
   align-items: center;
   color: #333; /* text color for placeholder */
+  overflow: hidden; /* Prevents overflow if the image is too large */
 }
 
 /* Restaurant Image */
-.Restaurant-image {
-  display: block;
+.restaurant-image {
   width: 100%;
-  height: 100%;
-  border-radius: 0.5rem;
-  object-fit: cover;
+  height: 100%; /* Ensure the image fills the container */
+  object-fit: cover; /* Ensures the image covers the container */
   object-position: center;
+  border-radius: 0.5rem;
 }
 
-/* When there's no image, add a shaded background */
-.Restaurant-image[alt=""] {
+/* When there's no image, show a placeholder */
+.restaurant-image[alt=""] {
   display: none; /* Hide the image element when alt is empty */
 }
 

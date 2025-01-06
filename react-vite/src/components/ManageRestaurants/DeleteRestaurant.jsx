@@ -5,7 +5,7 @@ import {
   fetchAllRestaurantsThunk,
 } from "../../redux/restaurants";
 import { useModal } from "../../context/Modal";
-import "./deleteRestaurant.css";
+import "./DeleteRestaurant.css";
 
 const DeleteRestaurant = ({ restaurantId }) => {
   const dispatch = useDispatch();

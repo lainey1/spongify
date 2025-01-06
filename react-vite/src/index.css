@@ -97,7 +97,6 @@ textarea {
   margin: 0 auto;
   object-fit: cover;
   object-position: center;
-  background-color: #4a91e2b7; /* Default shaded background */
   display: flex; /* Align placeholder content (optional) */
   justify-content: center;
   align-items: center;
