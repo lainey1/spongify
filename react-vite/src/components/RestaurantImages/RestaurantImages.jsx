@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  thunkFetchAllImages,
   thunkFetchRestaurantImages,
   thunkUploadImage,
   thunkDeleteImage,
@@ -14,23 +15,32 @@ import { useParams } from "react-router-dom";
 const RestaurantImages = () => {
   const dispatch = useDispatch();
   const { restaurantId } = useParams();
+  // const restaurant = useSelector((state) => state.restaurants.currentRestaurant.id);
   const images = useSelector((state) => state.restaurantImages.images);
 
   const [imageUrl, setImageUrl] = useState("");
   const [isPreview, setIsPreview] = useState(false);
   const [editImageId, setEditImageId] = useState(null);
 
-  // Upload Image
   const handleUpload = async (e) => {
     e.preventDefault();
     await dispatch(thunkUploadImage({ restaurantId, imageUrl, isPreview }));
+
+    // After upload, re-fetch the images to ensure the new image is included
+    if (restaurantId) {
+      dispatch(thunkFetchRestaurantImages(restaurantId));
+    } else {
+      dispatch(thunkFetchAllImages());
+    }
+
+    // Reset form fields
     setImageUrl("");
     setIsPreview(false);
   };
 
   // Delete Image
-  const handleDelete = async (imageId) => {
-    await dispatch(thunkDeleteImage(imageId));
+  const handleDelete = async (image) => {
+    await dispatch(thunkDeleteImage(image));
   };
 
   // Edit Image
@@ -52,7 +62,9 @@ const RestaurantImages = () => {
 
   useEffect(() => {
     if (restaurantId) {
-      dispatch(thunkFetchRestaurantImages(restaurantId)); // Fetch images for the specific restaurant
+      dispatch(thunkFetchRestaurantImages(restaurantId));
+    } else {
+      dispatch(thunkFetchAllImages());
     }
   }, [dispatch, restaurantId]);
 
