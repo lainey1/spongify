@@ -125,6 +125,10 @@ def restaurant(id):
     if not restaurant:
         return {'error': f'Restaurant with ID {id} not found.'}, 404
 
+    # Check if the current user is the owner of the restaurant
+    if restaurant.owner_id != current_user.id:
+        return {'error': 'You are not authorized to delete this restaurant.'}, 403
+
     if request.method == 'GET':
         # Fetch aggregated review data for the restaurant
         review_stats = (
@@ -167,6 +171,7 @@ def create_restaurant():
     """
     Query to add a restaurant to the DB using either JSON or Form data
     """
+
     if request.is_json:
         # Handle JSON input (from Postman)
         data = request.get_json()
