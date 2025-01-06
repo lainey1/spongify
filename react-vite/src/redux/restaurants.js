@@ -100,6 +100,7 @@ export const deleteRestaurantThunk = (restaurantId) => async (dispatch) => {
 
 const initialState = {
   currentRestaurant: {},
+  selectedRestaurant: {},
 };
 
 export default function restaurantsReducer(

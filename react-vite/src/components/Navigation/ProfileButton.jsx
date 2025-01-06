@@ -7,6 +7,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
+import "./Navigation.css";
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ function ProfileButton() {
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
+  // Toggle the dropdown menu
   // Toggle the dropdown menu
   const toggleMenu = (e) => {
     e.stopPropagation();
@@ -33,11 +35,12 @@ function ProfileButton() {
   };
 
   // Close menu when clicking outside
+  // Close menu when clicking outside
   useEffect(() => {
     if (!showMenu) return;
-
     const handleClickOutside = (e) => {
       if (ulRef.current && !ulRef.current.contains(e.target)) {
+        closeMenu();
         closeMenu();
       }
     };
@@ -95,6 +98,9 @@ function ProfileButton() {
                 Manage Restaurants
               </button>
               <li>
+                <button className="logout-button" onClick={handleLogout}>
+                  Log Out
+                </button>
                 <button className="logout-button" onClick={handleLogout}>
                   Log Out
                 </button>

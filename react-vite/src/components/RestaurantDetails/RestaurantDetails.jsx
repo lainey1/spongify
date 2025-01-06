@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useParams, Outlet, Link, useNavigate } from "react-router-dom";
+// import { Carousel } from "react-responsive-carousel";
+// import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { IoIosStarOutline, IoIosInformationCircle } from "react-icons/io";
 import { MdAddAPhoto } from "react-icons/md";
 import { fetchRestaurantThunk } from "../../redux/restaurants";
@@ -19,6 +19,7 @@ import StarRating from "../StarRating";
 import "./RestaurantDetails.css";
 
 function RestaurantDetails() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { restaurantId } = useParams();
   const [loading, setLoading] = useState(true);
@@ -64,19 +65,25 @@ function RestaurantDetails() {
     alert("Manage your restaurant settings...");
   };
 
+
+  const handleNavigateToImages = () => {
+    navigate("images"); // Programmatic navigation to the 'images' route
+  };
+
+   
   if (loading) return <div>Loading...</div>;
 
   return (
     <div className="restaurant-page">
       <div className="carousel-container">
-        <Carousel>
+        {/* <Carousel>
           {restaurant.images.map((image, idx) => (
             <div key={idx}>
               <img src={image.url} alt={`Restaurant image ${idx + 1}`} />
               <p className="legend">{image.caption || `Image ${idx + 1}`}</p>
             </div>
           ))}
-        </Carousel>
+        </Carousel> */}
       </div>
       <div className="restaurant-page-banner">
         <h2 className="restaurant-name">{restaurant?.name}</h2>
@@ -122,7 +129,7 @@ function RestaurantDetails() {
               <IoIosStarOutline className="button-icon" />
               Write a Review
             </button>
-            <button className="menu-button" onClick={handleReserveClick}>
+            <button className="menu-button" onClick={handleNavigateToImages}>
               <MdAddAPhoto className="button-icon" />
               Add Photo
             </button>
@@ -163,6 +170,7 @@ function RestaurantDetails() {
           </div>
         </div>
       </div>
+      <Outlet />
     </div>
   );
 }
