@@ -55,7 +55,7 @@ def get_restaurant_reservations(restaurant_id):
     return jsonify({'reservations': [reservation.to_dict() for reservation in reservations]})
 
 #Create Reservation
-@reservation_routes.route('/restaurant/<int:restaurant_id>/new', methods=['GET, POST'])
+@reservation_routes.route('/restaurant/<int:restaurant_id>/new', methods=['POST'])
 @login_required
 def create_reservation(restaurant_id):
     """

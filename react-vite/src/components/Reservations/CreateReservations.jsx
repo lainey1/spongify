@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateReservations = () => {
     const { restaurantId } = useParams(); // Get the restaurantId from the URL
@@ -9,66 +9,75 @@ const CreateReservations = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    const navigate = useNavigate();
-    const user = useSelector((store) => store.session.user);
+    // const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const users = useSelector((store) => store.session.user);
 
-    // const getCSRFTokenFromCookie = () => {
-    //     // Extract CSRF token from cookies (assuming it's set by Flask)
-    //     return document.cookie.match(/csrf_token=([^;]+)/)?.[1] || '';
-    // };
+  // const currentUserId = users ? users.id : null; 
+  const currentUserId = users.id;
+  console.log("User", currentUserId, restaurantId);
+    // Fetch logged-in user (assuming you're getting user data from an API or local storage)
+   
 
+   
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
 
-        // Ensure restaurantId is valid before making the API request
         if (!restaurantId) {
             setError('Invalid restaurant ID');
             setLoading(false);
             return;
         }
 
+        
+        if (!currentUserId) {
+            setError('User is not logged in');
+            setLoading(false);
+            return;
+        }
+
         const reservationData = {
-            restaurant_id: restaurantId,
-            user_id: user.id,
-            date,
-            party_size: partySize,
+            restaurant_id: parseInt(restaurantId),
+            user_id: currentUserId, 
+            date: date,
+            party_size: parseInt(partySize),
         };
+ console.log("DATA", reservationData);
+      
 
-        // const csrfToken = getCSRFTokenFromCookie(); // Get the CSRF token from the cookie
-
-        fetch(`/api/restaurant/${restaurantId}/new`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('authToken')}`, 
-
-
-                // 'X-CSRF-TOKEN': csrfToken, // Add CSRF token to the request header
-            },
-            // credentials: 'include', // To include cookies with the request (for CSRF token)
-            body: JSON.stringify(reservationData),
-        })
-            .then(response => {
+        const fetchCreate = async () => {
+            try {
+                const response = await fetch(`/api/reservations/restaurant/${restaurantId}/new`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                    },
+                  body: JSON.stringify(reservationData),                 
+                });
+ console.log("DATA", reservationData);
                 if (!response.ok) {
                     throw new Error('Failed to create reservation');
                 }
-                return response.json();
-            })
-            .then(data => {
+
+              const data = await response.json();
+              
                 setLoading(false);
                 setSuccess(data.message);
                 setError(null);
                 if (data.reservation) {
                     navigate(`/reservations/${data.reservation.id}`);
                 }
-            })
-            .catch(err => {
+            } catch (err) {
                 setLoading(false);
                 setSuccess(null);
                 setError('There was an error creating your reservation');
                 console.error('Error:', err);
-            });
+            }
+        };
+
+        fetchCreate();
     };
 
     return (
@@ -108,6 +117,8 @@ const CreateReservations = () => {
 };
 
 export default CreateReservations;
+
+
 
 
 

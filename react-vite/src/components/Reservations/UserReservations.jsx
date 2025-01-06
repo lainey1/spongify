@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
+import { useNavigate } from 'react-router-dom'; 
+import { useSelector } from 'react-redux';
 
 const UserReservations = () => {
     const [reservations, setReservations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const currentUser = useSelector((state) => state.session.user);
+    
+    // Filter reservations based on the current user's ID
+    const userReservations = reservations?.filter((reservation) => reservation.user_id === currentUser.id);
 
-    const navigate = useNavigate(); // Initialize navigate function
+    const navigate = useNavigate(); // Correct usage of navigate
 
     useEffect(() => {
         fetch('/api/reservations/user', {
@@ -41,17 +46,16 @@ const UserReservations = () => {
         <div>
             <h1>Your Reservations</h1>
             <ul>
-                {reservations.length === 0 ? (
+                {userReservations.length === 0 ? (
                     <p>No reservations found.</p>
                 ) : (
-                    reservations.map((reservation) => (
+                    userReservations.map((reservation) => (
                         <li key={reservation.id}>
                             <p>Date: {new Date(reservation.date).toLocaleString()}</p>
                             <p>Party Size: {reservation.party_size}</p>
                             <button onClick={() => handleOnClick(reservation.id)}>
                                 View Reservation Details
                             </button>
-                            
                         </li>
                     ))
                 )}
