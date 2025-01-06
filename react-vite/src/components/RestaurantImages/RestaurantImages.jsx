@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  thunkFetchAllImages,
   thunkFetchRestaurantImages,
   thunkUploadImage,
   thunkDeleteImage,
@@ -15,17 +14,11 @@ import { useParams } from "react-router-dom";
 const RestaurantImages = () => {
   const dispatch = useDispatch();
   const { restaurantId } = useParams();
-  // const restaurant = useSelector((state) => state.restaurants.currentRestaurant.id);
   const images = useSelector((state) => state.restaurantImages.images);
 
   const [imageUrl, setImageUrl] = useState("");
   const [isPreview, setIsPreview] = useState(false);
   const [editImageId, setEditImageId] = useState(null);
-
-  //   // Filter images by restaurantId
-  //   const filteredImages = images.filter(
-  //     (image) => image.restaurant_id === restaurantId
-  //   );
 
   // Upload Image
   const handleUpload = async (e) => {
@@ -59,9 +52,7 @@ const RestaurantImages = () => {
 
   useEffect(() => {
     if (restaurantId) {
-      dispatch(thunkFetchRestaurantImages(restaurantId));
-    } else {
-      dispatch(thunkFetchAllImages());
+      dispatch(thunkFetchRestaurantImages(restaurantId)); // Fetch images for the specific restaurant
     }
   }, [dispatch, restaurantId]);
 
@@ -111,7 +102,7 @@ const RestaurantImages = () => {
           <ul className="image-list">
             {images?.map((image) => (
               <li key={image.id}>
-                <img src={image} alt="Restaurant" />
+                <img src={image.url} alt="Restaurant" />
                 {/* <p>{image.is_preview ? "Preview" : "Regular"}</p> */}
                 <button onClick={() => startEdit(image)}>Edit</button>
                 <button

@@ -2,17 +2,12 @@ const SET_IMAGES = "restaurantImages/setImages";
 const ADD_IMAGE = "restaurantImages/addImage";
 const REMOVE_IMAGE = "restaurantImages/removeImage";
 const UPDATE_IMAGE = "restaurantImages/updateImage";
-const SET_RESTAURANT_IMAGES = "restaurantImages/setRestaurantImages";
+
 // Action Creators
 const setImages = (images) => ({
   type: SET_IMAGES,
   payload: images,
 });
-
-// const setRestaurantImages = (images) => ({
-//   type: SET_RESTAURANT_IMAGES,
-//   payload: images,
-// });
 
 const addImage = (image) => ({
   type: ADD_IMAGE,
@@ -29,15 +24,16 @@ const updateImage = (image) => ({
   payload: image,
 });
 
-// Thunks
+// Fetch all images
 export const thunkFetchAllImages = () => async (dispatch) => {
   const response = await fetch("/api/restaurant_images/");
   if (response.ok) {
     const data = await response.json();
-    dispatch(setImages(data.restaurant_images));
+    dispatch(setImages(data.restaurant_images)); // Assumed data structure
   }
 };
 
+// Fetch restaurant images based on restaurantId
 export const thunkFetchRestaurantImages =
   (restaurantId) => async (dispatch) => {
     const response = await fetch(
@@ -45,19 +41,17 @@ export const thunkFetchRestaurantImages =
     );
     if (response.ok) {
       const data = await response.json();
-      // console.log("DATA IN THUNK",data)
-      dispatch(setImages(data.image));
+      dispatch(setImages(data.images));
     } else if (response.status === 404) {
       const error = await response.json();
       console.error(error.message);
     }
   };
 
+// Upload new image
 export const thunkUploadImage =
   ({ restaurantId, imageUrl, isPreview }) =>
   async (dispatch) => {
-    console.log("RESTAURANTID  --   inTHUNK", restaurantId);
-
     const response = await fetch(
       `/api/restaurant_images/restaurant/${restaurantId}/images`,
       {
@@ -69,13 +63,14 @@ export const thunkUploadImage =
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(addImage(data));
+      dispatch(addImage(data)); // Assuming the API returns the image object
     } else {
       const error = await response.json();
       console.error(error.error);
     }
   };
 
+// Delete an image
 export const thunkDeleteImage = (imageId) => async (dispatch) => {
   const response = await fetch(`/api/restaurant_images/${imageId}`, {
     method: "DELETE",
@@ -89,6 +84,7 @@ export const thunkDeleteImage = (imageId) => async (dispatch) => {
   }
 };
 
+// Update an image
 export const thunkUpdateImage =
   ({ imageId, imageUrl, isPreview }) =>
   async (dispatch) => {
@@ -100,7 +96,7 @@ export const thunkUpdateImage =
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(updateImage(data.image));
+      dispatch(updateImage(data.image)); // Assuming the API returns the updated image
     } else {
       const error = await response.json();
       console.error(error.error);
@@ -108,16 +104,13 @@ export const thunkUpdateImage =
   };
 
 // Initial State
-const initialState = { images: [], selectedImages: [] };
+const initialState = { images: [] };
 
 // Reducer
 function restaurantImagesReducer(state = initialState, action) {
   switch (action.type) {
     case SET_IMAGES:
       return { ...state, images: action.payload };
-
-    case SET_RESTAURANT_IMAGES:
-      return { ...state, selectedImages: action.payload };
 
     case ADD_IMAGE:
       return { ...state, images: [...state.images, action.payload] };
