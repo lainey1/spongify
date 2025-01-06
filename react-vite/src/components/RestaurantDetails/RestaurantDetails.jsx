@@ -67,7 +67,7 @@ function RestaurantDetails() {
   };
 
   const handleReserveClick = () => {
-    alert("Feature coming soon...");
+    navigate(`/restaurants/${restaurantId}/review`);
   };
 
   // Navigate to UserProfile with active section

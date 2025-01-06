@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ReviewsUser from "../ReviewsUser";
 import ManageRestaurants from "../ManageRestaurants/ManageRestaurants";
+import ManageReservations from "./ManageReservations/ManageReservations";
 import { thunkAuthenticate } from "../../redux/session";
 import "./UserProfile.css";
 
@@ -84,7 +85,7 @@ function UserProfile() {
         {activeSection === "profile" && <ProfileOverview user={currentUser} />}
         {activeSection === "reviews" && <ReviewsUser />}
         {activeSection === "restaurants" && <ManageRestaurants />}
-        {/* {activeSection === "reservations" && <ManageReservations />} */}
+        {activeSection === "reservations" && <ManageReservations />}
       </div>
     </div>
   );
