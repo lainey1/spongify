@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-// import OpenModalButton from "../OpenModalButton/OpenModalButton";
-// import DeleteRestaurant from "./DeleteRestaurant";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteRestaurant from "./DeleteRestaurant";
 import { fetchAllRestaurantsThunk } from "../../redux/restaurants";
 import { IoLocationOutline } from "react-icons/io5";
 
@@ -108,6 +108,23 @@ function ManageRestaurants() {
                     </div>
                   </div>
                 </Link>
+                <span className="button-wrapper">
+                  <button
+                    className="update-button"
+                    onClick={() => {
+                      navigate(`/spots/${spot.id}/edit`);
+                    }}
+                  >
+                    Update
+                  </button>
+                  <OpenModalButton
+                    buttonText={"Delete"}
+                    modalComponent={
+                      <DeleteRestaurant restaurantId={restaurant.id} />
+                    }
+                    className="delete-button"
+                  />
+                </span>
               </div>
             );
           })}
