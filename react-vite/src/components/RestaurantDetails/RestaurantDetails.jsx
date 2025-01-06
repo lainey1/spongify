@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
@@ -20,6 +21,7 @@ import "./RestaurantDetails.css";
 
 function RestaurantDetails() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { restaurantId } = useParams();
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -55,6 +57,14 @@ function RestaurantDetails() {
       }
     }
   }, [restaurant?.hours]);
+
+  const handleNavigateToImages = () => {
+    navigate("images");
+  };
+
+  const handleWriteReviewClick = () => {
+    navigate(`/restaurants/${restaurantId}/review`);
+  };
 
   const handleReserveClick = () => {
     alert("Feature coming soon...");
@@ -118,11 +128,12 @@ function RestaurantDetails() {
       <div id="restaurant-layout">
         <div id="restaurant-main-panel">
           <div id="restaurant-menu">
-            <button className="menu-button" onClick={handleReserveClick}>
+            <button className="menu-button" onClick={handleWriteReviewClick}>
               <IoIosStarOutline className="button-icon" />
               Write a Review
             </button>
-            <button className="menu-button" onClick={handleReserveClick}>
+
+            <button className="menu-button" onClick={handleNavigateToImages}>
               <MdAddAPhoto className="button-icon" />
               Add Photo
             </button>
