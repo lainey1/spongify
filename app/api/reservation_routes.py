@@ -62,7 +62,7 @@ def create_reservation(restaurant_id):
     Create a new reservation and return it as a reservation dictionary
     """
     form = ReservationForm()
-    # form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
         # Create a new reservation using the validated form data

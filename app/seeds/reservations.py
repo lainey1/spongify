@@ -9,7 +9,7 @@ def seed_reservations():
            id = 1,
            restaurant_id = 3,
            user_id = 1,
-           date=datetime.strptime('2024-12-20 13:45:00', '%Y-%m-%d %H:%M:%S'),
+           date=datetime.strptime('2024-12-20T13:45', '%Y-%m-%dT%H:%M'),
            party_size = 4,
         )
 
@@ -17,7 +17,7 @@ def seed_reservations():
         id=2,
         restaurant_id=2,
         user_id=3,
-        date=datetime.strptime('2024-12-21 18:00:00', '%Y-%m-%d %H:%M:%S'),
+        date=datetime.strptime('2024-12-21T18:00', '%Y-%m-%dT%H:%M'),
         party_size=2,
     )
 
@@ -25,7 +25,7 @@ def seed_reservations():
         id=3,
         restaurant_id=1,
         user_id=2,
-        date=datetime.strptime('2024-12-22 19:30:00', '%Y-%m-%d %H:%M:%S'),
+        date=datetime.strptime('2024-12-22T19:30', '%Y-%m-%dT%H:%M'),
         party_size=6,
     )
 

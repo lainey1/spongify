@@ -44,7 +44,7 @@ class Reservation(db.Model):
             'id': self.id,
             'restaurant_id': self.restaurant_id,
             'user_id': self.user_id,
-            'date': self.date.strftime('%Y-%m-%d %H:%M:%S'),
+            'date': self.date.strftime('%Y-%m-%dT%H:%M'),
             'party_size': self.party_size,
             'name': self.restaurant.name if self.restaurant else None,
             'username': self.user.username if self.user else None

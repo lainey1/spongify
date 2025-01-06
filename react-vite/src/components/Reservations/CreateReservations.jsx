@@ -9,17 +9,13 @@ const CreateReservations = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    // const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-  const users = useSelector((store) => store.session.user);
 
-  // const currentUserId = users ? users.id : null; 
-  const currentUserId = users.id;
-  console.log("User", currentUserId, restaurantId);
-    // Fetch logged-in user (assuming you're getting user data from an API or local storage)
-   
+    const navigate = useNavigate();
+    const users = useSelector((store) => store.session.user);
 
-   
+    const currentUserId = users?.id; // safely accessing user ID
+    console.log("User", currentUserId, restaurantId);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
@@ -30,7 +26,6 @@ const CreateReservations = () => {
             return;
         }
 
-        
         if (!currentUserId) {
             setError('User is not logged in');
             setLoading(false);
@@ -39,43 +34,54 @@ const CreateReservations = () => {
 
         const reservationData = {
             restaurant_id: parseInt(restaurantId),
-            user_id: currentUserId, 
+            user_id: currentUserId,
             date: date,
             party_size: parseInt(partySize),
         };
- console.log("DATA", reservationData);
-      
+        console.log("REVDATA", reservationData);
 
         const fetchCreate = async () => {
-            try {
-                const response = await fetch(`/api/reservations/restaurant/${restaurantId}/new`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                    },
-                  body: JSON.stringify(reservationData),                 
-                });
- console.log("DATA", reservationData);
-                if (!response.ok) {
-                    throw new Error('Failed to create reservation');
-                }
-
-              const data = await response.json();
-              
-                setLoading(false);
-                setSuccess(data.message);
-                setError(null);
-                if (data.reservation) {
-                    navigate(`/reservations/${data.reservation.id}`);
-                }
-            } catch (err) {
-                setLoading(false);
-                setSuccess(null);
-                setError('There was an error creating your reservation');
-                console.error('Error:', err);
-            }
-        };
+          try {
+              const response = await fetch(`/api/reservations/restaurant/${restaurantId}/new`, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                  },
+                  body: JSON.stringify(reservationData),
+              });
+      
+              // Read the response body once
+              const responseBody = await response.json();
+      
+              // Log response status and body for debugging
+              console.log('Response Status:', response.status);
+              console.log('Response Body:', responseBody);
+      
+              // Check for non-OK responses
+              if (!response.ok) {
+                  throw new Error(responseBody.message || 'Failed to create reservation');
+              }
+      
+              // Use the already parsed response body for your success handling
+              const data = responseBody;
+              console.log('Reservation Data:', data);
+      
+              // Handle success
+              setLoading(false);
+              setSuccess(data.message);
+              setError(null);
+      
+              if (data.reservation) {
+                  navigate(`/reservations/${data.reservation.id}`);
+              }
+          } catch (err) {
+              setLoading(false);
+              setSuccess(null);
+              setError(`There was an error creating your reservation: ${err.message}`);
+              console.error('Error:', err);
+          }
+      };     
 
         fetchCreate();
     };
@@ -117,6 +123,7 @@ const CreateReservations = () => {
 };
 
 export default CreateReservations;
+
 
 
 
