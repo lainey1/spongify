@@ -3,8 +3,10 @@ import { useDispatch } from "react-redux";
 import { deleteProfileThunk } from "../../redux/session";
 import { useModal } from "../../context/Modal";
 import "./DeleteProfile.css";
+import { useNavigate } from "react-router-dom";
 
 const DeleteProfile = ({ user }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
@@ -12,7 +14,7 @@ const DeleteProfile = ({ user }) => {
 
   const confirmDelete = (e) => {
     e.preventDefault();
-    dispatch(deleteProfileThunk(user)).then(() => closeModal());
+    dispatch(deleteProfileThunk(user)).then(() => navigate("/"));
   };
 
   const cancelDelete = (e) => {

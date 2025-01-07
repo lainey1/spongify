@@ -24,6 +24,11 @@ class User(db.Model, UserMixin):
     reviews = db.relationship('Review', back_populates='user', cascade='all, delete-orphan')
 
 
+
+    reervations = db.relationship('Reservation',
+    back_populates='user', cascade='all, delete-orphan')
+
+
     # TODO Future Enhancement - In your Profile model -
     # profile_image = db.relationship('ProfileImage', back_populates='profile')
 
