@@ -17,7 +17,6 @@ class ReviewImage(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
-
     review = db.relationship('Review', back_populates='review_images')
     user = db.relationship('User', back_populates='review_images')
 

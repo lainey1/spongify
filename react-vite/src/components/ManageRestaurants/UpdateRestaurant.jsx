@@ -362,10 +362,11 @@ const UpdateRestaurant = () => {
               <option value="" disabled>
                 Select a Price Range
               </option>
-              <option value="1">Inexpensive ($10 and under)</option>
-              <option value="2">Moderate ($11 - $30)</option>
-              <option value="3">Pricey ($31 - $60)</option>
-              <option value="4">Ultra High-End ($61 and up)</option>
+              <option value="1">$10 and under</option>
+              <option value="2">$11 - $30</option>
+              <option value="3">$31 - $60</option>
+              <option value="4">$61-$100</option>
+              <option value="5">Over $100</option>
             </select>
             {errors.price_point && (
               <p className="form-error">{errors.price_point}</p>

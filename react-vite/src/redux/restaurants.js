@@ -28,6 +28,7 @@ export const updateRestaurant = (restaurant) => ({
   type: UPDATE_RESTAURANT,
   payload: restaurant,
 });
+
 export const deleteRestaurant = (restaurantId) => ({
   type: DELETE_RESTAURANT,
   payload: restaurantId,

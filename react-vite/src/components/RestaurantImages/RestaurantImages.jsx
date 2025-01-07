@@ -15,7 +15,6 @@ import { useParams } from "react-router-dom";
 const RestaurantImages = () => {
   const dispatch = useDispatch();
   const { restaurantId } = useParams();
-  // const restaurant = useSelector((state) => state.restaurants.currentRestaurant.id);
   const images = useSelector((state) => state.restaurantImages.images);
   const currentUser = useSelector((state) => state.session.user);
 
@@ -23,7 +22,7 @@ const RestaurantImages = () => {
   const [isPreview, setIsPreview] = useState(false);
   const [editImageId, setEditImageId] = useState(null);
   const [error, setError] = useState("");
-  const isOwner = currentUser?.id === images?.owner_id;
+  // const isOwner = currentUser?.id === images?.user_id;
   const validateUrl = (url) => {
     return url.startsWith("https://");
   };
@@ -127,29 +126,31 @@ const RestaurantImages = () => {
       </div>
 
       <div>
-        <h2>Image List</h2>
         {images?.length > 0 ? (
           <ul className="image-list">
-            {images?.map((image) => (
-              <li key={image.id}>
-                <img src={image.url} alt="Restaurant" />
-                {/* <p>{image.is_preview ? "Preview" : "Regular"}</p> */}
-                <p>Posty by {image.user.email}</p>
+            {images?.map((image) => {
+              const isOwner = currentUser?.id === image.user_id;
+              return (
+                <li key={image.id}>
+                  <img src={image.url} alt="Restaurant" />
+                  {/* <p>{image.is_preview ? "Preview" : "Regular"}</p> */}
+                  <p>Posted by {image?.user?.email}</p>
 
-                {isOwner && (
-                  <button onClick={() => startEdit(image)}>Edit</button>
-                )}
+                  {isOwner && (
+                    <button onClick={() => startEdit(image)}>Edit</button>
+                  )}
 
-                {isOwner && (
-                  <button
-                    className="delete"
-                    onClick={() => handleDelete(image.id)}
-                  >
-                    Delete
-                  </button>
-                )}
-              </li>
-            ))}
+                  {isOwner && (
+                    <button
+                      className="delete"
+                      onClick={() => handleDelete(image.id)}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         ) : (
           <p>No images available</p>
