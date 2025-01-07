@@ -1,11 +1,13 @@
 import ProfileOverview from "./ProfileOverview";
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ReviewsUser from "../ReviewsUser";
 import ManageRestaurants from "../ManageRestaurants/ManageRestaurants";
-// import ManageReservations from "../ManageReservations";
+import ManageReservations from "../Reservations/ManageReservations";
+import DeleteProfile from "./DeleteProfile";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import { thunkAuthenticate } from "../../redux/session";
 import "./UserProfile.css";
 
@@ -20,8 +22,14 @@ function UserProfile() {
   const activeSection = queryParams.get("section") || "profile";
 
   useEffect(() => {
-    dispatch(thunkAuthenticate()); // Load current user data
-  }, [dispatch]);
+    if (!currentUser) {
+      dispatch(thunkAuthenticate()); // Load current user data
+    }
+  }, [dispatch, currentUser]);
+
+  if (!currentUser) {
+    return <div>Loading...</div>; // or a loading spinner
+  }
 
   return (
     <div className="profile-page">
@@ -36,6 +44,13 @@ function UserProfile() {
           <h2>{currentUser.username}</h2>
           <h4>{currentUser.location}</h4>
           <p>{currentUser.headline}</p>
+
+          {/* user/:userId/edit */}
+          <div>
+            <Link to={`/user/${currentUser.id}/edit`} className="profile-link">
+              Edit Profile
+            </Link>
+          </div>
         </div>
 
         <nav className="menu">
@@ -56,25 +71,30 @@ function UserProfile() {
           >
             Restaurants
           </button>
-          {/* <button
+          <button
             onClick={() =>
               navigate(`/user/${currentUser.id}?section=reservations`)
             }
           >
             Reservations
-          </button> */}
+          </button>
+
+          <div id="delete-profile-link">
+            <OpenModalButton
+              buttonText={"Delete Profile"}
+              modalComponent={<DeleteProfile user={currentUser.id} />}
+              className="profile-link"
+            />
+          </div>
         </nav>
       </div>
 
       {/* Main Content */}
       <div className="main-content">
-        {/* {activeSection === "profile" && (
-          <ProfileOverview user={currentUser} reviewRatings={reviewRatings} />
-        )} */}
         {activeSection === "profile" && <ProfileOverview user={currentUser} />}
         {activeSection === "reviews" && <ReviewsUser />}
         {activeSection === "restaurants" && <ManageRestaurants />}
-        {/* {activeSection === "reservations" && <ManageReservations />} */}
+        {activeSection === "reservations" && <ManageReservations />}
       </div>
     </div>
   );

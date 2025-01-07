@@ -136,7 +136,7 @@ const UpdateRestaurant = () => {
     const newErrors = {};
 
     if (!formData.name) newErrors.name = "Name of your restaurant is required";
-    
+
     if (!formData.address) newErrors.address = "Address is required";
     if (!formData.city) newErrors.city = "City is required";
     if (!formData.state) newErrors.state = "State is required";
@@ -312,7 +312,9 @@ const UpdateRestaurant = () => {
               onChange={handleInputChange}
               placeholder="Phone Number"
             />
-            {errors.phone_number && <p className="form-error">{errors.phone_number}</p>}
+            {errors.phone_number && (
+              <p className="form-error">{errors.phone_number}</p>
+            )}
           </div>
 
           {/* Email */}
@@ -350,7 +352,7 @@ const UpdateRestaurant = () => {
 
           {/* Price Point */}
           <div className="form-group">
-            <select 
+            <select
               className="form-input"
               name="price_point"
               value={formData.price_point}
@@ -360,12 +362,15 @@ const UpdateRestaurant = () => {
               <option value="" disabled>
                 Select a Price Range
               </option>
-              <option value="1">Inexpensive ($10 and under)</option>
-              <option value="2">Moderate ($11 - $30)</option>
-              <option value="3">Pricey ($31 - $60)</option>
-              <option value="4">Ultra High-End ($61 and up)</option>
+              <option value="1">$10 and under</option>
+              <option value="2">$11 - $30</option>
+              <option value="3">$31 - $60</option>
+              <option value="4">$61-$100</option>
+              <option value="5">Over $100</option>
             </select>
-            {errors.price_point && <p className="form-error">{errors.price_point}</p>}
+            {errors.price_point && (
+              <p className="form-error">{errors.price_point}</p>
+            )}
           </div>
 
           {/* Cuisine */}
@@ -389,7 +394,7 @@ const UpdateRestaurant = () => {
             {errors.cuisine && <p className="form-error">{errors.cuisine}</p>}
           </div>
         </section>
-        
+
         {/* Restaurant Description */}
         <section className="form-section">
           <h2>Describe your place to guests</h2>

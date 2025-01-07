@@ -1,7 +1,7 @@
 /* ================================
    Form Container
 ================================ */
-#delete-user-form {
+#delete-restaurant-form {
   position: fixed;
   top: 25%;
   left: 50%; /* Centers the modal horizontally */
@@ -47,7 +47,7 @@
    Media Query for Small Screens (Phones)
 ================================ */
 @media (max-width: 600px) {
-  #delete-user-form {
+  #delete-restaurant-form {
     width: 90%; /* Adjust the form width to be 90% of the screen */
     padding: 15px; /* Reduce padding on smaller screens */
   }

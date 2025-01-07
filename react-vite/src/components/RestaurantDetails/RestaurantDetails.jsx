@@ -58,20 +58,21 @@ function RestaurantDetails() {
     }
   }, [restaurant?.hours]);
 
-  const handleNavigateToImages = () => {
-    navigate("images");
-  };
-
   const handleWriteReviewClick = () => {
     navigate(`/restaurants/${restaurantId}/review`);
   };
 
   const handleReserveClick = () => {
-    alert("Feature coming soon...");
+    navigate(`/restaurant/${restaurantId}/new`);
   };
 
-  const handleManageClick = () => {
-    alert("Manage your restaurant settings...");
+  const handleNavigateToImages = () => {
+    navigate("images");
+  };
+
+  // Navigate to UserProfile with active section
+  const navigateToSection = (section) => {
+    navigate(`/user/${currentUser.id}?section=${section}`);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -93,7 +94,9 @@ function RestaurantDetails() {
         <span>
           <div className="highlights">
             <StarRating rating={avgStarRating} />
+            <span style={{ padding: "0 0.5em" }}></span>
             {formatStarRating(avgStarRating)}
+            <span style={{ padding: "0 0.5em" }}></span>
             {formatReviewCount(reviewCount)}
           </div>
           <div className="highlights">
@@ -101,7 +104,7 @@ function RestaurantDetails() {
               className="open-or-closed"
               style={{
                 color: isOpen ? "green" : "red",
-                fontWeight: "bold", // Optional for emphasis
+                fontWeight: "bold",
               }}
             >
               {isOpen ? "Open Now" : "Closed"}
@@ -169,7 +172,9 @@ function RestaurantDetails() {
               </p>
             </div>
             {isOwner && (
-              <button onClick={handleManageClick}>Manage Restaurant</button>
+              <button onClick={() => navigateToSection("restaurants")}>
+                Manage Restaurant
+              </button>
             )}
           </div>
         </div>

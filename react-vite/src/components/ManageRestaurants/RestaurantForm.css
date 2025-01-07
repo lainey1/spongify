@@ -16,6 +16,8 @@
 }
 
 .form-section {
+  display: flex;
+  flex-direction: column;
   width: 80%;
   margin-bottom: 20px;
 }

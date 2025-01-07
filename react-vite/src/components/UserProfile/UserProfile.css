@@ -10,6 +10,7 @@ body {
 .profile-page {
   display: flex;
   height: 100vh;
+  flex-direction: row;
 }
 
 /* Sidebar Styling */
@@ -35,13 +36,40 @@ body {
   margin-bottom: 10px;
 }
 
-.edit-profile-btn {
-  background-color: #007bff;
+.profile-link {
+  color: #8c183e;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#delete-profile-link {
+  border-top: 1px solid #d6d6d6;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  /* padding-top: 50px; */
+}
+
+#delete-profile-link button {
+  text-align: center;
+  width: 30%;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-image: none;
+  background-color: maroon;
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
   cursor: pointer;
+}
+
+#delete-profile-link button:hover {
+  background-color: #5a6268; /* Slightly darker shade on hover */
+}
+
+.edit-profile-link:hover {
+  color: #e26d12;
+  text-decoration: none;
 }
 
 .menu button {
@@ -66,7 +94,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 
 .view-all-btn {
   margin-top: 10px;
@@ -111,4 +138,97 @@ body {
   height: 50px;
   background-color: #eaeaea;
   border-radius: 50%;
+}
+
+/* ================================
+   Responsive Layouts for Medium and Small Screens
+================================ */
+
+@media (max-width: 1000px) {
+  .profile-page {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    margin-bottom: 20px;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+
+  .stats-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .top-cuisines,
+  .review-stars {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .friends-section {
+    margin-top: 20px;
+  }
+
+  .view-all-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .user-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .sidebar {
+    padding: 10px;
+  }
+
+  .menu button {
+    padding: 8px;
+  }
+
+  #delete-profile-link button {
+    width: 40%;
+  }
+
+  .main-content {
+    padding: 15px;
+  }
+
+  /* Move name and location under the image */
+  .user-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user-info h3,
+  .user-info p {
+    margin: 5px 0;
+  }
+
+  .stats-section {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .top-cuisines,
+  .review-stars {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .friends-section {
+    padding: 10px;
+  }
+
+  .view-all-btn {
+    padding: 6px 10px;
+  }
 }

@@ -1,13 +1,10 @@
 import { useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-  deleteRestaurantThunk,
-  fetchAllRestaurantsThunk,
-} from "../../redux/restaurants";
+import { deleteProfileThunk } from "../../redux/session";
 import { useModal } from "../../context/Modal";
-import "./DeleteRestaurant.css";
+import "./DeleteProfile.css";
 
-const DeleteRestaurant = ({ restaurantId }) => {
+const DeleteProfile = ({ user }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
@@ -15,9 +12,7 @@ const DeleteRestaurant = ({ restaurantId }) => {
 
   const confirmDelete = (e) => {
     e.preventDefault();
-    dispatch(deleteRestaurantThunk(restaurantId))
-      .then(() => dispatch(fetchAllRestaurantsThunk()))
-      .then(() => closeModal());
+    dispatch(deleteProfileThunk(user)).then(() => closeModal());
   };
 
   const cancelDelete = (e) => {
@@ -54,17 +49,20 @@ const DeleteRestaurant = ({ restaurantId }) => {
   }, [closeModal]);
 
   return (
-    <div id="delete-restaurant-form">
-      <h1>Confirm Delete</h1>
-      <p>Are you sure you want to remove this restaurant?</p>
+    <div id="delete-user-form">
+      <h1>Confirm Deletion of Your Profile</h1>
+      <p>
+        Are you sure you want to delete your profile? Deletion will remove your
+        profile, reviews, reservation, and image data and is not reversable.{" "}
+      </p>
       <button onClick={confirmDelete} className="confirm-delete">
-        Yes (Delete Restaurant)
+        Yes (Delete Profile)
       </button>
       <button onClick={cancelDelete} className="cancel-delete">
-        No (Keep Restaurant)
+        No (Keep Profile)
       </button>
     </div>
   );
 };
 
-export default DeleteRestaurant;
+export default DeleteProfile;

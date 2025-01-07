@@ -31,7 +31,6 @@
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
-  margin-bottom: 20px;
 }
 
 .user-location h4 {
@@ -69,4 +68,72 @@
   margin-top: 5px;
   font-size: 14px;
   color: #555;
+}
+
+/* ================================
+   Responsive Layouts for Medium and Small Screens
+================================ */
+
+@media (max-width: 1000px) {
+  .profile-overview {
+    padding: 15px;
+  }
+
+  .favorite-cuisine,
+  .user-location {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .favorite-cuisine h4,
+  .user-location h4 {
+    font-size: 16px;
+  }
+
+  .favorite-cuisine p,
+  .user-location p {
+    font-size: 14px;
+  }
+
+  .rating-graph {
+    gap: 8px;
+  }
+
+  .rating-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 700px) {
+  .profile-overview {
+    padding: 10px;
+  }
+
+  .favorite-cuisine,
+  .user-location {
+    gap: 10px;
+  }
+
+  .favorite-cuisine h4,
+  .user-location h4 {
+    font-size: 14px;
+  }
+
+  .favorite-cuisine p,
+  .user-location p {
+    font-size: 12px;
+  }
+
+  .rating-graph {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .bar {
+    width: 25px; /* Adjust bar size for smaller screens */
+  }
+
+  .rating-label {
+    font-size: 10px;
+  }
 }
