@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateField } from "../../utils/validateField";
+import {
+  fetchRestaurantThunk,
+  addRestaurantThunk,
+} from "../../redux/restaurants";
 import "./RestaurantForm.css";
+import { useDispatch } from "react-redux";
 
 function CreateRestaurant() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formSchema, setFormSchema] = useState(null);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -31,6 +37,25 @@ function CreateRestaurant() {
         initialData["cuisine"] = "American";
         initialData["price_point"] = "1";
 
+        const defaultOpenTime = "10:00 AM";
+        const defaultCloseTime = "10:00 PM";
+
+        // Add default opening and closing times for each day of the week
+        initialData["monday_open"] = defaultOpenTime;
+        initialData["monday_close"] = defaultCloseTime;
+        initialData["tuesday_open"] = defaultOpenTime;
+        initialData["tuesday_close"] = defaultCloseTime;
+        initialData["wednesday_open"] = defaultOpenTime;
+        initialData["wednesday_close"] = defaultCloseTime;
+        initialData["thursday_open"] = defaultOpenTime;
+        initialData["thursday_close"] = defaultCloseTime;
+        initialData["friday_open"] = defaultOpenTime;
+        initialData["friday_close"] = defaultCloseTime;
+        initialData["saturday_open"] = defaultOpenTime;
+        initialData["saturday_close"] = defaultCloseTime;
+        initialData["sunday_open"] = defaultOpenTime;
+        initialData["sunday_close"] = defaultCloseTime;
+
         setFormData(initialData);
         setLoading(false);
       })
@@ -55,7 +80,7 @@ function CreateRestaurant() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // You can now include the csrfToken in the request headers or form data
 
@@ -94,28 +119,13 @@ function CreateRestaurant() {
 
     // Log the transformed data
     console.log("Transformed form data: ", transformedData);
-
-    // Send the transformed formData to the backend
-    fetch("/api/restaurants/new", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(transformedData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error);
-        } else {
-          console.log("Restaurant created:", data);
-          navigate(`/restaurants/${data.id}`);
-        }
-      })
-      .catch((err) => {
-        console.error("Error during form submission:", err);
-        setError("Error submitting form");
-      });
+    try {
+      const data = await dispatch(addRestaurantThunk(transformedData));
+      dispatch(fetchRestaurantThunk(data.id));
+      navigate(`/restaurants/${data.id}`);
+    } catch (error) {
+      console.error("Failed to update restaurant:", error);
+    }
   };
 
   if (loading) return <div className="loading">Loading...</div>;

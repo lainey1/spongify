@@ -5,6 +5,7 @@
 const LOAD_RESTAURANT = "/restaurants/LOAD_RESTAURANT";
 const LOAD_RESTAURANTS = "/restaurants/LOAD_RESTAURANTS";
 const SET_ERRORS = "/restaurants/SET_ERRORS";
+const ADD_RESTAURANT = "/restaurants/ADD_RESTAURANT";
 const UPDATE_RESTAURANT = "/restaurants/UPDATE_RESTAURANT";
 const DELETE_RESTAURANT = "/restaurants/DELETE_RESTAURANT";
 
@@ -22,6 +23,11 @@ const loadRestaurants = (restaurants) => ({
 const setErrors = (errors) => ({
   type: SET_ERRORS,
   errors,
+});
+
+const addRestaurant = (restaurant) => ({
+  type: ADD_RESTAURANT,
+  payload: restaurant,
 });
 
 export const updateRestaurant = (restaurant) => ({
@@ -64,6 +70,31 @@ export const fetchAllRestaurantsThunk = () => async (dispatch) => {
     }
   } catch (err) {
     dispatch(setErrors({ message: "Network error" }));
+  }
+};
+
+export const addRestaurantThunk = (restaurantData) => async (dispatch) => {
+  try {
+    const response = await fetch("/api/restaurants/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(restaurantData),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(addRestaurant(data)); // Dispatch action to update store with new restaurant
+      console.log("Restaurant created:", data);
+      return data;
+    } else {
+      const errors = await response.json();
+      dispatch(setErrors(errors)); // Dispatch errors if creation failed
+    }
+  } catch (err) {
+    console.error("Error creating restaurant:", err);
+    dispatch(setErrors({ message: "Error submitting form" }));
   }
 };
 
@@ -117,6 +148,12 @@ export default function restaurantsReducer(
       return {
         currentRestaurant: state.currentRestaurant,
         ...payload,
+      };
+
+    case ADD_RESTAURANT:
+      return {
+        ...state,
+        currentRestaurant: payload, // Add the newly created restaurant to the state
       };
 
     case UPDATE_RESTAURANT: {
