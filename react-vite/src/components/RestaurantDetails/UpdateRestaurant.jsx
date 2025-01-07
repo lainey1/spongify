@@ -63,7 +63,7 @@ const UpdateRestaurant = () => {
   }, [dispatch, restaurantId]);
 
   useEffect(() => {
-    if (restaurant && restaurant.hours) {
+    if (restaurant) {
       const updatedFormData = {
         owner_id: restaurant.owner_id || "",
         name: restaurant.name || "",
@@ -77,27 +77,32 @@ const UpdateRestaurant = () => {
         cuisine: restaurant.cuisine || "",
         price_point: restaurant.price_point || "",
         description: restaurant.description || "",
-        hours: Object.keys(restaurant.hours).reduce((acc, day) => {
-          acc[day] = Array.isArray(restaurant.hours[day])
-            ? {
-                open: restaurant.hours[day][0],
-                close: restaurant.hours[day][1],
-              }
-            : restaurant.hours[day];
-          return acc;
-        }, {}),
+        hours: restaurant.hours || {
+          Monday: ["Closed", "Closed"],
+          Tuesday: ["9:00 AM", "9:00 PM"],
+          Wednesday: ["9:00 AM", "9:00 PM"],
+          Thursday: ["9:00 AM", "9:00 PM"],
+          Friday: ["9:00 AM", "10:00 PM"],
+          Saturday: ["10:00 AM", "10:00 PM"],
+          Sunday: ["10:00 AM", "8:00 PM"],
+        },
       };
-
+      console.log(updatedFormData.hours); // Check if hours is set correctly
       setFormData(updatedFormData);
     }
   }, [restaurant]);
 
   // Validation helper functions
+
   const validateField = (name, value) => {
     let error = "";
+
     switch (name) {
       case "name":
-        if (!value) error = "Name is required.";
+        if (!value)
+          error = `${
+            name.charAt(0).toUpperCase() + name.slice(1)
+          } is required.`;
         break;
       case "address":
         if (!value) error = "Address is required.";
@@ -129,14 +134,19 @@ const UpdateRestaurant = () => {
 
   const validateForm = () => {
     const newErrors = {};
+
     if (!formData.name) newErrors.name = "Name of your restaurant is required";
+
     if (!formData.address) newErrors.address = "Address is required";
     if (!formData.city) newErrors.city = "City is required";
     if (!formData.state) newErrors.state = "State is required";
     if (!formData.country) newErrors.country = "Country is required";
-    if (!formData.cuisine) newErrors.cuisine = "Cuisine type is required";
+    if (!formData.cuisine)
+      newErrors.cuisine =
+        "Cuisine type is required. Please select cuisine from the options provided.";
     if (!formData.price_point)
-      newErrors.price_point = "Price range is required";
+      newErrors.price_point =
+        "Price range is required. Please select a range from the options provided.";
     if (!formData.description || formData.description.length < 30)
       newErrors.description = "Description needs 30 or more characters";
     return newErrors;
@@ -163,7 +173,7 @@ const UpdateRestaurant = () => {
         ...prevFormData.hours,
         [day]: {
           ...prevFormData.hours[day],
-          [type]: value, // Update open/close based on the type
+          [type]: value,
         },
       },
     }));
@@ -185,7 +195,6 @@ const UpdateRestaurant = () => {
 
     try {
       await dispatch(editRestaurantThunk(restaurantId, updatedRestaurantData));
-      dispatch(fetchRestaurantThunk(restaurantId));
       navigate(`/restaurants/${restaurantId}`);
     } catch (error) {
       console.error("Failed to update restaurant:", error);
@@ -412,59 +421,51 @@ const UpdateRestaurant = () => {
         <section className="form-section">
           <h2>Set your restaurant&apos;s hours</h2>
           {formData.hours &&
-            Object.keys(formData.hours)
-              .sort((a, b) => {
-                const daysOfWeek = [
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday",
-                  "Sunday",
-                ];
-                return daysOfWeek.indexOf(a) - daysOfWeek.indexOf(b);
-              })
-              .map((day) => (
-                <div key={day} className="form-group">
-                  <label>{day}</label>
-                  <div className="hours-select">
-                    <select
-                      name={`${day}-open`}
-                      value={formData.hours[day].open}
-                      onChange={(e) =>
-                        handleHoursChange(day, "open", e.target.value)
-                      }
-                      required
-                    >
-                      {constants.time_choices.map((choice, index) => (
-                        <option key={index} value={choice[0]}>
-                          {choice[1]}
+            Object.keys(formData.hours).map((day) => (
+              <div key={day} className="form-group">
+                <h3>{day}</h3>
+                <div className="form-hours">
+                  <select
+                    name={`${day}_open`}
+                    value={formData.hours[day].open}
+                    onChange={(e) =>
+                      handleHoursChange(day, "open", e.target.value)
+                    }
+                    required
+                  >
+                    {constants.time_choices.map((choice, index) => (
+                      <option key={index} value={choice[0]}>
+                        {choice[1]}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    name={`${day}_close`}
+                    value={formData.hours[day].close}
+                    onChange={(e) =>
+                      handleHoursChange(day, "close", e.target.value)
+                    }
+                    required
+                  >
+                    {/* If the open time is 'Closed', set 'Closed' as the only option for close */}
+                    {formData.hours[day].open === "Closed" ? (
+                      <option value="Closed">Closed</option>
+                    ) : (
+                      constants.time_choices.map((time) => (
+                        <option key={time[0]} value={time[0]}>
+                          {time[1]}
                         </option>
-                      ))}
-                    </select>
-                    <select
-                      name={`${day}-close`}
-                      value={formData.hours[day].close}
-                      onChange={(e) =>
-                        handleHoursChange(day, "close", e.target.value)
-                      }
-                      required
-                    >
-                      {constants.time_choices.map((choice, index) => (
-                        <option key={index} value={choice[0]}>
-                          {choice[1]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                      ))
+                    )}
+                  </select>
                 </div>
-              ))}
+              </div>
+            ))}
         </section>
 
-        {/* Submit Button */}
-        <button type="submit" className="form-submit">
-          Save Changes
+        <button className="form-submit" type="submit">
+          Update Restaurant
         </button>
       </form>
     </div>

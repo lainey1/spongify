@@ -8,6 +8,7 @@ const RestaurantHours = ({ hours }) => {
     "Saturday",
     "Sunday",
   ];
+
   return (
     <table className="hours-table">
       <tbody>
@@ -18,7 +19,11 @@ const RestaurantHours = ({ hours }) => {
               <td className="day-cell">
                 <strong>{day}</strong>
               </td>
-              <td>{times ? `${times[0]} - ${times[1]}` : "Closed"}</td>
+              <td>
+                {times && times.open !== "Closed" && times.close !== "Closed"
+                  ? `${times.open} - ${times.close}`
+                  : "Closed"}
+              </td>
             </tr>
           );
         })}

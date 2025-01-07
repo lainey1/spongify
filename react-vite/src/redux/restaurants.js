@@ -78,6 +78,8 @@ export const editRestaurantThunk =
       if (response.ok) {
         const restaurant = await response.json();
         dispatch(updateRestaurant(restaurant));
+
+        return restaurant;
       }
     } catch (err) {
       console.error("Error updating restaurant:", err);
@@ -118,7 +120,14 @@ export default function restaurantsReducer(
       };
 
     case UPDATE_RESTAURANT: {
-      return { ...state, [payload.id]: payload };
+      return {
+        ...state,
+        currentRestaurant: {
+          ...state.currentRestaurant,
+          ...payload,
+          hours: payload.hours || state.currentRestaurant.hours, // Ensure hours are fully replaced
+        },
+      };
     }
 
     case DELETE_RESTAURANT: {

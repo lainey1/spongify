@@ -44,19 +44,38 @@ function RestaurantDetails() {
   useEffect(() => {
     if (restaurant?.hours) {
       const today = new Date();
-      const todayHours =
-        restaurant.hours[today.toLocaleString("en-US", { weekday: "long" })];
-      if (todayHours) {
-        const [openTime, closeTime] = todayHours.map((time) =>
-          parseTimeToMinutes(time)
-        );
-        const nowMinutes = today.getHours() * 60 + today.getMinutes();
-        setIsOpen(nowMinutes >= openTime && nowMinutes <= closeTime);
-      } else {
-        setIsOpen(false);
+      const todayDay = today.toLocaleString("en-US", { weekday: "long" });
+      const todayHours = restaurant.hours[todayDay]; // { open: "9:00 AM", close: "9:00 PM" }
+
+      if (todayHours && todayHours.length === 2) {
+        const openTime = todayHours[0];
+        const closeTime = todayHours[1];
+
+        // Check if times are valid
+        if (typeof openTime === "string" && typeof closeTime === "string") {
+          console.log("=======> Open time:", openTime);
+          console.log("=======> Close time:", closeTime);
+
+          try {
+            const openTimeInMinutes = parseTimeToMinutes(openTime); // Convert "open" time
+            const closeTimeInMinutes = parseTimeToMinutes(closeTime); // Convert "close" time
+            const nowMinutes = parseTimeToMinutes(
+              `${today.getHours()}:${today.getMinutes()}`
+            ); // Current time
+
+            // Determine if the restaurant is open
+            setIsOpen(
+              openTimeInMinutes <= nowMinutes && nowMinutes < closeTimeInMinutes
+            );
+          } catch (err) {
+            console.error("Error parsing times:", err);
+          }
+        } else {
+          console.error("Invalid time format for open or close time");
+        }
       }
     }
-  }, [restaurant?.hours]);
+  }, [restaurant]);
 
   const handleWriteReviewClick = () => {
     navigate(`/restaurants/${restaurantId}/review`);
