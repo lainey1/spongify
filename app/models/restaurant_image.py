@@ -19,7 +19,8 @@ class RestaurantImage(db.Model):
 
 
     restaurant = db.relationship('Restaurant', back_populates='restaurant_images')
-    user = db.relationship('User', back_populates='restaurant_images')
+
+    user = db.relationship('User', back_populates='restaurant_images', lazy='joined')
 
     def to_dict(self):
         return {

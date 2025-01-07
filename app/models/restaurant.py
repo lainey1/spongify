@@ -30,8 +30,10 @@ class Restaurant(db.Model):
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True
     )
 
+    owner = db.relationship('User', back_populates='owned_restaurants', lazy='joined')
+
     reservations = db.relationship(
-        "Reservation", backref="restaurant", cascade="all, delete-orphan"
+        "Reservation", back_populates="restaurant", cascade="all, delete-orphan"
     )
 
     restaurant_images = db.relationship(
@@ -39,13 +41,8 @@ class Restaurant(db.Model):
     )
 
     reviews = db.relationship(
-        "Review", backref="restaurant", cascade="all, delete-orphan"
+        "Review", back_populates="restaurant", cascade="all, delete-orphan"
     )
-
-
-    # review_images = db.relationship(
-    #     "ReviewImage", back_populates="restaurant", cascade="all, delete-orphan"
-    # )
 
 
 

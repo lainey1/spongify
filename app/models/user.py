@@ -19,15 +19,26 @@ class User(db.Model, UserMixin):
     favorite_cuisine = db.Column(db.String(100), nullable=True)
     headline = db.Column(db.String(255), nullable=True)
 
-    review_images = db.relationship('ReviewImage', back_populates='user', cascade='all, delete-orphan')
-    restaurant_images = db.relationship('RestaurantImage', back_populates='user', cascade='all, delete-orphan')
-    reviews = db.relationship('Review', back_populates='user', cascade='all, delete-orphan')
+   # Updated relationship
+    owned_restaurants = db.relationship(
+        'Restaurant', back_populates='owner', cascade='all, delete-orphan'
+    )
 
+    review_images = db.relationship(
+        'ReviewImage', back_populates='user', cascade='all, delete-orphan'
+    )
 
+    restaurant_images = db.relationship(
+        'RestaurantImage', back_populates='user', cascade='all, delete-orphan'
+    )
 
-    reervations = db.relationship('Reservation',
-    back_populates='user', cascade='all, delete-orphan')
+    reviews = db.relationship(
+        'Review', back_populates='user', cascade='all, delete-orphan'
+    )
 
+    reservations = db.relationship(
+        'Reservation', back_populates='user', cascade='all, delete-orphan'
+    )
 
     # TODO Future Enhancement - In your Profile model -
     # profile_image = db.relationship('ProfileImage', back_populates='profile')

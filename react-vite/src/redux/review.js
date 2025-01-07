@@ -115,8 +115,13 @@ export const deleteExistingReview = (reviewId) => async (dispatch) => {
     const response = await fetch(`/api/reviews/${reviewId}`, {
       method: "DELETE",
     });
+
     if (response.ok) {
+      // Dispatch the action to remove the review from the Redux store
       dispatch(deleteReview(reviewId));
+      dispatch(fetchAllReviews()); // Ensure the reviews list is up-to-date
+    } else {
+      console.error("Failed to delete the review");
     }
   } catch (err) {
     console.error("Error deleting review:", err);

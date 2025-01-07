@@ -14,9 +14,9 @@ class Reservation(db.Model):
     date = db.Column(db.TIMESTAMP, nullable=False)
     party_size = db.Column(db.Integer, nullable=False)
 
-    # restaurant = db.relationship('Restaurant', backref='reservations')
-    # user = db.relationship('User', backref='reservations')
-    user = db.relationship('User', backref='reservations', lazy='joined')
+
+    user = db.relationship('User', back_populates='reservations')
+    restaurant = db.relationship('Restaurant', back_populates='reservations')
 
     def to_dict(self):
         return {
