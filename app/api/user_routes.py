@@ -61,3 +61,25 @@ def update_profile(user_id):
         'message': 'Invalid user data',
         'errors': form.errors
     }), 400
+
+
+@user_routes.route('/<int:user_id>', methods=['DELETE'])
+@login_required
+def delete_user(user_id):
+    """
+    Delete a user by ID
+    """
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    # Ensure the current user is the profile owner
+    if user_id != current_user.id:
+        return jsonify({'message': 'You are not authorized to delete this user profile'}), 403
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'User profile deleted successfully'
+    }), 200

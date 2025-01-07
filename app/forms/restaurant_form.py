@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField
 from wtforms.validators import InputRequired, Optional, Length, ValidationError
-from ..constants import TIME_CHOICES, POPULAR_CUISINES
+from ..constants import TIME_CHOICES
 
 # Email validator can be customized as needed
 def email_validator(form, field):
@@ -22,11 +22,31 @@ class RestaurantForm(FlaskForm):
     email = StringField('Email', validators=[email_validator, Optional(), Length(max=255)])
     website = StringField('Website', validators=[Optional(), Length(max=255)])
 
+    POPULAR_CUISINES = [
+        ('American', 'American'),
+        ('African', 'African'),
+        ('Chinese', 'Chinese'),
+        ('French', 'French'),
+        ('Greek', 'Greek'),
+        ('Indian', 'Indian'),
+        ('Italian', 'Italian'),
+        ('Japanese', 'Japanese'),
+        ('Korean', 'Korean'),
+        ('Mediterranean', 'Mediterranean'),
+        ('Mexican', 'Mexican'),
+        ('Middle Eastern', 'Middle Eastern'),
+        ('Spanish', 'Spanish'),
+        ('Thai', 'Thai'),
+        ('Vietnamese', 'Vietnamese'),
+        ('Other', 'Other'),
+    ]
+
+
     # Cuisine dropdown now with predefined choices
     cuisine = SelectField('Cuisine', choices=POPULAR_CUISINES, validators=[Optional()])
 
     # Price point dropdown
-    price_point = SelectField('Price Point', choices=[('1', '$1-$10'), ('2', '$11-$30'), ('3', '$31-$60'), ('4', '$61-$100'), ('5', 'Over $100')], validators=[Optional()])
+    price_point = SelectField('Price Point', choices=[('1', '$10 and under'), ('2', '$11 - $30'), ('3', '$31 - $60'), ('4', '$61-$100'), ('5', 'Over $100')], validators=[Optional()])
 
     # Description field
     description = TextAreaField('Description', validators=[Optional(), Length(max=500)])

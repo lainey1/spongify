@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import ReviewsUser from "../ReviewsUser";
 import ManageRestaurants from "../ManageRestaurants/ManageRestaurants";
 import ManageReservations from "../Reservations/ManageReservations";
+import DeleteProfile from "./DeleteProfile";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import { thunkAuthenticate } from "../../redux/session";
 import "./UserProfile.css";
 
@@ -45,10 +47,7 @@ function UserProfile() {
 
           {/* user/:userId/edit */}
           <div>
-            <Link
-              to={`/user/${currentUser.id}/edit`}
-              className="edit-profile-link"
-            >
+            <Link to={`/user/${currentUser.id}/edit`} className="profile-link">
               Edit Profile
             </Link>
           </div>
@@ -79,6 +78,14 @@ function UserProfile() {
           >
             Reservations
           </button>
+
+          <div id="delete-profile-link">
+            <OpenModalButton
+              buttonText={"Delete Profile"}
+              modalComponent={<DeleteProfile user={currentUser.id} />}
+              className="profile-link"
+            />
+          </div>
         </nav>
       </div>
 
