@@ -1,36 +1,53 @@
-export const formatTo12HourTime = (time) => {
-  if (time === "Closed") {
-    return "Closed"; // If the time is "Closed", just return it as it is
+const formatTo12HourTime = (date) => {
+  if (!(date instanceof Date)) {
+    throw new Error("Invalid date object passed to formatTo12HourTime");
   }
 
-  const [hours24, minutes] = time.split(":").map((x) => parseInt(x, 10));
-
+  const hours24 = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, "0");
   const meridiem = hours24 >= 12 ? "PM" : "AM";
-  const hours12 = hours24 % 12 || 12; // Convert to 12-hour format
-  const formattedMinutes = minutes.toString().padStart(2, "0");
 
-  return `${hours12}:${formattedMinutes} ${meridiem}`;
+  const hours12 = hours24 % 12 || 12; // Convert to 12-hour format
+  return `${hours12}:${minutes} ${meridiem}`;
 };
 
 export const parseTimeToMinutes = (time) => {
-  if (time === "Closed") {
-    return -1; // Return a special value to signify "Closed"
+  console.log("Input to parseTimeToMinutes:", time);
+
+  // Convert Date objects to "HH:MM AM/PM"
+  if (time instanceof Date) {
+    time = formatTo12HourTime(time);
   }
 
-  const timePattern = /^(\d{1,2}):(\d{2}) (AM|PM)$/i;
-  const match = time.match(timePattern);
-
-  if (match) {
-    const [, hoursStr, minutesStr, meridiem] = match;
-    const hours = parseInt(hoursStr, 10);
-    const minutes = parseInt(minutesStr, 10);
-
-    return (
-      (hours % 12) * 60 + minutes + (meridiem.toUpperCase() === "PM" ? 720 : 0)
+  // Validate time is now a string
+  if (typeof time !== "string") {
+    throw new Error(
+      "Invalid time format. Expected a string in 'HH:MM AM/PM' format."
     );
   }
 
-  throw new Error("Invalid time format. Expected format: 'HH:MM AM/PM'");
+  // Regex to validate and extract components of the time string
+  const timePattern = /^(\d{1,2}):(\d{2}) (AM|PM)$/i;
+  const match = time.match(timePattern);
+
+  if (!match) {
+    throw new Error("Invalid time format. Expected format: 'HH:MM AM/PM'");
+  }
+
+  const [, hoursStr, minutesStr, meridiem] = match;
+  const hours = parseInt(hoursStr, 10);
+  const minutes = parseInt(minutesStr, 10);
+
+  if (hours < 1 || hours > 12 || minutes < 0 || minutes > 59) {
+    throw new Error(
+      "Invalid time values. Hours must be 1-12, and minutes 0-59."
+    );
+  }
+
+  // Convert to minutes since midnight
+  return (
+    (hours % 12) * 60 + minutes + (meridiem.toUpperCase() === "PM" ? 720 : 0)
+  );
 };
 
 export const formatTimeAgo = (updatedAt) => {

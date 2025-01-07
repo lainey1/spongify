@@ -35,11 +35,55 @@ function RestaurantDetails() {
   const reviewCount = getReviewCount(restaurant?.reviewStats);
 
   useEffect(() => {
+    // Set loading to true while fetching data
     setLoading(true);
+
+    // Fetch restaurant data
     dispatch(fetchRestaurantThunk(restaurantId))
-      .then(() => setLoading(false))
-      .catch(() => setLoading(false));
-  }, [dispatch, restaurantId]);
+      .then(() => {
+        setLoading(false); // Set loading to false when the fetch is complete
+      })
+      .catch(() => setLoading(false)); // In case of error, stop loading
+
+    // Handle restaurant hours logic
+    if (restaurant?.hours) {
+      const today = new Date();
+      const todayDay = today.toLocaleString("en-US", { weekday: "long" });
+      const todayHours = restaurant.hours[todayDay]; // { open: "9:00 AM", close: "9:00 PM" }
+
+      if (todayHours && todayHours.length === 2) {
+        const openTime = todayHours[0];
+        const closeTime = todayHours[1];
+
+        // Check if times are valid
+        if (typeof openTime === "string" && typeof closeTime === "string") {
+          try {
+            const openTimeInMinutes = parseTimeToMinutes(openTime); // Convert "open" time
+            const closeTimeInMinutes = parseTimeToMinutes(closeTime); // Convert "close" time
+            const nowMinutes = parseTimeToMinutes(
+              `${today.getHours()}:${today.getMinutes()}`
+            ); // Current time
+
+            // Determine if the restaurant is open
+            setIsOpen(
+              openTimeInMinutes <= nowMinutes && nowMinutes < closeTimeInMinutes
+            );
+          } catch (err) {
+            console.error("Error parsing times:", err);
+          }
+        } else {
+          console.error("Invalid time format for open or close time");
+        }
+      }
+    }
+  }, [dispatch, restaurantId, restaurant]); // Added restaurant as a dependency
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   dispatch(fetchRestaurantThunk(restaurantId))
+  //     .then(() => setLoading(false))
+  //     .catch(() => setLoading(false));
+  // }, [dispatch, restaurantId]);
 
   useEffect(() => {
     if (restaurant?.hours) {
